@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoilSpark · Learn, Grow, Succeed</title>
+  <title>SoilSparks · Learn, Grow, Succeed</title>
   <!-- Font Awesome 6 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Google Fonts (Inter & Poppins) -->
@@ -17,9 +17,10 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f5f8fc; /* very soft off-white / light blue-white */
+      background-color: #fafcff;
       color: #0b1e33;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     h1, h2, h3, .logo-text {
@@ -27,26 +28,133 @@
       font-weight: 600;
     }
 
-    /* navy blue & white palette
-       navy: #0a2a4a / #0b2e4e / #133b5c
-       accents: #1e4d7b / #2b5f8a
-       light: #ffffff / #f5f8fc / #e6edf5
-    */
+    /* ---------- palette ----------
+       white: #ffffff
+       very pale blue bg: #fafcff / #f2f8ff
+       soft blue border: #d0e0f0
+       soft blue accent: #e1ecf9
+       medium blue: #2b5f8a
+       deep navy: #0a2a4a
+    --------------------------------- */
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
+      position: relative;
+      z-index: 2;
     }
 
-    /* header / navbar */
+    /* ---------- loading overlay ---------- */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: #fafcff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.9s;
+      pointer-events: none;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 3.4rem;
+      letter-spacing: -1px;
+      color: #0a2a4a;
+      filter: blur(1.2px);
+      transition: filter 1s cubic-bezier(0.2, 0.8, 0.3, 1);
+      position: relative;
+      text-shadow: 0 0 30px rgba(43, 95, 138, 0.1);
+    }
+
+    .loader-logo span {
+      color: #2b5f8a;
+    }
+
+    .loader-logo.reveal {
+      filter: blur(0px);
+    }
+
+    .loader-line {
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #b0cde0, #2b5f8a, #b0cde0, transparent);
+      margin-top: 24px;
+      border-radius: 4px;
+      animation: loaderPulse 1.4s infinite ease-in-out;
+      opacity: 0.7;
+    }
+
+    @keyframes loaderPulse {
+      0% { transform: scaleX(0.7); opacity: 0.3; }
+      50% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0.7); opacity: 0.3; }
+    }
+
+    .loader-sub {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: #5d7f9e;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      opacity: 0;
+      animation: fadeInSub 1.2s 0.3s forwards;
+    }
+
+    @keyframes fadeInSub {
+      to { opacity: 1; }
+    }
+
+    /* ---------- soft background atmosphere ---------- */
+    .bg-atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-atmosphere::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(175, 205, 235, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .bg-atmosphere::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(175, 205, 235, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* ---------- navbar ---------- */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 0 12px;
+      padding: 16px 0 12px;
       flex-wrap: wrap;
       gap: 16px;
+      position: relative;
+      z-index: 10;
     }
 
     .logo {
@@ -57,17 +165,17 @@
     }
 
     .logo-img {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       border-radius: 14px;
       object-fit: cover;
-      box-shadow: 0 4px 12px rgba(10, 42, 74, 0.12);
+      box-shadow: 0 6px 16px rgba(10, 42, 74, 0.08);
       background-color: #ffffff;
-      border: 2px solid #d9e2ec;
+      border: 1.5px solid #d0e0f0;
     }
 
     .logo-text {
-      font-size: 1.9rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #0a2a4a;
       letter-spacing: -0.5px;
@@ -78,9 +186,45 @@
       font-weight: 700;
     }
 
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-weight: 500;
+      color: #2a4058;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #2a4058;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: #2b5f8a;
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: #0a2a4a;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
     .nav-buttons {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -90,25 +234,25 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 12px 26px;
-      border-radius: 40px;
+      padding: 10px 24px;
+      border-radius: 14px;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 0.95rem;
       text-decoration: none;
       transition: all 0.2s ease;
       border: none;
       cursor: pointer;
-      box-shadow: 0 6px 14px rgba(10, 42, 74, 0.06);
+      box-shadow: 0 4px 12px rgba(10, 42, 74, 0.04);
     }
 
     .btn-login {
       background-color: #ffffff;
       color: #0a2a4a;
-      border: 1.5px solid #cbd8e6;
+      border: 1.5px solid #cfdbe8;
     }
 
     .btn-login:hover {
-      background-color: #e6edf5;
+      background-color: #f2f8ff;
       border-color: #2b5f8a;
       transform: translateY(-1px);
     }
@@ -121,71 +265,132 @@
     .btn-dashboard:hover {
       background-color: #133b5c;
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.2);
+      box-shadow: 0 8px 20px rgba(10, 42, 74, 0.2);
     }
 
-    /* Hero section */
+    /* ---------- announcement strip ---------- */
+    .announcement {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      background-color: #e8f1fb;
+      border: 1px solid #c8daea;
+      border-radius: 60px;
+      padding: 10px 26px;
+      margin: 10px auto 0;
+      max-width: 600px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1f3f5e;
+      box-shadow: 0 4px 12px rgba(10, 42, 74, 0.02);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 5;
+    }
+
+    .announcement i {
+      color: #2b5f8a;
+      font-size: 1rem;
+    }
+
+    .announcement a {
+      color: #0a2a4a;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .announcement a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- hero ---------- */
     .hero {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 40px;
-      padding: 40px 0 60px;
+      gap: 50px;
+      padding: 48px 0 60px;
       flex-wrap: wrap;
+      position: relative;
     }
 
     .hero-content {
-      flex: 1 1 400px;
+      flex: 1 1 420px;
     }
 
     .hero-badge {
       display: inline-block;
-      background-color: #e6edf5;
+      background-color: #e8f1fb;
       color: #0a2a4a;
       padding: 6px 18px;
       border-radius: 40px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
       margin-bottom: 20px;
       letter-spacing: 0.3px;
-      border: 1px solid #b8cee0;
+      border: 1px solid #c8daea;
     }
 
     .hero h1 {
-      font-size: 3.2rem;
+      font-size: 3.1rem;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1.15;
       color: #0b1e33;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .hero h1 .highlight {
       color: #0a2a4a;
-      background: linear-gradient(120deg, #d4e2f0 0%, #d4e2f0 40%, transparent 80%);
+      background: linear-gradient(120deg, #dbe9f8 0%, #dbe9f8 40%, transparent 80%);
       padding: 0 8px;
       display: inline-block;
     }
 
     .hero p {
-      font-size: 1.15rem;
-      color: #2a3f57;
-      max-width: 550px;
-      margin-bottom: 32px;
+      font-size: 1.12rem;
+      color: #2a4058;
+      max-width: 540px;
+      margin-bottom: 20px;
+      line-height: 1.6;
     }
 
-    /* social connect row */
+    .trust-indicators {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-bottom: 28px;
+      font-size: 0.9rem;
+      color: #2b5f8a;
+      font-weight: 500;
+    }
+
+    .trust-indicators span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-indicators i {
+      font-size: 0.8rem;
+      color: #2b5f8a;
+    }
+
     .social-connect {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
       flex-wrap: wrap;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .social-label {
       font-weight: 500;
       color: #3f5a73;
-      font-size: 1rem;
+      font-size: 0.95rem;
       margin-right: 4px;
     }
 
@@ -193,35 +398,29 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background-color: #ffffff;
       color: #0a2a4a;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       text-decoration: none;
-      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.08);
-      border: 1.5px solid #d9e2ec;
+      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.06);
+      border: 1.5px solid #d0e0f0;
       transition: all 0.2s ease;
     }
 
-    .social-icon.telegram:hover {
-      background-color: #e6edf5;
+    .social-icon:hover {
+      background-color: #e8f1fb;
       color: #0a2a4a;
       border-color: #2b5f8a;
       transform: translateY(-3px);
+      box-shadow: 0 12px 22px rgba(10, 42, 74, 0.1);
     }
 
-    .social-icon.whatsapp:hover {
-      background-color: #e6edf5;
-      color: #0a2a4a;
-      border-color: #2b5f8a;
-      transform: translateY(-3px);
-    }
-
-    /* hero image / illustration */
+    /* hero card */
     .hero-image {
-      flex: 1 1 360px;
+      flex: 1 1 340px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -229,31 +428,48 @@
 
     .hero-card {
       background: #ffffff;
-      border-radius: 36px;
-      padding: 32px 32px 28px;
-      box-shadow: 0 30px 40px -18px rgba(10, 42, 74, 0.18);
-      border: 1px solid #e1eaf2;
-      max-width: 380px;
+      border-radius: 32px;
+      padding: 32px 28px 28px;
+      box-shadow: 0 30px 40px -18px rgba(10, 42, 74, 0.12);
+      border: 1.5px solid #d0e0f0;
+      max-width: 370px;
       width: 100%;
       text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-5px);
+      border-color: #a0c0dd;
+      box-shadow: 0 35px 45px -18px rgba(10, 42, 74, 0.18);
     }
 
     .hero-card i {
-      font-size: 3.4rem;
+      font-size: 3.2rem;
       color: #2b5f8a;
       margin-bottom: 12px;
     }
 
     .hero-card h3 {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       color: #0a2a4a;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .hero-card p {
-      color: #3a4f66;
-      margin-bottom: 24px;
-      font-size: 0.98rem;
+      color: #3a5f7a;
+      margin-bottom: 22px;
+      font-size: 0.95rem;
     }
 
     .chip-group {
@@ -264,259 +480,579 @@
     }
 
     .chip {
-      background-color: #f0f5fa;
-      padding: 8px 16px;
+      background-color: #f2f8ff;
+      padding: 7px 16px;
       border-radius: 40px;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
       color: #1f3b57;
       border: 1px solid #cfdbe8;
+      transition: background 0.2s;
     }
 
-    /* features section */
-    .features {
-      padding: 50px 0 30px;
+    .chip i {
+      color: #2b5f8a;
+      margin-right: 4px;
     }
 
+    /* ---------- section titles ---------- */
     .section-title {
       text-align: center;
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       font-weight: 600;
       color: #0b1e33;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: #b0cde0;
+      margin: 14px auto 0;
+      border-radius: 4px;
+      opacity: 0.7;
     }
 
     .section-sub {
       text-align: center;
       color: #3f5a73;
       max-width: 620px;
-      margin: 0 auto 48px;
-      font-size: 1.1rem;
+      margin: 12px auto 48px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* ---------- learning journey ---------- */
+    .journey-section {
+      padding: 30px 0 40px;
+    }
+
+    .journey-path {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 6px;
+      margin-top: 20px;
+    }
+
+    .journey-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 90px;
+      position: relative;
+      padding: 0 6px;
+    }
+
+    .journey-step .step-circle {
+      width: 58px;
+      height: 58px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #2b5f8a;
+      border: 1.5px solid #d0e0f0;
+      box-shadow: 0 6px 14px rgba(10, 42, 74, 0.04);
+      transition: all 0.25s ease;
+    }
+
+    .journey-step:hover .step-circle {
+      border-color: #2b5f8a;
+      background: #f2f8ff;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 22px rgba(10, 42, 74, 0.08);
+    }
+
+    .journey-step span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0a2a4a;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .journey-connector {
+      width: 24px;
+      height: 1.5px;
+      background: #b0cde0;
+      border-radius: 4px;
+      margin-top: -30px;
+      opacity: 0.6;
+    }
+
+    @media (max-width: 700px) {
+      .journey-connector {
+        display: none;
+      }
+      .journey-path {
+        gap: 14px 20px;
+      }
+    }
+
+    /* ---------- features ---------- */
+    .features {
+      padding: 40px 0 30px;
     }
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 28px;
     }
 
     .feature-item {
       background: #ffffff;
       padding: 32px 24px;
       border-radius: 28px;
-      border: 1px solid #e1eaf2;
-      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.04);
-      transition: all 0.2s ease;
+      border: 1.5px solid #d8e4f0;
+      box-shadow: 0 8px 20px rgba(10, 42, 74, 0.02);
+      transition: all 0.3s ease;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-item::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      pointer-events: none;
     }
 
     .feature-item:hover {
-      transform: translateY(-4px);
-      border-color: #2b5f8a;
-      box-shadow: 0 16px 28px rgba(10, 42, 74, 0.08);
+      transform: translateY(-6px);
+      border-color: #a0c0dd;
+      box-shadow: 0 20px 32px -10px rgba(10, 42, 74, 0.1);
     }
 
     .feature-icon {
-      width: 64px;
-      height: 64px;
-      background-color: #e6edf5;
+      width: 62px;
+      height: 62px;
+      background-color: #e8f1fb;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 20px;
-      font-size: 1.9rem;
+      font-size: 1.7rem;
       color: #0a2a4a;
+      transition: all 0.3s ease;
+      border: 1px solid #d0e0f0;
+    }
+
+    .feature-item:hover .feature-icon {
+      background-color: #dbe9f8;
+      transform: scale(1.02);
     }
 
     .feature-item h3 {
-      font-size: 1.3rem;
-      margin-bottom: 12px;
+      font-size: 1.25rem;
+      margin-bottom: 10px;
       color: #0a2a4a;
     }
 
     .feature-item p {
-      color: #3a4f66;
-      font-size: 0.98rem;
+      color: #3a5f7a;
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
-    /* CTA / connect section */
+    /* ---------- why section ---------- */
+    .why-section {
+      padding: 30px 0 40px;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 10px;
+    }
+
+    .why-item {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px 22px;
+      border: 1.5px solid #d8e4f0;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .why-item:hover {
+      border-color: #a0c0dd;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(10, 42, 74, 0.04);
+    }
+
+    .why-item i {
+      font-size: 1.8rem;
+      color: #2b5f8a;
+      margin-bottom: 14px;
+    }
+
+    .why-item h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0a2a4a;
+      margin-bottom: 8px;
+    }
+
+    .why-item p {
+      font-size: 0.9rem;
+      color: #3a5f7a;
+      line-height: 1.5;
+    }
+
+    /* ---------- testimonials ---------- */
+    .testimonials {
+      padding: 30px 0 40px;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 26px;
+    }
+
+    .testimonial-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      border: 1.5px solid #d8e4f0;
+      box-shadow: 0 8px 16px rgba(10, 42, 74, 0.02);
+      transition: all 0.25s ease;
+    }
+
+    .testimonial-card:hover {
+      border-color: #a0c0dd;
+      transform: translateY(-3px);
+      box-shadow: 0 16px 28px rgba(10, 42, 74, 0.06);
+    }
+
+    .testimonial-card .quote {
+      font-size: 1rem;
+      color: #1f3f5e;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .testimonial-card .author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-card .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #e8f1fb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #0a2a4a;
+      font-size: 1rem;
+      border: 1px solid #d0e0f0;
+    }
+
+    .testimonial-card .author-info {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #0a2a4a;
+    }
+
+    .testimonial-card .author-info small {
+      display: block;
+      font-weight: 400;
+      color: #5d7f9e;
+      font-size: 0.8rem;
+    }
+
+    /* ---------- cta ---------- */
     .cta-section {
       background-color: #ffffff;
-      border-radius: 40px;
+      border-radius: 36px;
       padding: 48px 40px;
-      margin: 40px 0 50px;
-      box-shadow: 0 20px 30px -15px rgba(10, 42, 74, 0.12);
-      border: 1px solid #e1eaf2;
+      margin: 30px 0 50px;
+      box-shadow: 0 25px 35px -18px rgba(10, 42, 74, 0.1);
+      border: 1.5px solid #d8e4f0;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      pointer-events: none;
     }
 
     .cta-section h2 {
-      font-size: 2rem;
+      font-size: 1.9rem;
       color: #0a2a4a;
       margin-bottom: 12px;
     }
 
     .cta-section p {
-      color: #3a4f66;
-      margin-bottom: 32px;
-      font-size: 1.1rem;
-      max-width: 550px;
+      color: #3a5f7a;
+      margin-bottom: 30px;
+      font-size: 1.05rem;
+      max-width: 540px;
       margin-left: auto;
       margin-right: auto;
+      line-height: 1.6;
     }
 
     .cta-socials {
       display: flex;
       justify-content: center;
-      gap: 28px;
+      gap: 22px;
       flex-wrap: wrap;
     }
 
     .cta-social-btn {
       display: flex;
       align-items: center;
-      gap: 14px;
-      background-color: #f5f8fc;
+      gap: 12px;
+      background-color: #f8fbff;
       padding: 14px 28px;
-      border-radius: 60px;
+      border-radius: 16px;
       text-decoration: none;
       color: #0b1e33;
       font-weight: 600;
-      border: 1.5px solid #cfdbe8;
+      border: 1.5px solid #d0e0f0;
       transition: all 0.2s ease;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .cta-social-btn i {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #0a2a4a;
     }
 
     .cta-social-btn:hover {
-      background-color: #e6edf5;
+      background-color: #e8f1fb;
       border-color: #2b5f8a;
       transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(10, 42, 74, 0.06);
     }
 
-    /* footer */
+    /* ---------- footer ---------- */
     .footer {
-      padding: 30px 0 20px;
-      text-align: center;
+      padding: 40px 0 24px;
       color: #4f6a83;
-      font-size: 0.95rem;
-      border-top: 1px solid #d9e2ec;
+      font-size: 0.9rem;
+      border-top: 1px solid #d8e4f0;
       margin-top: 20px;
     }
 
-    .footer-links {
-      display: flex;
-      justify-content: center;
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 30px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 0 auto 30px;
+      text-align: left;
     }
 
-    .footer-links a {
-      color: #2b5f8a;
+    .footer-col h5 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0a2a4a;
+      margin-bottom: 14px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: #3f5a73;
       text-decoration: none;
-      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      transition: color 0.2s;
     }
 
-    .footer-links a:hover {
+    .footer-col a:hover {
       color: #0a2a4a;
       text-decoration: underline;
     }
 
-    /* responsive */
-    @media (max-width: 700px) {
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #e2ecf5;
+      font-size: 0.85rem;
+      color: #5d7f9e;
+    }
+
+    /* ---------- scroll reveal ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 900px) {
       .navbar {
         flex-direction: column;
         align-items: stretch;
       }
-
-      .logo {
+      .nav-links {
         justify-content: center;
+        gap: 16px;
       }
-
       .nav-buttons {
         justify-content: center;
       }
-
-      .hero h1 {
-        font-size: 2.4rem;
+      .logo {
+        justify-content: center;
       }
+    }
 
+    @media (max-width: 700px) {
+      .hero h1 {
+        font-size: 2.3rem;
+      }
       .hero {
         padding: 20px 0 40px;
+        gap: 30px;
       }
-
       .cta-section {
         padding: 32px 20px;
       }
-
       .cta-socials {
-        gap: 16px;
+        gap: 14px;
       }
-
       .cta-social-btn {
         padding: 12px 20px;
-        font-size: 1rem;
+        font-size: 0.95rem;
+      }
+      .section-title {
+        font-size: 1.8rem;
+      }
+      .footer-columns {
+        text-align: center;
+        grid-template-columns: 1fr 1fr;
+      }
+      .announcement {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        margin: 10px 16px 0;
       }
     }
 
     @media (max-width: 480px) {
       .social-icon {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
+        font-size: 1.3rem;
+      }
+      .btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+      }
+      .logo-text {
         font-size: 1.5rem;
       }
-
-      .btn {
-        padding: 10px 18px;
-        font-size: 0.9rem;
-      }
-
-      .logo-text {
-        font-size: 1.6rem;
-      }
-
       .hero-card {
         padding: 22px;
+      }
+      .loader-logo {
+        font-size: 2.4rem;
+      }
+      .journey-step {
+        min-width: 70px;
+      }
+      .journey-step .step-circle {
+        width: 46px;
+        height: 46px;
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
 
+<!-- loading overlay -->
+<div class="loader" id="loader">
+  <div class="loader-logo" id="loaderLogo">Soil<span>Sparks</span></div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Preparing your learning space…</div>
+</div>
+
+<!-- soft background atmosphere -->
+<div class="bg-atmosphere"></div>
+
 <div class="container">
   <!-- Navbar -->
   <nav class="navbar">
     <a href="#" class="logo">
-      <!-- Logo fetched from soilsparklogo.jpg -->
       <img src="soilsparklogo.jpg" alt="SoilSpark logo" class="logo-img">
-      <div class="logo-text">Soil<span>Spark</span></div>
+      <div class="logo-text">Soil<span>Sparks</span></div>
     </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#">Test Series</a>
+      <a href="#">Resources</a>
+      <a href="#">Community</a>
+      <a href="#">About</a>
+    </div>
     <div class="nav-buttons">
       <a href="login.html" class="btn btn-login"><i class="fas fa-user-graduate"></i> Login</a>
       <a href="dashboard.html" class="btn btn-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
     </div>
   </nav>
 
+  <!-- announcement strip -->
+  <div class="announcement reveal">
+    <i class="fas fa-bullhorn"></i>
+    <span>New: Daily Practice Tests are now available</span>
+    <a href="#">Try now <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
+  </div>
+
   <!-- Hero section -->
-  <section class="hero">
+  <section class="hero reveal">
     <div class="hero-content">
       <div class="hero-badge"><i class="fas fa-seedling" style="margin-right: 6px;"></i> Learn · Grow · Succeed</div>
-      <h1>Nurture your <span class="highlight">knowledge</span> with SoilSpark</h1>
-      <p>Test series, crisp notes, and expert guidance — all in one place. Join thousands of students who are growing smarter every day.</p>
+      <h1>Nurture your <span class="highlight">knowledge</span> with SoilSparks</h1>
+      <p>A calmer way to prepare, practice and improve. Test series, crisp notes, and expert guidance — all in one place.</p>
       
-      <!-- Social connect (Telegram & WhatsApp) with icons -->
+      <!-- trust indicators -->
+      <div class="trust-indicators">
+        <span><i class="fas fa-circle-check"></i> Structured Learning</span>
+        <span><i class="fas fa-circle-check"></i> Practice Tests</span>
+        <span><i class="fas fa-circle-check"></i> Performance Tracking</span>
+        <span><i class="fas fa-circle-check"></i> Student Support</span>
+      </div>
+
+      <!-- social connect -->
       <div class="social-connect">
         <span class="social-label">Connect with us:</span>
-        <a href="#" class="social-icon telegram" aria-label="Telegram" title="Join us on Telegram">
+        <a href="https://t.me/soilsparks" target="_blank" rel="noopener" class="social-icon telegram" aria-label="Telegram" title="Join us on Telegram">
           <i class="fab fa-telegram-plane"></i>
         </a>
-        <a href="#" class="social-icon whatsapp" aria-label="WhatsApp" title="Chat on WhatsApp">
+        <a href="https://wa.me/917849969232" target="_blank" rel="noopener" class="social-icon whatsapp" aria-label="WhatsApp" title="Chat on WhatsApp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </div>
@@ -528,16 +1064,48 @@
         <h3>Test Series 2.0</h3>
         <p>Adaptive tests, real-time analytics, and performance boosters.</p>
         <div class="chip-group">
-          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Notes</span>
-          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Guidance</span>
-          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Doubts</span>
+          <span class="chip"><i class="fas fa-check-circle"></i> Notes</span>
+          <span class="chip"><i class="fas fa-check-circle"></i> Guidance</span>
+          <span class="chip"><i class="fas fa-check-circle"></i> Doubts</span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Learning Journey -->
+  <section class="journey-section reveal">
+    <h2 class="section-title">Your learning journey</h2>
+    <p class="section-sub">A clear path from first concept to final confidence.</p>
+    <div class="journey-path">
+      <div class="journey-step">
+        <div class="step-circle"><i class="fas fa-book-open"></i></div>
+        <span>Learn</span>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step">
+        <div class="step-circle"><i class="fas fa-pen-to-square"></i></div>
+        <span>Practice</span>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step">
+        <div class="step-circle"><i class="fas fa-chart-simple"></i></div>
+        <span>Analyse</span>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step">
+        <div class="step-circle"><i class="fas fa-arrow-trend-up"></i></div>
+        <span>Improve</span>
+      </div>
+      <div class="journey-connector"></div>
+      <div class="journey-step">
+        <div class="step-circle"><i class="fas fa-trophy"></i></div>
+        <span>Succeed</span>
+      </div>
+    </div>
+  </section>
+
   <!-- Features -->
-  <section class="features">
+  <section class="features reveal" id="features">
     <h2 class="section-title">Everything you need to excel</h2>
     <p class="section-sub">Carefully crafted resources for students — from daily practice to final revision.</p>
 
@@ -565,15 +1133,72 @@
     </div>
   </section>
 
-  <!-- Connect on Telegram/WhatsApp CTA -->
-  <section class="cta-section">
+  <!-- Why students choose SoilSpark -->
+  <section class="why-section reveal">
+    <h2 class="section-title">Why students choose SoilSparks</h2>
+    <p class="section-sub">Human-centered learning, without the noise.</p>
+    <div class="why-grid">
+      <div class="why-item">
+        <i class="fas fa-feather"></i>
+        <h4>Less clutter. More focus.</h4>
+        <p>A calm, clean interface that keeps your attention on what matters.</p>
+      </div>
+      <div class="why-item">
+        <i class="fas fa-chart-pie"></i>
+        <h4>Know where you're improving.</h4>
+        <p>Clear analytics that show your progress without overwhelming you.</p>
+      </div>
+      <div class="why-item">
+        <i class="fas fa-heart"></i>
+        <h4>Practice without pressure.</h4>
+        <p>Take your time. Revisit concepts. Build confidence at your own pace.</p>
+      </div>
+      <div class="why-item">
+        <i class="fas fa-box-open"></i>
+        <h4>Everything in one place.</h4>
+        <p>Notes, tests, mentorship and community — all together.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials reveal">
+    <h2 class="section-title">Student stories</h2>
+    <p class="section-sub">Real feedback from learners who grow with us.</p>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <div class="quote">"The daily practice tests helped me build a habit. I feel more confident every week."</div>
+        <div class="author">
+          <div class="avatar">A</div>
+          <div class="author-info">Ananya <small>JRF Aspirant</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="quote">"I love how calm the platform feels. No distractions, just clear notes and good questions."</div>
+        <div class="author">
+          <div class="avatar">R</div>
+          <div class="author-info">Sumit <small>SRF Aspirant</small></div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="quote">"The progress dashboard showed me exactly what to revise. Game changer."</div>
+        <div class="author">
+          <div class="avatar">S</div>
+          <div class="author-info">Sneha <small>JRF Aspirant</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section reveal">
     <h2>Stay updated, stay ahead</h2>
     <p>Join our Telegram and WhatsApp communities for daily quizzes, notes, and instant updates.</p>
     <div class="cta-socials">
-      <a href="#" class="cta-social-btn">
+      <a href="https://t.me/soilsparks" target="_blank" rel="noopener" class="cta-social-btn">
         <i class="fab fa-telegram-plane"></i> Join Telegram
       </a>
-      <a href="#" class="cta-social-btn">
+      <a href="https://wa.me/917849969232" target="_blank" rel="noopener" class="cta-social-btn">
         <i class="fab fa-whatsapp"></i> Connect on WhatsApp
       </a>
     </div>
@@ -581,15 +1206,72 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-links">
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h5>SoilSparks</h5>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Learning</h5>
+        <a href="#">Test Series</a>
+        <a href="#">Notes</a>
+        <a href="#">Mentorship</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
     </div>
-    <p>© 2025 SoilSpark · Learn, grow, and spark your potential.</p>
+    <div class="footer-bottom">
+      © 2026 SoilSparks · Learn, grow, and spark your potential.
+    </div>
   </footer>
 </div>
+
+<script>
+  // loading overlay: blur reveal + fade out
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    const loaderLogo = document.getElementById('loaderLogo');
+
+    // set initial subtle blur
+    loaderLogo.style.filter = 'blur(1.2px)';
+
+    // reveal after a short delay
+    setTimeout(() => {
+      loaderLogo.classList.add('reveal'); // blur -> sharp
+    }, 80);
+
+    // fade out loader after ~1.3s
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 1500);
+
+    // remove from DOM after transition
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 2500);
+  });
+
+  // scroll reveal with Intersection Observer
+  document.addEventListener('DOMContentLoaded', () => {
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => observer.observe(el));
+  });
+</script>
 
 </body>
 </html>
