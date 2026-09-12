@@ -1,1 +1,595 @@
-Soil Science is ❤️
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoilSpark · Learn, Grow, Succeed</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts (Inter & Poppins) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f8fc; /* very soft off-white / light blue-white */
+      color: #0b1e33;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3, .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    /* navy blue & white palette
+       navy: #0a2a4a / #0b2e4e / #133b5c
+       accents: #1e4d7b / #2b5f8a
+       light: #ffffff / #f5f8fc / #e6edf5
+    */
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* header / navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 12px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(10, 42, 74, 0.12);
+      background-color: #ffffff;
+      border: 2px solid #d9e2ec;
+    }
+
+    .logo-text {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #0a2a4a;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: #2b5f8a;
+      font-weight: 700;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(10, 42, 74, 0.06);
+    }
+
+    .btn-login {
+      background-color: #ffffff;
+      color: #0a2a4a;
+      border: 1.5px solid #cbd8e6;
+    }
+
+    .btn-login:hover {
+      background-color: #e6edf5;
+      border-color: #2b5f8a;
+      transform: translateY(-1px);
+    }
+
+    .btn-dashboard {
+      background-color: #0a2a4a;
+      color: white;
+    }
+
+    .btn-dashboard:hover {
+      background-color: #133b5c;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.2);
+    }
+
+    /* Hero section */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 40px 0 60px;
+      flex-wrap: wrap;
+    }
+
+    .hero-content {
+      flex: 1 1 400px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background-color: #e6edf5;
+      color: #0a2a4a;
+      padding: 6px 18px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+      border: 1px solid #b8cee0;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #0b1e33;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      color: #0a2a4a;
+      background: linear-gradient(120deg, #d4e2f0 0%, #d4e2f0 40%, transparent 80%);
+      padding: 0 8px;
+      display: inline-block;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: #2a3f57;
+      max-width: 550px;
+      margin-bottom: 32px;
+    }
+
+    /* social connect row */
+    .social-connect {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .social-label {
+      font-weight: 500;
+      color: #3f5a73;
+      font-size: 1rem;
+      margin-right: 4px;
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      color: #0a2a4a;
+      font-size: 1.8rem;
+      text-decoration: none;
+      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.08);
+      border: 1.5px solid #d9e2ec;
+      transition: all 0.2s ease;
+    }
+
+    .social-icon.telegram:hover {
+      background-color: #e6edf5;
+      color: #0a2a4a;
+      border-color: #2b5f8a;
+      transform: translateY(-3px);
+    }
+
+    .social-icon.whatsapp:hover {
+      background-color: #e6edf5;
+      color: #0a2a4a;
+      border-color: #2b5f8a;
+      transform: translateY(-3px);
+    }
+
+    /* hero image / illustration */
+    .hero-image {
+      flex: 1 1 360px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      border-radius: 36px;
+      padding: 32px 32px 28px;
+      box-shadow: 0 30px 40px -18px rgba(10, 42, 74, 0.18);
+      border: 1px solid #e1eaf2;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .hero-card i {
+      font-size: 3.4rem;
+      color: #2b5f8a;
+      margin-bottom: 12px;
+    }
+
+    .hero-card h3 {
+      font-size: 1.6rem;
+      color: #0a2a4a;
+      margin-bottom: 12px;
+    }
+
+    .hero-card p {
+      color: #3a4f66;
+      margin-bottom: 24px;
+      font-size: 0.98rem;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .chip {
+      background-color: #f0f5fa;
+      padding: 8px 16px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #1f3b57;
+      border: 1px solid #cfdbe8;
+    }
+
+    /* features section */
+    .features {
+      padding: 50px 0 30px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: #0b1e33;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: #3f5a73;
+      max-width: 620px;
+      margin: 0 auto 48px;
+      font-size: 1.1rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-item {
+      background: #ffffff;
+      padding: 32px 24px;
+      border-radius: 28px;
+      border: 1px solid #e1eaf2;
+      box-shadow: 0 8px 18px rgba(10, 42, 74, 0.04);
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-4px);
+      border-color: #2b5f8a;
+      box-shadow: 0 16px 28px rgba(10, 42, 74, 0.08);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background-color: #e6edf5;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 1.9rem;
+      color: #0a2a4a;
+    }
+
+    .feature-item h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #0a2a4a;
+    }
+
+    .feature-item p {
+      color: #3a4f66;
+      font-size: 0.98rem;
+    }
+
+    /* CTA / connect section */
+    .cta-section {
+      background-color: #ffffff;
+      border-radius: 40px;
+      padding: 48px 40px;
+      margin: 40px 0 50px;
+      box-shadow: 0 20px 30px -15px rgba(10, 42, 74, 0.12);
+      border: 1px solid #e1eaf2;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      color: #0a2a4a;
+      margin-bottom: 12px;
+    }
+
+    .cta-section p {
+      color: #3a4f66;
+      margin-bottom: 32px;
+      font-size: 1.1rem;
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-socials {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .cta-social-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background-color: #f5f8fc;
+      padding: 14px 28px;
+      border-radius: 60px;
+      text-decoration: none;
+      color: #0b1e33;
+      font-weight: 600;
+      border: 1.5px solid #cfdbe8;
+      transition: all 0.2s ease;
+      font-size: 1.1rem;
+    }
+
+    .cta-social-btn i {
+      font-size: 1.8rem;
+      color: #0a2a4a;
+    }
+
+    .cta-social-btn:hover {
+      background-color: #e6edf5;
+      border-color: #2b5f8a;
+      transform: translateY(-3px);
+    }
+
+    /* footer */
+    .footer {
+      padding: 30px 0 20px;
+      text-align: center;
+      color: #4f6a83;
+      font-size: 0.95rem;
+      border-top: 1px solid #d9e2ec;
+      margin-top: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #2b5f8a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: #0a2a4a;
+      text-decoration: underline;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .logo {
+        justify-content: center;
+      }
+
+      .nav-buttons {
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero {
+        padding: 20px 0 40px;
+      }
+
+      .cta-section {
+        padding: 32px 20px;
+      }
+
+      .cta-socials {
+        gap: 16px;
+      }
+
+      .cta-social-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .social-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+      }
+
+      .btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+
+      .logo-text {
+        font-size: 1.6rem;
+      }
+
+      .hero-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="logo">
+      <!-- Logo fetched from soilsparklogo.jpg -->
+      <img src="soilsparklogo.jpg" alt="SoilSpark logo" class="logo-img">
+      <div class="logo-text">Soil<span>Spark</span></div>
+    </a>
+    <div class="nav-buttons">
+      <a href="login.html" class="btn btn-login"><i class="fas fa-user-graduate"></i> Login</a>
+      <a href="dashboard.html" class="btn btn-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fas fa-seedling" style="margin-right: 6px;"></i> Learn · Grow · Succeed</div>
+      <h1>Nurture your <span class="highlight">knowledge</span> with SoilSpark</h1>
+      <p>Test series, crisp notes, and expert guidance — all in one place. Join thousands of students who are growing smarter every day.</p>
+      
+      <!-- Social connect (Telegram & WhatsApp) with icons -->
+      <div class="social-connect">
+        <span class="social-label">Connect with us:</span>
+        <a href="#" class="social-icon telegram" aria-label="Telegram" title="Join us on Telegram">
+          <i class="fab fa-telegram-plane"></i>
+        </a>
+        <a href="#" class="social-icon whatsapp" aria-label="WhatsApp" title="Chat on WhatsApp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <div class="hero-card">
+        <i class="fas fa-book-open-reader"></i>
+        <h3>Test Series 2.0</h3>
+        <p>Adaptive tests, real-time analytics, and performance boosters.</p>
+        <div class="chip-group">
+          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Notes</span>
+          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Guidance</span>
+          <span class="chip"><i class="fas fa-check-circle" style="color:#0a2a4a;"></i> Doubts</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2 class="section-title">Everything you need to excel</h2>
+    <p class="section-sub">Carefully crafted resources for students — from daily practice to final revision.</p>
+
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+        <h3>Test Series</h3>
+        <p>Chapter-wise & full-length mock tests with instant solutions and All-India rank.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-pen-fancy"></i></div>
+        <h3>Smart Notes</h3>
+        <p>Short, revision-friendly notes designed by top educators and toppers.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>1:1 Guidance</h3>
+        <p>Personal mentorship, strategy sessions, and doubt-clearing with experts.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Progress Dashboard</h3>
+        <p>Track your strengths, weak areas, and improvement with visual analytics.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Connect on Telegram/WhatsApp CTA -->
+  <section class="cta-section">
+    <h2>Stay updated, stay ahead</h2>
+    <p>Join our Telegram and WhatsApp communities for daily quizzes, notes, and instant updates.</p>
+    <div class="cta-socials">
+      <a href="#" class="cta-social-btn">
+        <i class="fab fa-telegram-plane"></i> Join Telegram
+      </a>
+      <a href="#" class="cta-social-btn">
+        <i class="fab fa-whatsapp"></i> Connect on WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <p>© 2025 SoilSpark · Learn, grow, and spark your potential.</p>
+  </footer>
+</div>
+
+</body>
+</html>
