@@ -4,11 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SoilSparks · Learn, Grow, Succeed</title>
-  <!-- Font Awesome 6 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Fonts (Inter & Poppins) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ---------- CSS VARIABLES (used by comments + site) ---------- */
+    :root {
+      --dark: #2d1f13;
+      --text: #5d4a37;
+      --brown: #8b5e3c;
+      --light-brown: #fef3d9;
+      --cream: #fefcf5;
+      --accent: #f7d44a;
+      --border-soft: #e3d3b5;
+      --shadow-sm: 0 4px 14px rgba(139, 94, 60, 0.06);
+      --shadow-hover: 0 14px 30px rgba(139, 94, 60, 0.12);
+      --transition: all 0.25s ease;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -28,7 +40,7 @@
       font-weight: 600;
     }
 
-    /* ---------- multi-color palette ---------- */
+    /* ---------- LOADING OVERLAY ---------- */
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -37,7 +49,6 @@
       z-index: 2;
     }
 
-    /* ---------- loading overlay ---------- */
     .loader {
       position: fixed;
       inset: 0;
@@ -51,10 +62,7 @@
       pointer-events: none;
     }
 
-    .loader.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
+    .loader.hidden { opacity: 0; visibility: hidden; }
 
     .loader-logo {
       font-family: 'Poppins', sans-serif;
@@ -64,17 +72,10 @@
       color: #4a3724;
       filter: blur(1.2px);
       transition: filter 1s cubic-bezier(0.2, 0.8, 0.3, 1);
-      position: relative;
       text-shadow: 0 0 30px rgba(139, 94, 60, 0.1);
     }
-
-    .loader-logo span {
-      color: #b87c4b;
-    }
-
-    .loader-logo.reveal {
-      filter: blur(0px);
-    }
+    .loader-logo span { color: #b87c4b; }
+    .loader-logo.reveal { filter: blur(0); }
 
     .loader-line {
       width: 120px;
@@ -87,8 +88,8 @@
     }
 
     @keyframes loaderPulse {
-      0% { transform: scaleX(0.7); opacity: 0.3; }
-      50% { transform: scaleX(1); opacity: 1; }
+      0%   { transform: scaleX(0.7); opacity: 0.3; }
+      50%  { transform: scaleX(1);   opacity: 1; }
       100% { transform: scaleX(0.7); opacity: 0.3; }
     }
 
@@ -96,17 +97,12 @@
       margin-top: 18px;
       font-size: 0.95rem;
       color: #8b5e3c;
-      font-weight: 400;
-      letter-spacing: 0.3px;
       opacity: 0;
       animation: fadeInSub 1.2s 0.3s forwards;
     }
+    @keyframes fadeInSub { to { opacity: 1; } }
 
-    @keyframes fadeInSub {
-      to { opacity: 1; }
-    }
-
-    /* ---------- background atmosphere ---------- */
+    /* ---------- BACKGROUND ATMOSPHERE ---------- */
     .bg-atmosphere {
       position: fixed;
       inset: 0;
@@ -114,25 +110,19 @@
       pointer-events: none;
       overflow: hidden;
     }
-
     .bg-atmosphere::before {
       content: '';
       position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 600px;
-      height: 600px;
+      top: -20%; right: -10%;
+      width: 600px; height: 600px;
       background: radial-gradient(circle, rgba(247, 212, 74, 0.12) 0%, transparent 70%);
       border-radius: 50%;
     }
-
     .bg-atmosphere::after {
       content: '';
       position: absolute;
-      bottom: -15%;
-      left: -5%;
-      width: 500px;
-      height: 500px;
+      bottom: -15%; left: -5%;
+      width: 500px; height: 500px;
       background: radial-gradient(circle, rgba(166, 200, 232, 0.18) 0%, transparent 70%);
       border-radius: 50%;
     }
@@ -149,16 +139,10 @@
       z-index: 20;
     }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 
     .logo-img {
-      width: 50px;
-      height: 50px;
+      width: 50px; height: 50px;
       border-radius: 14px;
       object-fit: cover;
       box-shadow: 0 6px 16px rgba(139, 94, 60, 0.12);
@@ -172,11 +156,7 @@
       color: #4a3724;
       letter-spacing: -0.5px;
     }
-
-    .logo-text span {
-      color: #b87c4b;
-      font-weight: 700;
-    }
+    .logo-text span { color: #b87c4b; }
 
     .nav-links {
       display: flex;
@@ -184,9 +164,7 @@
       align-items: center;
       flex-wrap: wrap;
       font-weight: 500;
-      color: #4a3724;
     }
-
     .nav-links a {
       text-decoration: none;
       color: #5d4a37;
@@ -194,32 +172,18 @@
       transition: color 0.2s;
       position: relative;
     }
-
     .nav-links a::after {
       content: '';
       position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
       background: #f5c542;
       transition: width 0.25s ease;
     }
+    .nav-links a:hover { color: #2d1f13; }
+    .nav-links a:hover::after { width: 100%; }
 
-    .nav-links a:hover {
-      color: #2d1f13;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    .nav-buttons { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
     .btn {
       display: inline-flex;
@@ -236,38 +200,16 @@
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(74, 55, 36, 0.06);
     }
+    .btn-login { background-color: #ffffff; color: #4a3724; border: 2px solid #e3d3b5; }
+    .btn-login:hover { background-color: #fff8e7; border-color: #f5c542; transform: translateY(-1px); }
+    .btn-dashboard { background-color: #8b5e3c; color: white; border: 2px solid #6b4a2e; }
+    .btn-dashboard:hover { background-color: #6b4a2e; transform: translateY(-1px); }
 
-    .btn-login {
-      background-color: #ffffff;
-      color: #4a3724;
-      border: 2px solid #e3d3b5;
-    }
-
-    .btn-login:hover {
-      background-color: #fff8e7;
-      border-color: #f5c542;
-      transform: translateY(-1px);
-    }
-
-    .btn-dashboard {
-      background-color: #8b5e3c;
-      color: white;
-      border: 2px solid #6b4a2e;
-    }
-
-    .btn-dashboard:hover {
-      background-color: #6b4a2e;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(139, 94, 60, 0.25);
-    }
-
-    /* ----- MENU TOGGLE BUTTON ----- */
     .menu-toggle {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 52px;
-      height: 52px;
+      width: 52px; height: 52px;
       background-color: #f7d44a;
       border: 2px solid #b87c4b;
       border-radius: 16px;
@@ -278,18 +220,12 @@
       box-shadow: 0 6px 14px rgba(139, 94, 60, 0.12);
       margin-left: 10px;
     }
+    .menu-toggle:hover { background-color: #f5c542; transform: scale(1.02); }
 
-    .menu-toggle:hover {
-      background-color: #f5c542;
-      transform: scale(1.02);
-      border-color: #8b5e3c;
-    }
-
-    /* ---------- TOP OVERLAY MENU (simple text links) ---------- */
+    /* ---------- TOP OVERLAY MENU ---------- */
     .top-menu {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       height: 0;
       background: linear-gradient(135deg, #fefcf5 0%, #fff4e0 100%);
@@ -301,7 +237,6 @@
       border-bottom-right-radius: 32px;
       border-bottom: 4px solid #f7d44a;
     }
-
     .top-menu.open {
       height: auto;
       max-height: 90vh;
@@ -319,11 +254,7 @@
       transform: translateY(-12px);
       transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
     }
-
-    .top-menu.open .top-menu-content {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .top-menu.open .top-menu-content { opacity: 1; transform: translateY(0); }
 
     .top-menu-header {
       display: flex;
@@ -331,7 +262,6 @@
       align-items: center;
       margin-bottom: 20px;
     }
-
     .top-menu-header h3 {
       font-size: 1.5rem;
       color: #4a3724;
@@ -339,19 +269,14 @@
       align-items: center;
       gap: 12px;
     }
-
-    .top-menu-header h3 i {
-      color: #b87c4b;
-      font-size: 1.8rem;
-    }
+    .top-menu-header h3 i { color: #b87c4b; font-size: 1.8rem; }
 
     .close-menu-btn {
       background: #f7d44a;
       border: 2px solid #b87c4b;
       font-size: 1.5rem;
       color: #4a3724;
-      width: 44px;
-      height: 44px;
+      width: 44px; height: 44px;
       border-radius: 14px;
       display: flex;
       align-items: center;
@@ -359,20 +284,9 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+    .close-menu-btn:hover { background: #f5c542; transform: scale(1.05); }
 
-    .close-menu-btn:hover {
-      background: #f5c542;
-      transform: scale(1.05);
-    }
-
-    /* simple text menu list */
-    .menu-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 24px;
-    }
-
+    .menu-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 24px; }
     .menu-list a {
       display: flex;
       align-items: center;
@@ -386,25 +300,10 @@
       transition: background 0.2s, color 0.2s;
       border-left: 4px solid transparent;
     }
+    .menu-list a i { width: 24px; font-size: 1.2rem; color: #b87c4b; text-align: center; }
+    .menu-list a:hover { background: #fef3d9; border-left-color: #f7d44a; color: #2d1f13; }
 
-    .menu-list a i {
-      width: 24px;
-      font-size: 1.2rem;
-      color: #b87c4b;
-      text-align: center;
-    }
-
-    .menu-list a:hover {
-      background: #fef3d9;
-      border-left-color: #f7d44a;
-      color: #2d1f13;
-    }
-
-    .menu-divider {
-      height: 1px;
-      background: #e3d3b5;
-      margin: 8px 0 16px;
-    }
+    .menu-divider { height: 1px; background: #e3d3b5; margin: 8px 0 16px; }
 
     .menu-secondary-links {
       display: flex;
@@ -414,7 +313,6 @@
       padding-top: 8px;
       font-size: 0.9rem;
     }
-
     .menu-secondary-links a {
       text-decoration: none;
       color: #6b4a2e;
@@ -425,17 +323,10 @@
       border-radius: 30px;
       transition: all 0.2s;
     }
+    .menu-secondary-links a i { color: #b87c4b; }
+    .menu-secondary-links a:hover { background: rgba(247, 212, 74, 0.2); color: #2d1f13; }
 
-    .menu-secondary-links a i {
-      color: #b87c4b;
-    }
-
-    .menu-secondary-links a:hover {
-      background: #f7d44a30;
-      color: #2d1f13;
-    }
-
-    /* ---------- announcement strip ---------- */
+    /* ---------- ANNOUNCEMENT ---------- */
     .announcement {
       display: flex;
       justify-content: center;
@@ -451,30 +342,14 @@
       font-weight: 500;
       color: #4a3724;
       box-shadow: 0 4px 12px rgba(139, 94, 60, 0.06);
-      transition: all 0.3s ease;
       position: relative;
       z-index: 5;
     }
+    .announcement i { color: #b87c4b; }
+    .announcement a { color: #8b5e3c; font-weight: 600; text-decoration: none; }
+    .announcement a:hover { text-decoration: underline; }
 
-    .announcement i {
-      color: #b87c4b;
-      font-size: 1rem;
-    }
-
-    .announcement a {
-      color: #8b5e3c;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .announcement a:hover {
-      text-decoration: underline;
-    }
-
-    /* ---------- hero ---------- */
+    /* ---------- HERO ---------- */
     .hero {
       display: flex;
       align-items: center;
@@ -484,23 +359,7 @@
       flex-wrap: wrap;
       position: relative;
     }
-
-    .hero-content {
-      flex: 1 1 420px;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background-color: #c1d9f0;
-      color: #2c3e4f;
-      padding: 6px 18px;
-      border-radius: 40px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 20px;
-      letter-spacing: 0.3px;
-      border: 2px solid #a6c8e8;
-    }
+    .hero-content { flex: 1 1 420px; }
 
     .hero h1 {
       font-size: 3.1rem;
@@ -509,21 +368,13 @@
       color: #2d1f13;
       margin-bottom: 18px;
     }
-
     .hero h1 .highlight {
       color: #4a3724;
       background: linear-gradient(120deg, #f9e0a0 0%, #f9e0a0 40%, transparent 80%);
       padding: 0 8px;
       display: inline-block;
     }
-
-    .hero p {
-      font-size: 1.12rem;
-      color: #5d4a37;
-      max-width: 540px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
+    .hero p { font-size: 1.12rem; color: #5d4a37; max-width: 540px; margin-bottom: 20px; }
 
     .trust-indicators {
       display: flex;
@@ -534,39 +385,17 @@
       color: #8b5e3c;
       font-weight: 500;
     }
+    .trust-indicators span { display: inline-flex; align-items: center; gap: 6px; }
+    .trust-indicators i { font-size: 0.8rem; color: #b87c4b; }
 
-    .trust-indicators span {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .trust-indicators i {
-      font-size: 0.8rem;
-      color: #b87c4b;
-    }
-
-    .social-connect {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .social-label {
-      font-weight: 500;
-      color: #5d4a37;
-      font-size: 0.95rem;
-      margin-right: 4px;
-    }
+    .social-connect { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+    .social-label { font-weight: 500; color: #5d4a37; font-size: 0.95rem; }
 
     .social-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 52px;
-      height: 52px;
+      width: 52px; height: 52px;
       border-radius: 50%;
       background-color: #ffffff;
       color: #4a3724;
@@ -576,22 +405,13 @@
       border: 2px solid #f7d44a;
       transition: all 0.2s ease;
     }
-
     .social-icon:hover {
       background-color: #fef3d9;
-      color: #2d1f13;
       border-color: #b87c4b;
       transform: translateY(-3px);
-      box-shadow: 0 12px 22px rgba(139, 94, 60, 0.15);
     }
 
-    /* hero card */
-    .hero-image {
-      flex: 1 1 340px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    .hero-image { flex: 1 1 340px; display: flex; justify-content: center; align-items: center; }
 
     .hero-card {
       background: #ffffff;
@@ -603,40 +423,13 @@
       width: 100%;
       text-align: center;
       transition: all 0.3s ease;
-      position: relative;
     }
+    .hero-card:hover { transform: translateY(-5px); border-color: #7fb2d9; }
+    .hero-card i { font-size: 3.2rem; color: #b87c4b; margin-bottom: 12px; }
+    .hero-card h3 { font-size: 1.5rem; color: #4a3724; margin-bottom: 10px; }
+    .hero-card p { color: #5d4a37; margin-bottom: 22px; font-size: 0.95rem; }
 
-    .hero-card:hover {
-      transform: translateY(-5px);
-      border-color: #7fb2d9;
-      box-shadow: 0 35px 45px -18px rgba(74, 55, 36, 0.22);
-    }
-
-    .hero-card i {
-      font-size: 3.2rem;
-      color: #b87c4b;
-      margin-bottom: 12px;
-    }
-
-    .hero-card h3 {
-      font-size: 1.5rem;
-      color: #4a3724;
-      margin-bottom: 10px;
-    }
-
-    .hero-card p {
-      color: #5d4a37;
-      margin-bottom: 22px;
-      font-size: 0.95rem;
-    }
-
-    .chip-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
+    .chip-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
     .chip {
       background-color: #fef3d9;
       padding: 7px 16px;
@@ -645,15 +438,10 @@
       font-weight: 500;
       color: #4a3724;
       border: 2px solid #f7d44a;
-      transition: background 0.2s;
     }
+    .chip i { color: #b87c4b; margin-right: 4px; }
 
-    .chip i {
-      color: #b87c4b;
-      margin-right: 4px;
-    }
-
-    /* ---------- section titles ---------- */
+    /* ---------- SECTIONS ---------- */
     .section-title {
       text-align: center;
       font-size: 2.1rem;
@@ -661,32 +449,24 @@
       color: #2d1f13;
       margin-bottom: 10px;
     }
-
     .section-title::after {
       content: '';
       display: block;
-      width: 60px;
-      height: 3px;
+      width: 60px; height: 3px;
       background: #f7d44a;
       margin: 14px auto 0;
       border-radius: 4px;
-      opacity: 0.9;
     }
-
     .section-sub {
       text-align: center;
       color: #5d4a37;
       max-width: 620px;
       margin: 12px auto 48px;
       font-size: 1.05rem;
-      line-height: 1.6;
     }
 
-    /* ---------- learning journey ---------- */
-    .journey-section {
-      padding: 30px 0 40px;
-    }
-
+    /* ---------- JOURNEY ---------- */
+    .journey-section { padding: 30px 0 40px; }
     .journey-path {
       display: flex;
       justify-content: center;
@@ -695,20 +475,16 @@
       gap: 12px 6px;
       margin-top: 20px;
     }
-
     .journey-step {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
       min-width: 90px;
-      position: relative;
       padding: 0 6px;
     }
-
     .journey-step .step-circle {
-      width: 58px;
-      height: 58px;
+      width: 58px; height: 58px;
       background: #ffffff;
       border-radius: 50%;
       display: flex;
@@ -717,17 +493,13 @@
       font-size: 1.5rem;
       color: #b87c4b;
       border: 3px solid #f7d44a;
-      box-shadow: 0 6px 14px rgba(139, 94, 60, 0.08);
       transition: all 0.25s ease;
     }
-
     .journey-step:hover .step-circle {
       border-color: #b87c4b;
       background: #fef3d9;
       transform: translateY(-4px);
-      box-shadow: 0 12px 22px rgba(139, 94, 60, 0.15);
     }
-
     .journey-step span {
       font-size: 0.85rem;
       font-weight: 600;
@@ -735,27 +507,21 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
-
     .journey-connector {
-      width: 24px;
-      height: 2px;
+      width: 24px; height: 2px;
       background: #f7d44a;
       border-radius: 4px;
       margin-top: -30px;
       opacity: 0.8;
     }
 
-    /* ---------- features ---------- */
-    .features {
-      padding: 40px 0 30px;
-    }
-
+    /* ---------- FEATURES ---------- */
+    .features { padding: 40px 0 30px; }
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 28px;
     }
-
     .feature-item {
       background: #ffffff;
       padding: 32px 24px;
@@ -764,19 +530,10 @@
       box-shadow: 0 8px 20px rgba(139, 94, 60, 0.04);
       transition: all 0.3s ease;
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
-
-    .feature-item:hover {
-      transform: translateY(-6px);
-      border-color: #7fb2d9;
-      box-shadow: 0 20px 32px -10px rgba(139, 94, 60, 0.15);
-    }
-
+    .feature-item:hover { transform: translateY(-6px); border-color: #7fb2d9; }
     .feature-icon {
-      width: 62px;
-      height: 62px;
+      width: 62px; height: 62px;
       background-color: #fef3d9;
       border-radius: 20px;
       display: flex;
@@ -785,39 +542,256 @@
       margin: 0 auto 20px;
       font-size: 1.7rem;
       color: #b87c4b;
-      transition: all 0.3s ease;
       border: 2px solid #f7d44a;
     }
+    .feature-item h3 { font-size: 1.25rem; margin-bottom: 10px; color: #4a3724; }
+    .feature-item p { color: #5d4a37; font-size: 0.95rem; }
 
-    .feature-item:hover .feature-icon {
-      background-color: #f9e0a0;
-      transform: scale(1.02);
+    /* ===================================================
+       COMMENTS / FEEDBACK SECTION
+    =================================================== */
+    .comments-section {
+      background: #f8f3ef;
+      padding: 80px 6%;
+      border-radius: 40px;
+      margin: 20px 0 50px;
     }
 
-    .feature-item h3 {
-      font-size: 1.25rem;
+    .comments-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .comments-section h2 {
+      text-align: center;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      color: var(--dark);
       margin-bottom: 10px;
-      color: #4a3724;
+      font-family: 'Poppins', sans-serif;
     }
 
-    .feature-item p {
-      color: #5d4a37;
+    .comments-subtitle {
+      text-align: center;
+      color: var(--text);
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+    }
+
+    /* Form */
+    .comment-form-card {
+      background: white;
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 50px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-group label span {
+      font-weight: 400;
+      color: #888;
+      font-size: 0.8rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 16px;
+      border: 2px solid var(--border-soft);
+      border-radius: 12px;
+      font-family: inherit;
       font-size: 0.95rem;
-      line-height: 1.6;
+      color: var(--dark);
+      background: #fffdf9;
+      transition: var(--transition);
+      resize: vertical;
     }
 
-    /* ---------- why section ---------- */
-    .why-section {
-      padding: 30px 0 40px;
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(247, 212, 74, 0.2);
     }
 
+    .character-count {
+      text-align: right;
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: -4px;
+    }
+
+    .comment-submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 30px;
+      background: var(--brown);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+      margin-top: 8px;
+    }
+
+    .comment-submit-btn:hover:not(:disabled) {
+      background: #6b4a2e;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(139, 94, 60, 0.2);
+    }
+
+    .comment-submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .comment-message {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: none;
+    }
+
+    .comment-message.success {
+      display: block;
+      background: #e7f8ef;
+      color: #0a7a45;
+      border: 1px solid #b6e6cf;
+    }
+
+    .comment-message.error {
+      display: block;
+      background: #fdecec;
+      color: #b3261e;
+      border: 1px solid #f7c4c1;
+    }
+
+    /* Comments list */
+    .comments-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .comments-list-header h3 {
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+
+    #commentCount {
+      color: var(--brown);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .comment-card {
+      background: white;
+      padding: 22px 25px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .comment-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .comment-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .comment-avatar {
+      width: 45px; height: 45px;
+      border-radius: 50%;
+      background: var(--light-brown);
+      color: var(--brown);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 0.98rem;
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .comment-text {
+      line-height: 1.7;
+      color: var(--text);
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .comments-loading,
+    .no-comments {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+      font-size: 0.95rem;
+    }
+
+    .comments-loading i,
+    .no-comments i {
+      font-size: 1.6rem;
+      color: var(--brown);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    /* ---------- WHY ---------- */
+    .why-section { padding: 30px 0 40px; }
     .why-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 24px;
-      margin-top: 10px;
     }
-
     .why-item {
       background: #ffffff;
       border-radius: 24px;
@@ -826,59 +800,26 @@
       text-align: center;
       transition: all 0.25s ease;
     }
+    .why-item:hover { border-color: #7fb2d9; transform: translateY(-3px); }
+    .why-item i { font-size: 1.8rem; color: #b87c4b; margin-bottom: 14px; }
+    .why-item h4 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: #4a3724; margin-bottom: 8px; }
+    .why-item p { font-size: 0.9rem; color: #5d4a37; }
 
-    .why-item:hover {
-      border-color: #7fb2d9;
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(139, 94, 60, 0.08);
-    }
-
-    .why-item i {
-      font-size: 1.8rem;
-      color: #b87c4b;
-      margin-bottom: 14px;
-    }
-
-    .why-item h4 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #4a3724;
-      margin-bottom: 8px;
-    }
-
-    .why-item p {
-      font-size: 0.9rem;
-      color: #5d4a37;
-      line-height: 1.5;
-    }
-
-    /* ---------- testimonials ---------- */
-    .testimonials {
-      padding: 30px 0 40px;
-    }
-
+    /* ---------- TESTIMONIALS ---------- */
+    .testimonials { padding: 30px 0 40px; }
     .testimonial-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 26px;
     }
-
     .testimonial-card {
       background: #ffffff;
       border-radius: 24px;
       padding: 28px 24px 24px;
       border: 2px solid #f7d44a;
-      box-shadow: 0 8px 16px rgba(139, 94, 60, 0.04);
       transition: all 0.25s ease;
     }
-
-    .testimonial-card:hover {
-      border-color: #b87c4b;
-      transform: translateY(-3px);
-      box-shadow: 0 16px 28px rgba(139, 94, 60, 0.1);
-    }
-
+    .testimonial-card:hover { border-color: #b87c4b; transform: translateY(-3px); }
     .testimonial-card .quote {
       font-size: 1rem;
       color: #4a3724;
@@ -886,16 +827,9 @@
       margin-bottom: 16px;
       font-style: italic;
     }
-
-    .testimonial-card .author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .testimonial-card .author { display: flex; align-items: center; gap: 12px; }
     .testimonial-card .avatar {
-      width: 42px;
-      height: 42px;
+      width: 42px; height: 42px;
       border-radius: 50%;
       background: #c1d9f0;
       display: flex;
@@ -903,16 +837,13 @@
       justify-content: center;
       font-weight: 700;
       color: #2d1f13;
-      font-size: 1rem;
       border: 2px solid #a6c8e8;
     }
-
     .testimonial-card .author-info {
       font-size: 0.9rem;
       font-weight: 600;
       color: #4a3724;
     }
-
     .testimonial-card .author-info small {
       display: block;
       font-weight: 400;
@@ -920,7 +851,7 @@
       font-size: 0.8rem;
     }
 
-    /* ---------- cta ---------- */
+    /* ---------- CTA ---------- */
     .cta-section {
       background-color: #ffffff;
       border-radius: 36px;
@@ -929,33 +860,10 @@
       box-shadow: 0 25px 35px -18px rgba(74, 55, 36, 0.14);
       border: 3px solid #c1d9f0;
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
-
-    .cta-section h2 {
-      font-size: 1.9rem;
-      color: #4a3724;
-      margin-bottom: 12px;
-    }
-
-    .cta-section p {
-      color: #5d4a37;
-      margin-bottom: 30px;
-      font-size: 1.05rem;
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
-    }
-
-    .cta-socials {
-      display: flex;
-      justify-content: center;
-      gap: 22px;
-      flex-wrap: wrap;
-    }
-
+    .cta-section h2 { font-size: 1.9rem; color: #4a3724; margin-bottom: 12px; }
+    .cta-section p { color: #5d4a37; margin-bottom: 30px; font-size: 1.05rem; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .cta-socials { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
     .cta-social-btn {
       display: flex;
       align-items: center;
@@ -970,20 +878,10 @@
       transition: all 0.2s ease;
       font-size: 1.05rem;
     }
+    .cta-social-btn i { font-size: 1.6rem; color: #b87c4b; }
+    .cta-social-btn:hover { background-color: #fef3d9; border-color: #b87c4b; transform: translateY(-3px); }
 
-    .cta-social-btn i {
-      font-size: 1.6rem;
-      color: #b87c4b;
-    }
-
-    .cta-social-btn:hover {
-      background-color: #fef3d9;
-      border-color: #b87c4b;
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(139, 94, 60, 0.1);
-    }
-
-    /* ---------- footer ---------- */
+    /* ---------- FOOTER ---------- */
     .footer {
       padding: 40px 0 24px;
       color: #6b4a2e;
@@ -991,7 +889,6 @@
       border-top: 2px solid #f7d44a;
       margin-top: 20px;
     }
-
     .footer-columns {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1000,29 +897,20 @@
       margin: 0 auto 30px;
       text-align: left;
     }
-
     .footer-col h5 {
       font-family: 'Poppins', sans-serif;
       font-size: 1rem;
-      font-weight: 600;
       color: #4a3724;
       margin-bottom: 14px;
     }
-
     .footer-col a {
       display: block;
       color: #6b4a2e;
       text-decoration: none;
       font-size: 0.9rem;
       margin-bottom: 8px;
-      transition: color 0.2s;
     }
-
-    .footer-col a:hover {
-      color: #2d1f13;
-      text-decoration: underline;
-    }
-
+    .footer-col a:hover { color: #2d1f13; text-decoration: underline; }
     .footer-bottom {
       text-align: center;
       padding-top: 20px;
@@ -1031,84 +919,37 @@
       color: #8b5e3c;
     }
 
-    /* ---------- scroll reveal ---------- */
+    /* ---------- REVEAL ---------- */
     .reveal {
       opacity: 0;
       transform: translateY(18px);
       transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ---------- responsive ---------- */
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 900px) {
-      .navbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .nav-links {
-        justify-content: center;
-        gap: 16px;
-      }
-      .nav-buttons {
-        justify-content: center;
-      }
-      .logo {
-        justify-content: center;
-      }
-      .menu-toggle {
-        margin-left: 0;
-      }
+      .navbar { flex-direction: column; align-items: stretch; }
+      .nav-links { justify-content: center; gap: 16px; }
+      .nav-buttons { justify-content: center; }
+      .logo { justify-content: center; }
+      .menu-toggle { margin-left: 0; }
     }
 
     @media (max-width: 700px) {
-      .container {
-        padding: 0 18px;
-      }
-      .hero h1 {
-        font-size: 2.1rem;
-      }
-      .hero {
-        padding: 20px 0 36px;
-        gap: 30px;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-      .section-title {
-        font-size: 1.7rem;
-      }
-      .section-sub {
-        font-size: 0.95rem;
-        margin-bottom: 32px;
-      }
-      .cta-section {
-        padding: 32px 20px;
-        margin: 20px 0 36px;
-      }
-      .cta-section h2 {
-        font-size: 1.6rem;
-      }
-      .cta-socials {
-        gap: 12px;
-        flex-direction: column;
-        align-items: center;
-      }
-      .cta-social-btn {
-        padding: 12px 20px;
-        font-size: 0.95rem;
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-      }
-      .footer-columns {
-        text-align: center;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-      }
+      .container { padding: 0 18px; }
+      .hero h1 { font-size: 2.1rem; }
+      .hero { padding: 20px 0 36px; gap: 30px; }
+      .section-title { font-size: 1.7rem; }
+      .section-sub { font-size: 0.95rem; margin-bottom: 32px; }
+      .comments-section { padding: 50px 5%; }
+      .comment-form-card { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .cta-section { padding: 32px 20px; }
+      .cta-section h2 { font-size: 1.6rem; }
+      .cta-socials { flex-direction: column; align-items: center; }
+      .cta-social-btn { width: 100%; max-width: 280px; justify-content: center; }
+      .footer-columns { text-align: center; grid-template-columns: 1fr 1fr; gap: 24px; }
       .announcement {
         font-size: 0.8rem;
         padding: 8px 16px;
@@ -1116,221 +957,49 @@
         flex-wrap: wrap;
         text-align: center;
       }
-      /* reduce vertical density */
-      .feature-grid {
-        gap: 20px;
-      }
-      .feature-item {
-        padding: 24px 18px;
-      }
-      .why-grid {
-        gap: 18px;
-      }
-      .why-item {
-        padding: 22px 16px;
-      }
-      .testimonial-grid {
-        gap: 18px;
-      }
-      .testimonial-card {
-        padding: 22px 18px;
-      }
-      .journey-path {
-        gap: 8px 4px;
-      }
-      .journey-step {
-        min-width: 68px;
-      }
-      .journey-step .step-circle {
-        width: 50px;
-        height: 50px;
-        font-size: 1.3rem;
-      }
-      .journey-step span {
-        font-size: 0.75rem;
-      }
-      .journey-connector {
-        width: 16px;
-      }
-      .hero-card {
-        padding: 26px 20px 22px;
-      }
-      .hero-card i {
-        font-size: 2.6rem;
-      }
-      .hero-card h3 {
-        font-size: 1.3rem;
-      }
-      .social-icon {
-        width: 46px;
-        height: 46px;
-        font-size: 1.4rem;
-      }
-      .top-menu-content {
-        padding: 24px 18px 28px;
-      }
-      .top-menu-header h3 {
-        font-size: 1.3rem;
-      }
-      .menu-list a {
-        padding: 12px 14px;
-        font-size: 0.98rem;
-      }
+      .feature-grid, .why-grid, .testimonial-grid { gap: 20px; }
+      .feature-item, .why-item, .testimonial-card { padding: 24px 18px; }
+      .journey-step { min-width: 68px; }
+      .journey-step .step-circle { width: 50px; height: 50px; font-size: 1.3rem; }
+      .journey-step span { font-size: 0.75rem; }
+      .journey-connector { width: 16px; }
+      .hero-card { padding: 26px 20px 22px; }
+      .social-icon { width: 46px; height: 46px; font-size: 1.4rem; }
+      .top-menu-content { padding: 24px 18px 28px; }
+      .top-menu-header h3 { font-size: 1.3rem; }
+      .menu-list a { padding: 12px 14px; font-size: 0.98rem; }
+      .comment-card { padding: 18px 20px; }
     }
 
     @media (max-width: 480px) {
-      .container {
-        padding: 0 14px;
-      }
-      .social-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
-      }
-      .btn {
-        padding: 9px 16px;
-        font-size: 0.85rem;
-      }
-      .logo-text {
-        font-size: 1.5rem;
-      }
-      .hero-card {
-        padding: 22px 16px 18px;
-      }
-      .loader-logo {
-        font-size: 2.4rem;
-      }
-      .journey-step {
-        min-width: 58px;
-      }
-      .journey-step .step-circle {
-        width: 42px;
-        height: 42px;
-        font-size: 1.1rem;
-      }
-      .journey-step span {
-        font-size: 0.7rem;
-      }
-      .footer-columns {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-      .top-menu.open {
-        max-height: 95vh;
-      }
-      .menu-list a {
-        padding: 11px 12px;
-        font-size: 0.92rem;
-      }
-      .menu-list a i {
-        font-size: 1.1rem;
-      }
+      .container { padding: 0 14px; }
+      .social-icon { width: 44px; height: 44px; font-size: 1.2rem; }
+      .btn { padding: 9px 16px; font-size: 0.85rem; }
+      .logo-text { font-size: 1.5rem; }
+      .hero-card { padding: 22px 16px 18px; }
+      .loader-logo { font-size: 2.4rem; }
+      .journey-step { min-width: 58px; }
+      .journey-step .step-circle { width: 42px; height: 42px; font-size: 1.1rem; }
+      .journey-step span { font-size: 0.7rem; }
+      .footer-columns { grid-template-columns: 1fr; gap: 20px; }
+      .top-menu.open { max-height: 95vh; }
+      .menu-list a { padding: 11px 12px; font-size: 0.92rem; }
+      .comment-submit-btn { width: 100%; justify-content: center; }
     }
-
-
-
-
-    .comments-section {
-  background: #f8f3ef;
-  padding: 80px 6%;
-}
-
-.comments-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.comments-section h2 {
-  text-align: center;
-  font-size: clamp(2rem, 6vw, 2.8rem);
-  color: var(--dark);
-  margin-bottom: 10px;
-}
-
-.comments-subtitle {
-  text-align: center;
-  color: var(--text);
-  font-size: 1.05rem;
-  margin-bottom: 40px;
-}
-
-.comment-form-card {
-  background: white;
-  padding: 35px;
-  border-radius: 25px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 50px;
-}
-
-.comment-card {
-  background: white;
-  padding: 22px 25px;
-  border-radius: 20px;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-}
-
-.comment-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-}
-
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.comment-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.comment-avatar {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: var(--light-brown);
-  color: var(--brown);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.comment-author {
-  font-weight: 600;
-  color: var(--dark);
-}
-
-.comment-date {
-  font-size: 0.8rem;
-  color: #888;
-}
-
-.comment-text {
-  line-height: 1.7;
-  color: var(--text);
-  word-break: break-word;
-}
   </style>
 </head>
 <body>
 
-<!-- loading overlay -->
+<!-- Loading overlay -->
 <div class="loader" id="loader">
   <div class="loader-logo" id="loaderLogo">Soil<span>Sparks</span></div>
   <div class="loader-line"></div>
   <div class="loader-sub">Preparing your learning space…</div>
 </div>
 
-<!-- soft background atmosphere -->
 <div class="bg-atmosphere"></div>
 
-<!-- ========== TOP MENU (simple text links) ========== -->
+<!-- Top overlay menu -->
 <div class="top-menu" id="topMenu">
   <div class="top-menu-content">
     <div class="top-menu-header">
@@ -1339,7 +1008,6 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <!-- simple text menu -->
     <div class="menu-list">
       <a href="#"><i class="fas fa-home"></i> Home</a>
       <a href="#features"><i class="fas fa-star"></i> JRF</a>
@@ -1355,8 +1023,8 @@
       <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
       <a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a>
       <a href="#"><i class="fas fa-question-circle"></i> Help</a>
-      <a href="https://t.me/soilsparks" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
-      <a href="https://wa.me/917849969232" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://t.me/soilsparks" target="_blank" rel="noopener"><i class="fab fa-telegram-plane"></i> Telegram</a>
+      <a href="https://wa.me/917849969232" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
     </div>
   </div>
 </div>
@@ -1378,34 +1046,30 @@
     <div class="nav-buttons">
       <a href="login.html" class="btn btn-login"><i class="fas fa-user-graduate"></i> Login</a>
       <a href="dashboard.html" class="btn btn-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
-      <!-- Menu toggle button -->
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </nav>
 
-  <!-- announcement strip -->
+  <!-- Announcement -->
   <div class="announcement reveal">
     <i class="fas fa-bullhorn"></i>
     <span>New: Daily Practice Tests are now available</span>
     <a href="#">Try now <i class="fas fa-arrow-right" style="font-size:0.75rem;"></i></a>
   </div>
 
-  <!-- Hero section -->
+  <!-- Hero -->
   <section class="hero reveal">
     <div class="hero-content">
-      <!-- <div class="hero-badge"><i class="fas fa-seedling" style="margin-right: 6px;"></i> Learn · Grow · Succeed</div> -->
       <h1>Nurture your <span class="highlight">knowledge</span> with SoilSparks</h1>
       <p>A calmer way to prepare, practice and improve. Test series, crisp notes, and expert guidance — all in one place.</p>
-      
       <div class="trust-indicators">
         <span><i class="fas fa-circle-check"></i> Structured Learning</span>
         <span><i class="fas fa-circle-check"></i> Practice Tests</span>
         <span><i class="fas fa-circle-check"></i> Performance Tracking</span>
         <span><i class="fas fa-circle-check"></i> Student Support</span>
       </div>
-
       <div class="social-connect">
         <span class="social-label">Connect with us:</span>
         <a href="https://t.me/soilsparks" target="_blank" rel="noopener" class="social-icon telegram" aria-label="Telegram" title="Join us on Telegram">
@@ -1416,7 +1080,6 @@
         </a>
       </div>
     </div>
-
     <div class="hero-image">
       <div class="hero-card">
         <i class="fas fa-book-open-reader"></i>
@@ -1431,35 +1094,20 @@
     </div>
   </section>
 
-  <!-- Learning Journey -->
+  <!-- Journey -->
   <section class="journey-section reveal">
     <h2 class="section-title">Your learning journey</h2>
     <p class="section-sub">A clear path from first concept to final confidence.</p>
     <div class="journey-path">
-      <div class="journey-step">
-        <div class="step-circle"><i class="fas fa-book-open"></i></div>
-        <span>Learn</span>
-      </div>
+      <div class="journey-step"><div class="step-circle"><i class="fas fa-book-open"></i></div><span>Learn</span></div>
       <div class="journey-connector"></div>
-      <div class="journey-step">
-        <div class="step-circle"><i class="fas fa-pen-to-square"></i></div>
-        <span>Practice</span>
-      </div>
+      <div class="journey-step"><div class="step-circle"><i class="fas fa-pen-to-square"></i></div><span>Practice</span></div>
       <div class="journey-connector"></div>
-      <div class="journey-step">
-        <div class="step-circle"><i class="fas fa-chart-simple"></i></div>
-        <span>Analyse</span>
-      </div>
+      <div class="journey-step"><div class="step-circle"><i class="fas fa-chart-simple"></i></div><span>Analyse</span></div>
       <div class="journey-connector"></div>
-      <div class="journey-step">
-        <div class="step-circle"><i class="fas fa-arrow-trend-up"></i></div>
-        <span>Improve</span>
-      </div>
+      <div class="journey-step"><div class="step-circle"><i class="fas fa-arrow-trend-up"></i></div><span>Improve</span></div>
       <div class="journey-connector"></div>
-      <div class="journey-step">
-        <div class="step-circle"><i class="fas fa-trophy"></i></div>
-        <span>Succeed</span>
-      </div>
+      <div class="journey-step"><div class="step-circle"><i class="fas fa-trophy"></i></div><span>Succeed</span></div>
     </div>
   </section>
 
@@ -1467,7 +1115,6 @@
   <section class="features reveal" id="features">
     <h2 class="section-title">Everything you need to excel</h2>
     <p class="section-sub">Carefully crafted resources for students — from daily practice to final revision.</p>
-
     <div class="feature-grid">
       <div class="feature-item">
         <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
@@ -1492,156 +1139,65 @@
     </div>
   </section>
 
-  <!-- ================================
-     CUSTOMER FEEDBACK
-================================= -->
+  <!-- ==================== CUSTOMER FEEDBACK ==================== -->
+  <section id="comments" class="comments-section reveal">
+    <div class="comments-container">
+      <h2>What Our Customers Say</h2>
+      <p class="comments-subtitle">Have something to share? We'd love to hear from you.</p>
 
-<section id="comments" class="comments-section">
-
-  <div class="comments-container">
-
-    <h2>What Our Customers Say</h2>
-
-    <p class="comments-subtitle">
-      Have something to share? We'd love to hear from you.
-    </p>
-
-    <!-- Feedback Form -->
-    <div class="comment-form-card">
-
-      <form id="commentForm">
-
-        <div class="form-row">
+      <!-- Feedback Form -->
+      <div class="comment-form-card">
+        <form id="commentForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="commentName">Your Name</label>
+              <input type="text" id="commentName" maxlength="50" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label for="commentEmail">Email <span>(optional)</span></label>
+              <input type="email" id="commentEmail" maxlength="100" placeholder="Enter your email">
+            </div>
+          </div>
 
           <div class="form-group">
-
-            <label for="commentName">
-              Your Name
-            </label>
-
-            <input
-              type="text"
-              id="commentName"
-              maxlength="50"
-              placeholder="Enter your name"
-              required
-            >
-
+            <label for="commentText">Your Comment</label>
+            <textarea id="commentText" maxlength="500" rows="4" placeholder="Share your experience with us..." required></textarea>
+            <div class="character-count"><span id="charCount">0</span>/500</div>
           </div>
 
+          <button type="submit" class="comment-submit-btn" id="commentSubmitBtn">
+            <i class="fas fa-paper-plane"></i> Post Comment
+          </button>
 
-          <div class="form-group">
-
-            <label for="commentEmail">
-              Email <span>(optional)</span>
-            </label>
-
-            <input
-              type="email"
-              id="commentEmail"
-              maxlength="100"
-              placeholder="Enter your email"
-            >
-
-          </div>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="commentText">
-            Your Comment
-          </label>
-
-          <textarea
-            id="commentText"
-            maxlength="500"
-            rows="4"
-            placeholder="Share your experience with us..."
-            required
-          ></textarea>
-
-          <div class="character-count">
-            <span id="charCount">0</span>/500
-          </div>
-
-        </div>
-
-
-        <button
-          type="submit"
-          class="comment-submit-btn"
-          id="commentSubmitBtn"
-        >
-          <i class="fas fa-paper-plane"></i>
-          Post Comment
-        </button>
-
-        <div
-          id="commentMessage"
-          class="comment-message"
-        ></div>
-
-      </form>
-
-    </div>
-
-
-    <!-- Existing Feedback -->
-
-    <div class="comments-list-header">
-
-      <h3>Customer Feedback</h3>
-
-      <span id="commentCount">
-        0 comments
-      </span>
-
-    </div>
-
-
-    <div
-      id="commentsList"
-      class="comments-list"
-    >
-
-      <div class="comments-loading">
-        <i class="fas fa-spinner fa-spin"></i>
-        Loading comments...
+          <div id="commentMessage" class="comment-message"></div>
+        </form>
       </div>
 
+      <!-- List header -->
+      <div class="comments-list-header">
+        <h3>Customer Feedback</h3>
+        <span id="commentCount">0 comments</span>
+      </div>
+
+      <!-- Comments list -->
+      <div id="commentsList" class="comments-list">
+        <div class="comments-loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Loading comments...
+        </div>
+      </div>
     </div>
+  </section>
 
-  </div>
-
-</section>
-
-  <!-- Why students choose SoilSpark -->
+  <!-- Why -->
   <section class="why-section reveal">
     <h2 class="section-title">Why students choose SoilSparks</h2>
     <p class="section-sub">Human-centered learning, without the noise.</p>
     <div class="why-grid">
-      <div class="why-item">
-        <i class="fas fa-feather"></i>
-        <h4>Less clutter. More focus.</h4>
-        <p>A calm, clean interface that keeps your attention on what matters.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-chart-pie"></i>
-        <h4>Know where you're improving.</h4>
-        <p>Clear analytics that show your progress without overwhelming you.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-heart"></i>
-        <h4>Practice without pressure.</h4>
-        <p>Take your time. Revisit concepts. Build confidence at your own pace.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-box-open"></i>
-        <h4>Everything in one place.</h4>
-        <p>Notes, tests, mentorship and community — all together.</p>
-      </div>
+      <div class="why-item"><i class="fas fa-feather"></i><h4>Less clutter. More focus.</h4><p>A calm, clean interface that keeps your attention on what matters.</p></div>
+      <div class="why-item"><i class="fas fa-chart-pie"></i><h4>Know where you're improving.</h4><p>Clear analytics that show your progress without overwhelming you.</p></div>
+      <div class="why-item"><i class="fas fa-heart"></i><h4>Practice without pressure.</h4><p>Take your time. Revisit concepts. Build confidence at your own pace.</p></div>
+      <div class="why-item"><i class="fas fa-box-open"></i><h4>Everything in one place.</h4><p>Notes, tests, mentorship and community — all together.</p></div>
     </div>
   </section>
 
@@ -1652,24 +1208,15 @@
     <div class="testimonial-grid">
       <div class="testimonial-card">
         <div class="quote">"The daily practice tests helped me build a habit. I feel more confident every week."</div>
-        <div class="author">
-          <div class="avatar">A</div>
-          <div class="author-info">Ananya <small>JRF Aspirant</small></div>
-        </div>
+        <div class="author"><div class="avatar">A</div><div class="author-info">Ananya <small>JRF Aspirant</small></div></div>
       </div>
       <div class="testimonial-card">
         <div class="quote">"I love how calm the platform feels. No distractions, just clear notes and good questions."</div>
-        <div class="author">
-          <div class="avatar">R</div>
-          <div class="author-info">Sumit <small>SRF Aspirant</small></div>
-        </div>
+        <div class="author"><div class="avatar">R</div><div class="author-info">Sumit <small>SRF Aspirant</small></div></div>
       </div>
       <div class="testimonial-card">
         <div class="quote">"The progress dashboard showed me exactly what to revise. Game changer."</div>
-        <div class="author">
-          <div class="avatar">S</div>
-          <div class="author-info">Sneha <small>JRF Aspirant</small></div>
-        </div>
+        <div class="author"><div class="avatar">S</div><div class="author-info">Sneha <small>JRF Aspirant</small></div></div>
       </div>
     </div>
   </section>
@@ -1716,29 +1263,21 @@
   </footer>
 </div>
 
+<!-- ============================================================
+     UI SCRIPT (loader, reveal, menu) — plain JS
+============================================================ -->
 <script>
-  // loading overlay
   window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     const loaderLogo = document.getElementById('loaderLogo');
 
-    loaderLogo.style.filter = 'blur(1.2px)';
-
-    setTimeout(() => {
-      loaderLogo.classList.add('reveal');
-    }, 80);
-
-    setTimeout(() => {
-      loader.classList.add('hidden');
-    }, 1500);
-
-    setTimeout(() => {
-      loader.style.display = 'none';
-    }, 2500);
+    setTimeout(() => loaderLogo.classList.add('reveal'), 80);
+    setTimeout(() => loader.classList.add('hidden'), 1500);
+    setTimeout(() => { loader.style.display = 'none'; }, 2500);
   });
 
-  // scroll reveal
   document.addEventListener('DOMContentLoaded', () => {
+    // Scroll reveal
     const revealElements = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1748,466 +1287,216 @@
         }
       });
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
     revealElements.forEach(el => observer.observe(el));
 
-    // TOP MENU TOGGLE
+    // Top menu
     const menuToggle = document.getElementById('menuToggle');
     const topMenu = document.getElementById('topMenu');
     const closeMenuBtn = document.getElementById('closeMenuBtn');
 
-    function openMenu() {
-      topMenu.classList.add('open');
-    }
-
-    function closeMenu() {
-      topMenu.classList.remove('open');
-    }
+    const openMenu = () => topMenu.classList.add('open');
+    const closeMenu = () => topMenu.classList.remove('open');
 
     menuToggle.addEventListener('click', openMenu);
     closeMenuBtn.addEventListener('click', closeMenu);
 
-    // close menu when clicking on any link inside
     topMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        setTimeout(() => {
-          closeMenu();
-        }, 150);
-      });
+      link.addEventListener('click', () => setTimeout(closeMenu, 150));
     });
 
-    // close on escape key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && topMenu.classList.contains('open')) {
-        closeMenu();
-      }
+      if (e.key === 'Escape' && topMenu.classList.contains('open')) closeMenu();
     });
   });
 </script>
+
+<!-- ============================================================
+     FIREBASE COMMENTS (modular v10)
+============================================================ -->
 <script type="module">
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-/* ================================
-   FIREBASE CONFIG
-================================ */
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
-  authDomain: "soilspark.firebaseapp.com",
-  projectId: "soilspark",
-  storageBucket: "soilspark.firebasestorage.app",
-  messagingSenderId: "22641848933",
-  appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
-  measurementId: "G-1M406BN9JK"
-};
-
-
-/* ================================
-   INITIALIZE
-================================ */
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-
-/* ================================
-   ELEMENTS
-================================ */
-
-const form =
-  document.getElementById("commentForm");
-
-const nameInput =
-  document.getElementById("commentName");
-
-const emailInput =
-  document.getElementById("commentEmail");
-
-const textInput =
-  document.getElementById("commentText");
-
-const submitBtn =
-  document.getElementById("commentSubmitBtn");
-
-const message =
-  document.getElementById("commentMessage");
-
-const commentsList =
-  document.getElementById("commentsList");
-
-const commentCount =
-  document.getElementById("commentCount");
-
-const charCount =
-  document.getElementById("charCount");
-
-
-/* ================================
-   CHARACTER COUNTER
-================================ */
-
-textInput.addEventListener("input", () => {
-
-  charCount.textContent =
-    textInput.value.length;
-
-});
-
-
-/* ================================
-   SUBMIT FEEDBACK
-================================ */
-
-form.addEventListener("submit", async (e) => {
-
-  e.preventDefault();
-
-
-  const name =
-    nameInput.value.trim();
-
-  const email =
-    emailInput.value.trim();
-
-  const text =
-    textInput.value.trim();
-
-
-  /* Validation */
-
-  if (name.length < 2) {
-
-    showMessage(
-      "Please enter a valid name.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (text.length < 3) {
-
-    showMessage(
-      "Please write a meaningful comment.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  if (text.length > 500) {
-
-    showMessage(
-      "Comment must be less than 500 characters.",
-      "error"
-    );
-
-    return;
-  }
-
-
-  submitBtn.disabled = true;
-
-  submitBtn.innerHTML =
-    '<i class="fas fa-spinner fa-spin"></i> Posting...';
-
-
-  try {
-
-    await addDoc(
-      collection(db, "reviews"),
-      {
-
-        name: name,
-
-        email: email || "",
-
-        text: text,
-
-        product: "Chia-Nut",
-
-        approved: false,
-
-        timestamp: serverTimestamp(),
-
-        createdAt: serverTimestamp()
-
-      }
-    );
-
-
-    form.reset();
-
-    charCount.textContent = "0";
-
-
-    showMessage(
-      "Thank you! Your feedback has been submitted for review.",
-      "success"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Feedback submission error:",
-      error
-    );
-
-    showMessage(
-      "Unable to submit feedback. Please try again.",
-      "error"
-    );
-
-  } finally {
-
-    submitBtn.disabled = false;
-
-    submitBtn.innerHTML =
-      '<i class="fas fa-paper-plane"></i> Post Comment';
-
-  }
-
-});
-
-
-/* ================================
-   LOAD APPROVED REVIEWS
-================================ */
-
-const reviewsQuery = query(
-
-  collection(db, "reviews"),
-
-  where(
-    "product",
-    "==",
-    "Chia-Nut"
-  ),
-
-  where(
-    "approved",
-    "==",
-    true
-  ),
-
-  orderBy(
-    "timestamp",
-    "desc"
-  )
-
-);
-
-
-onSnapshot(
-  reviewsQuery,
-
-  (snapshot) => {
-
-    commentsList.innerHTML = "";
-
-    let count = 0;
-
-
-    snapshot.forEach((doc) => {
-
-      const review =
-        doc.data();
-
-      count++;
-
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "comment-card";
-
-
-      const top =
-        document.createElement("div");
-
-      top.className =
-        "comment-top";
-
-
-      const avatar =
-        document.createElement("div");
-
-      avatar.className =
-        "comment-avatar";
-
-
-      const safeName =
-        review.name || "Customer";
-
-
-      avatar.textContent =
-        safeName
-          .charAt(0)
-          .toUpperCase();
-
-
-      const authorContainer =
-        document.createElement("div");
-
-
-      const author =
-        document.createElement("div");
-
-      author.className =
-        "comment-author";
-
-      author.textContent =
-        safeName;
-
-
-      const date =
-        document.createElement("div");
-
-      date.className =
-        "comment-date";
-
-      date.textContent =
-        formatDate(review.timestamp);
-
-
-      authorContainer.appendChild(author);
-
-      authorContainer.appendChild(date);
-
-      top.appendChild(avatar);
-
-      top.appendChild(authorContainer);
-
-
-      const comment =
-        document.createElement("div");
-
-      comment.className =
-        "comment-text";
-
-      comment.textContent =
-        review.text || "";
-
-
-      card.appendChild(top);
-
-      card.appendChild(comment);
-
-      commentsList.appendChild(card);
-
-    });
-
-
-    commentCount.textContent =
-      `${count} ${count === 1 ? "comment" : "comments"}`;
-
-
-    if (count === 0) {
-
-      commentsList.innerHTML = `
-        <div class="no-comments">
-          <i class="far fa-comment-dots"></i>
-          <div>
-            Be the first to share your experience!
-          </div>
-        </div>
-      `;
-
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    where,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  /* ---------- CONFIG ---------- */
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+    authDomain: "soilspark.firebaseapp.com",
+    projectId: "soilspark",
+    storageBucket: "soilspark.firebasestorage.app",
+    messagingSenderId: "22641848933",
+    appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+    measurementId: "G-1M406BN9JK"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  /* ---------- ELEMENTS ---------- */
+  const form = document.getElementById("commentForm");
+  const nameInput = document.getElementById("commentName");
+  const emailInput = document.getElementById("commentEmail");
+  const textInput = document.getElementById("commentText");
+  const submitBtn = document.getElementById("commentSubmitBtn");
+  const message = document.getElementById("commentMessage");
+  const commentsList = document.getElementById("commentsList");
+  const commentCount = document.getElementById("commentCount");
+  const charCount = document.getElementById("charCount");
+
+  /* ---------- CHARACTER COUNTER ---------- */
+  textInput.addEventListener("input", () => {
+    charCount.textContent = textInput.value.length;
+  });
+
+  /* ---------- SUBMIT ---------- */
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const text = textInput.value.trim();
+
+    if (name.length < 2) {
+      showMessage("Please enter a valid name.", "error");
+      return;
+    }
+    if (text.length < 3) {
+      showMessage("Please write a meaningful comment.", "error");
+      return;
+    }
+    if (text.length > 500) {
+      showMessage("Comment must be less than 500 characters.", "error");
+      return;
     }
 
-  },
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
-  (error) => {
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name,
+        email: email || "",
+        text,
+        product: "Chia-Nut",
+        approved: false,
+        timestamp: serverTimestamp(),
+        createdAt: serverTimestamp()
+      });
 
-    console.error(
-      "Error loading reviews:",
-      error
-    );
+      form.reset();
+      charCount.textContent = "0";
+      showMessage("Thank you! Your feedback has been submitted for review.", "success");
+    } catch (error) {
+      console.error("Feedback submission error:", error);
+      showMessage("Unable to submit feedback. Please try again.", "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post Comment';
+    }
+  });
 
-    commentsList.innerHTML = `
-      <div class="no-comments">
-        Unable to load comments right now.
-      </div>
-    `;
+  /* ---------- LOAD APPROVED REVIEWS ---------- */
+  const reviewsQuery = query(
+    collection(db, "reviews"),
+    where("product", "==", "Chia-Nut"),
+    where("approved", "==", true),
+    orderBy("timestamp", "desc")
+  );
 
-  }
+  onSnapshot(
+    reviewsQuery,
+    (snapshot) => {
+      commentsList.innerHTML = "";
+      let count = 0;
 
-);
+      snapshot.forEach((docSnap) => {
+        const review = docSnap.data();
+        count++;
 
+        const card = document.createElement("div");
+        card.className = "comment-card";
 
-/* ================================
-   DATE
-================================ */
+        const top = document.createElement("div");
+        top.className = "comment-top";
 
-function formatDate(timestamp) {
+        const avatar = document.createElement("div");
+        avatar.className = "comment-avatar";
+        const safeName = review.name || "Customer";
+        avatar.textContent = safeName.charAt(0).toUpperCase();
 
-  if (!timestamp) {
-    return "Just now";
-  }
+        const authorContainer = document.createElement("div");
 
-  const date =
-    timestamp.toDate
-      ? timestamp.toDate()
-      : new Date(timestamp);
+        const author = document.createElement("div");
+        author.className = "comment-author";
+        author.textContent = safeName;
 
+        const date = document.createElement("div");
+        date.className = "comment-date";
+        date.textContent = formatDate(review.timestamp);
 
-  return date.toLocaleDateString(
-    "en-IN",
-    {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
+        authorContainer.appendChild(author);
+        authorContainer.appendChild(date);
+        top.appendChild(avatar);
+        top.appendChild(authorContainer);
+
+        const comment = document.createElement("div");
+        comment.className = "comment-text";
+        comment.textContent = review.text || "";
+
+        card.appendChild(top);
+        card.appendChild(comment);
+        commentsList.appendChild(card);
+      });
+
+      commentCount.textContent = `${count} ${count === 1 ? "comment" : "comments"}`;
+
+      if (count === 0) {
+        commentsList.innerHTML = `
+          <div class="no-comments">
+            <i class="far fa-comment-dots"></i>
+            <div>Be the first to share your experience!</div>
+          </div>
+        `;
+      }
+    },
+    (error) => {
+      console.error("Error loading reviews:", error);
+      commentsList.innerHTML = `
+        <div class="no-comments">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>Unable to load comments right now.</div>
+        </div>
+      `;
     }
   );
 
-}
+  /* ---------- HELPERS ---------- */
+  function formatDate(timestamp) {
+    if (!timestamp) return "Just now";
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  }
 
-
-/* ================================
-   MESSAGE
-================================ */
-
-function showMessage(
-  text,
-  type
-) {
-
-  message.textContent = text;
-
-  message.className =
-    "comment-message " + type;
-
-  setTimeout(() => {
-
-    message.textContent = "";
-
-    message.className =
-      "comment-message";
-
-  }, 5000);
-
-}
-
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "comment-message " + type;
+    setTimeout(() => {
+      message.textContent = "";
+      message.className = "comment-message";
+    }, 5000);
+  }
 </script>
 </body>
 </html>

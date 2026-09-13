@@ -1,1180 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="en">
- <head><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18151546873"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<head>
+  <!-- Google Ads tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18151546873"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18151546873');
+  </script>
 
-  gtag('config', 'AW-18151546873');
-</script><link rel="stylesheet" href="theme.css">
-<script src="theme.js"></script>
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K5XJZHT26S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K5XJZHT26S', {
+      page_title: document.title,
+      page_location: window.location.href
+    });
+  </script>
+
   <meta charset="UTF-8">
   <title>Admin Dashboard | AgriAchiever</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Excel export -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-  
-  <!-- Font Awesome for icons -->
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
- <!-- Google Analytics (GA4) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-K5XJZHT26S"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  
-  gtag('js', new Date());
 
-  gtag('config', 'G-K5XJZHT26S', {
-    page_title: document.title,
-    page_location: window.location.href
-  });
-</script></head>
-
-<body>
-  <!-- Main Container -->
-  <div class="container">
-    
-    <!-- 🔐 ADMIN LOGIN SECTION -->
-    <div id="loginSection" class="login-container">
-      <div class="login-card">
-        <div class="login-header">
-          <div class="logo">
-            <div class="logo-icon">
-              <i class="fas fa-seedling"></i>
-            </div>
-            <h1>Agri<span>Achiever</span></h1>
-          </div>
-          <p class="subtitle">Admin Dashboard</p>
-        </div>
-        
-        <div class="login-body">
-          <div class="input-group">
-            <label for="email">
-              <i class="fas fa-envelope"></i> Admin Email
-            </label>
-            <input type="email" id="email" placeholder="admin@agriachiever.com">
-          </div>
-          
-          <div class="input-group">
-            <label for="password">
-              <i class="fas fa-lock"></i> Password
-            </label>
-            <input type="password" id="password" placeholder="Enter your password">
-          </div>
-          
-          <button class="login-btn" onclick="loginAdmin()">
-            <i class="fas fa-sign-in-alt"></i> Login
-          </button>
-          
-          <div class="login-footer">
-            <p><i class="fas fa-shield-alt"></i> Secure access for administrators only</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📊 ADMIN DASHBOARD SECTION -->
-    <div id="dashboardSection" class="dashboard-container" style="display:none;">
-      <!-- Header -->
-      <header class="dashboard-header">
-        <div class="header-left">
-          <div class="logo">
-            <div class="logo-icon">
-              <i class="fas fa-seedling"></i>
-            </div>
-            <div>
-              <h1>Agri<span>Achiever</span></h1>
-              <p class="header-subtitle">Admin Dashboard</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="header-right">
-          <button class="btn-icon" onclick="exportExcel()" title="Export to Excel">
-            <i class="fas fa-file-excel"></i>
-            <span>Export</span>
-          </button>
-          <button class="btn-icon" onclick="exportPremiumUsers()" title="Export Premium Users">
-            <i class="fas fa-crown"></i>
-            <span>Premium Users</span>
-          </button>
-          <button class="btn-logout" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-          </button>
-        </div>
-      </header>
-
-      <!-- Stats Cards -->
-      <div class="stats-grid" id="statsGrid">
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="totalUsers">0</h3>
-            <p>Total Users</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: #FFF3E0; color: #FF9800;">
-            <i class="fas fa-crown"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="premiumUsers">0</h3>
-            <p>Premium Users</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: #E8F5E9; color: #4CAF50;">
-            <i class="fas fa-shopping-bag"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="totalOrders">0</h3>
-            <p>Total Orders</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: #FFEBEE; color: #F44336;">
-            <i class="fas fa-indian-rupee-sign"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="totalRevenue">₹0</h3>
-            <p>Total Revenue</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: #E3F2FD; color: #2196F3;">
-            <i class="fas fa-tag"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="couponUsageCount">0</h3>
-            <p>Coupon Uses</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon" style="background: #F3E5F5; color: #9C27B0;">
-            <i class="fas fa-chart-line"></i>
-          </div>
-          <div class="stat-details">
-            <h3 id="totalDiscountGiven">₹0</h3>
-            <p>Total Discount</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <main class="dashboard-content">
-        <!-- Tab Navigation -->
-        <div class="tab-navigation">
-          <button class="tab-btn active" onclick="switchTab('orders')">
-            <i class="fas fa-shopping-bag"></i> Orders
-          </button>
-          <button class="tab-btn" onclick="switchTab('users')">
-            <i class="fas fa-users"></i> Users
-          </button>
-          <button class="tab-btn" onclick="switchTab('premium')">
-            <i class="fas fa-crown"></i> Premium Members
-          </button>
-          <button class="tab-btn" onclick="switchTab('subscriptions')">
-            <i class="fas fa-history"></i> Subscriptions
-          </button>
-        </div>
-
-        <!-- ORDERS TAB -->
-        <div id="ordersTab" class="tab-content active">
-          <div class="card results-card">
-            <div class="card-header">
-              <h2><i class="fas fa-shopping-bag"></i> Orders List</h2>
-              <div class="header-controls">
-                <select id="orderLimitSelect" onchange="changeOrderLimit()" class="limit-select">
-                  <option value="20">Show 20</option>
-                  <option value="50">Show 50</option>
-                  <option value="100">Show 100</option>
-                </select>
-                <button class="btn-icon" onclick="loadOrders()">
-                  <i class="fas fa-sync"></i> Reload
-                </button>
-                <button class="btn-icon" onclick="loadMoreOrders()">
-                  <i class="fas fa-arrow-down"></i> Load More
-                </button>
-              </div>
-            </div>
-
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Order ID</th>
-                    <th>Plan</th>
-                    <th>Original</th>
-                    <th>Paid</th>
-                    <th>Coupon</th>
-                    <th>Status</th>
-                    <th>Payment ID</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="ordersTableBody">
-                  <tr><td colspan="12" style="text-align:center;"><i class="fas fa-inbox"></i> <br>No orders to show</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- USERS TAB -->
-        <div id="usersTab" class="tab-content">
-          <div class="card results-card">
-            <div class="card-header">
-              <h2><i class="fas fa-users"></i> Registered Users</h2>
-              <div class="header-controls">
-    <input type="text"
-           id="userSearch"
-           placeholder="Search users..."
-           class="search-input"
-           onkeyup="searchUsers()">
-
-    <select id="exportUserLimit" class="limit-select">
-        <option value="100">Export 100</option>
-        <option value="500">Export 500</option>
-        <option value="1000" selected>Export 1000</option>
-        <option value="5000">Export 5000</option>
-        <option value="999999999">Export All</option>
-    </select>
-
-    <button class="btn-icon" onclick="exportUsers()">
-        <i class="fas fa-download"></i> Export
-    </button>
-</div>
-            </div>
-
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Joined</th>
-                    <th>Premium Status</th>
-                    <th>Premium Expiry</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                  <tr><td colspan="7" style="text-align:center;">Loading users...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- PREMIUM MEMBERS TAB -->
-        <div id="premiumTab" class="tab-content">
-          <div class="card results-card">
-            <div class="card-header">
-              <h2><i class="fas fa-crown"></i> Premium Members</h2>
-              <div class="header-controls">
-                <button class="btn-icon" onclick="exportPremiumUsers()">
-                  <i class="fas fa-download"></i> Export Premium
-                </button>
-              </div>
-            </div>
-
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Plan</th>
-                    <th>Start Date</th>
-                    <th>Expiry Date</th>
-                    <th>Days Left</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="premiumTableBody">
-                  <tr><td colspan="8" style="text-align:center;">Loading premium members...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUBSCRIPTIONS TAB (with Coupon Column) -->
-        <div id="subscriptionsTab" class="tab-content">
-          <div class="card results-card">
-            <div class="card-header">
-              <h2><i class="fas fa-history"></i> Subscription History</h2>
-              <button class="btn-icon" onclick="exportSubscriptions()">
-                <i class="fas fa-download"></i> Export All
-              </button>
-            </div>
-
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Plan</th>
-                    <th>Original Amount</th>
-                    <th>Paid Amount</th>
-                    <th>Coupon Code</th>
-                    <th>Discount</th>
-                    <th>Payment ID</th>
-                    <th>Purchase Date</th>
-                    <th>Expiry Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="subscriptionsTableBody">
-                  <tr><td colspan="11" style="text-align:center;">Loading subscriptions...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </main>
-      
-      <footer class="dashboard-footer">
-        <p><i class="fas fa-info-circle"></i> AgriAchiever Admin Panel • All data is securely stored</p>
-      </footer>
-    </div>
-  </div>
-<!-- ================================
-     CUSTOMER REVIEWS
-================================= -->
-
-<div class="card reviews-admin-card">
-
-  <div class="card-header">
-
-    <div>
-      <h2>
-        <i class="fas fa-comments"></i>
-        Customer Feedback
-      </h2>
-
-      <p class="card-description">
-        Review, approve and remove customer feedback.
-      </p>
-    </div>
-
-    <button
-      class="btn-primary"
-      onclick="loadReviews()"
-    >
-      <i class="fas fa-sync"></i>
-      Refresh
-    </button>
-
-  </div>
-
-
-  <div class="review-stats">
-
-    <div>
-      <strong id="totalReviews">
-        0
-      </strong>
-
-      <span>Total</span>
-    </div>
-
-    <div>
-      <strong id="pendingReviews">
-        0
-      </strong>
-
-      <span>Pending</span>
-    </div>
-
-    <div>
-      <strong id="approvedReviews">
-        0
-      </strong>
-
-      <span>Approved</span>
-    </div>
-
-  </div>
-
-
-  <div
-    id="adminReviewsList"
-    class="admin-reviews-list"
-  >
-
-    <div class="empty-row">
-      <i class="fas fa-spinner fa-spin"></i>
-      <p>Loading feedback...</p>
-    </div>
-
-  </div>
-
-</div>
-  <!-- Firebase and main script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signInWithEmailAndPassword,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      getDoc,
-      doc,
-      updateDoc,
-      query,
-      orderBy,
-      limit,
-      startAfter,
-      where,
-      writeBatch
-    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-
-    // 🔥 Firebase Config
-    const firebaseConfig = {
-  apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
-  authDomain: "soilspark.firebaseapp.com",
-  projectId: "soilspark",
-  storageBucket: "soilspark.firebasestorage.app",
-  messagingSenderId: "22641848933",
-  appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
-  measurementId: "G-1M406BN9JK"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // ================= PAGINATION VARIABLES =================
-    let lastVisibleOrder = null;
-    let lastVisibleUser = null;
-    let lastVisibleSubscription = null;
-    let orderLimit = 20;
-    let userLimit = 20;
-    let subscriptionLimit = 20;
-
-    // ===== CHECK IF LOCKED ON PAGE LOAD =====
-    window.addEventListener("load", () => {
-      const lockUntil = localStorage.getItem("adminLockUntil");
-      if (lockUntil && Date.now() < lockUntil) {
-        document.getElementById("email").disabled = true;
-        document.getElementById("password").disabled = true;
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        const minutes = Math.floor(remaining / 60);
-        alert(`Login temporarily locked. Try again in ${minutes} minutes.`);
-      }
-    });
-
-    // ================= HELPER FUNCTION FOR EXPORT =================
-   async function getAllDocuments(collectionName, maxDocuments = Infinity) {
-
-    const allDocs = [];
-    let lastDoc = null;
-    const pageSize = 500;
-
-    while (allDocs.length < maxDocuments) {
-
-        const currentLimit = Math.min(pageSize, maxDocuments - allDocs.length);
-
-        let q;
-
-        if (lastDoc) {
-
-            q = query(
-                collection(db, collectionName),
-                orderBy("createdAt", "desc"),
-                startAfter(lastDoc),
-                limit(currentLimit)
-            );
-
-        } else {
-
-            q = query(
-                collection(db, collectionName),
-                orderBy("createdAt", "desc"),
-                limit(currentLimit)
-            );
-
-        }
-
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) break;
-
-        allDocs.push(...snapshot.docs);
-
-        lastDoc = snapshot.docs[snapshot.docs.length - 1];
-
-        if (snapshot.docs.length < currentLimit) break;
-    }
-
-    return allDocs;
-}
-
-    // ================= AUTH CHECK =================
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        showLogin();
-        return;
-      }
-
-      const adminDoc = doc(db, "admins", user.uid);
-      const snap = await getDoc(adminDoc);
-
-      if (!snap.exists()) {
-        alert("Access denied");
-        await signOut(auth);
-        showLogin();
-        return;
-      }
-
-      showDashboard();
-      loadStats();
-      loadOrders();
-      loadUsers();
-      loadPremiumUsers();
-      loadSubscriptions();
-      loadCouponStats();
-      showDashboard();
-loadOrders();
-loadReviews();
-    });
-
-    // ===== LOGIN SECURITY SETTINGS =====
-    const MAX_ATTEMPTS = 3;
-    const LOCK_TIME = 5 * 60 * 1000; // 5 minutes
-
-    // ================= LOGIN =================
-    window.loginAdmin = async () => {
-      const emailInput = document.getElementById("email");
-      const passwordInput = document.getElementById("password");
-      const email = emailInput.value;
-      const password = passwordInput.value;
-
-      const lockUntil = localStorage.getItem("adminLockUntil");
-      const failedAttempts = parseInt(localStorage.getItem("adminFailedAttempts")) || 0;
-
-      if (lockUntil && Date.now() < lockUntil) {
-        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
-        const minutes = Math.floor(remaining / 60);
-        const seconds = remaining % 60;
-        alert(`Too many failed attempts.\nTry again in ${minutes}m ${seconds}s`);
-        emailInput.disabled = true;
-        passwordInput.disabled = true;
-        return;
-      }
-
-      if (!email || !password) {
-        alert("Enter email and password");
-        return;
-      }
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        localStorage.removeItem("adminFailedAttempts");
-        localStorage.removeItem("adminLockUntil");
-      } catch (err) {
-        let attempts = failedAttempts + 1;
-        localStorage.setItem("adminFailedAttempts", attempts);
-
-        if (attempts >= MAX_ATTEMPTS) {
-          const lockTime = Date.now() + LOCK_TIME;
-          localStorage.setItem("adminLockUntil", lockTime);
-          alert("Too many incorrect attempts. Login locked for 5 minutes.");
-          emailInput.disabled = true;
-          passwordInput.disabled = true;
-        } else {
-          alert(`Incorrect credentials.\nAttempts left: ${MAX_ATTEMPTS - attempts}`);
-        }
-      }
-    };
-
-    // ================= LOGOUT =================
-    window.logout = async () => {
-      await signOut(auth);
-      showLogin();
-    };
-
-    function showLogin() {
-      document.getElementById("loginSection").style.display = "flex";
-      document.getElementById("dashboardSection").style.display = "none";
-    }
-
-    function showDashboard() {
-      document.getElementById("loginSection").style.display = "none";
-      document.getElementById("dashboardSection").style.display = "block";
-    }
-
-    // ================= LOAD STATS =================
-    async function loadStats() {
-      try {
-        const usersSnapshot = await getDocs(collection(db, "users"));
-        document.getElementById("totalUsers").textContent = usersSnapshot.size;
-
-        const premiumSnapshot = await getDocs(collection(db, "premium_users"));
-        document.getElementById("premiumUsers").textContent = premiumSnapshot.size;
-
-        const subsSnapshot = await getDocs(collection(db, "subscriptions"));
-        document.getElementById("totalOrders").textContent = subsSnapshot.size;
-
-        let totalRevenue = 0;
-        subsSnapshot.forEach(doc => {
-          totalRevenue += doc.data().amount || 0;
-        });
-        document.getElementById("totalRevenue").textContent = `₹${totalRevenue}`;
-      } catch (error) {
-        console.error("Error loading stats:", error);
-      }
-    }
-
-    // ================= LOAD COUPON STATS =================
-    async function loadCouponStats() {
-      try {
-        const subsSnapshot = await getDocs(collection(db, "subscriptions"));
-        let couponCount = 0;
-        let totalDiscount = 0;
-        
-        subsSnapshot.forEach(doc => {
-          const data = doc.data();
-          if (data.couponCode) {
-            couponCount++;
-            totalDiscount += data.discountAmount || 0;
-          }
-        });
-        
-        document.getElementById("couponUsageCount").textContent = couponCount;
-        document.getElementById("totalDiscountGiven").textContent = `₹${totalDiscount}`;
-      } catch (error) {
-        console.error("Error loading coupon stats:", error);
-      }
-    }
-
-    // ================= LOAD ORDERS =================
-    window.loadOrders = async () => {
-      const tableBody = document.getElementById("ordersTableBody");
-      tableBody.innerHTML = "<tr><td colspan='12'>Loading...</td></tr>";
-
-      try {
-        const q = query(
-          collection(db, "subscriptions"),
-          orderBy("createdAt", "desc"),
-          limit(orderLimit)
-        );
-
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) {
-          tableBody.innerHTML = "<tr><td colspan='12'>No orders found</td></tr>";
-          return;
-        }
-
-        lastVisibleOrder = snapshot.docs[snapshot.docs.length - 1];
-        renderOrders(snapshot, false);
-      } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = "<tr><td colspan='12'>Error loading orders</td></tr>";
-      }
-    };
-
-    // ================= LOAD MORE ORDERS =================
-    window.loadMoreOrders = async () => {
-      if (!lastVisibleOrder) return;
-
-      try {
-        const q = query(
-          collection(db, "subscriptions"),
-          orderBy("createdAt", "desc"),
-          startAfter(lastVisibleOrder),
-          limit(orderLimit)
-        );
-
-        const snapshot = await getDocs(q);
-
-        if (snapshot.empty) {
-          alert("No more orders");
-          return;
-        }
-
-        lastVisibleOrder = snapshot.docs[snapshot.docs.length - 1];
-        renderOrders(snapshot, true);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // ================= RENDER ORDERS =================
-    function renderOrders(snapshot, append = false) {
-      const tableBody = document.getElementById("ordersTableBody");
-      if (!append) tableBody.innerHTML = "";
-
-      snapshot.forEach(docSnap => {
-        const d = docSnap.data();
-        const date = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
-        const originalAmount = d.originalAmount || d.amount || 0;
-        const paidAmount = d.amount || 0;
-        const couponCode = d.couponCode || "—";
-        
-        const row = `
-          <tr>
-            <td>${d.userName || "—"}</td>
-            <td>${d.userPhone || "—"}</td>
-            <td>${d.userEmail || "—"}</td>
-            <td>${docSnap.id.slice(0, 8)}...</td>
-            <td>${d.planName || "—"}</td>
-            <td>₹${originalAmount}</td>
-            <td>₹${paidAmount}</td>
-            <td>${couponCode !== "—" ? `<span class="badge" style="background:#4CAF50; color:white;">${couponCode}</span>` : "—"}</td>
-            <td><span class="badge ${d.status === 'active' ? 'success' : 'warning'}">${d.status || "—"}</span></td>
-            <td>${d.paymentId ? d.paymentId.slice(-8) : "—"}</td>
-            <td>${date.toLocaleDateString()}</td>
-            <td>
-              <button class="action-btn" onclick="viewOrderDetails('${docSnap.id}')" title="View Details">
-                <i class="fas fa-eye"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-        tableBody.innerHTML += row;
-      });
-    }
-
-    // ================= LOAD USERS =================
-    async function loadUsers() {
-      const tableBody = document.getElementById("usersTableBody");
-      tableBody.innerHTML = "<tr><td colspan='7'>Loading...</td></tr>";
-
-      try {
-        const q = query(
-          collection(db, "users"),
-          orderBy("createdAt", "desc"),
-          limit(userLimit)
-        );
-
-        const snapshot = await getDocs(q);
-        renderUsers(snapshot, false);
-      } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = "<tr><td colspan='7'>Error loading users</td></tr>";
-      }
-    }
-
-    // ================= RENDER USERS =================
-    async function renderUsers(snapshot, append = false) {
-      const tableBody = document.getElementById("usersTableBody");
-      if (!append) tableBody.innerHTML = "";
-
-      for (const docSnap of snapshot.docs) {
-        const d = docSnap.data();
-        const joinDate = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
-        
-        let premiumStatus = "Free";
-        let expiryDate = "—";
-        
-        try {
-          const premiumDoc = await getDoc(doc(db, "premium_users", docSnap.id));
-          if (premiumDoc.exists()) {
-            const premiumData = premiumDoc.data();
-            premiumStatus = "Premium";
-            if (premiumData.expiryDate?.toDate()) {
-              expiryDate = premiumData.expiryDate.toDate().toLocaleDateString();
-            }
-          }
-        } catch (error) {
-          console.error("Error checking premium:", error);
-        }
-
-        const row = `
-          <tr>
-            <td>${d.name || d.displayName || "—"}</td>
-            <td>${d.email || "—"}</td>
-            <td>${d.phone || "—"}</td>
-            <td>${joinDate.toLocaleDateString()}</td>
-            <td><span class="badge ${premiumStatus === 'Premium' ? 'premium' : 'free'}">${premiumStatus}</span></td>
-            <td>${expiryDate}</td>
-            <td>
-              <button class="action-btn" onclick="viewUserDetails('${docSnap.id}')" title="View Details">
-                <i class="fas fa-user"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-        tableBody.innerHTML += row;
-      }
-    }
-
-    // ================= LOAD PREMIUM USERS =================
-    async function loadPremiumUsers() {
-      const tableBody = document.getElementById("premiumTableBody");
-      tableBody.innerHTML = "<tr><td colspan='8'>Loading...</td></tr>";
-
-      try {
-        const snapshot = await getDocs(collection(db, "premium_users"));
-        
-        if (snapshot.empty) {
-          tableBody.innerHTML = "<tr><td colspan='8'>No premium users found</td></tr>";
-          return;
-        }
-
-        tableBody.innerHTML = "";
-        
-        for (const docSnap of snapshot.docs) {
-          const d = docSnap.data();
-          
-          let userEmail = "—", userName = "—", userPhone = "—";
-          try {
-            const userDoc = await getDoc(doc(db, "users", docSnap.id));
-            if (userDoc.exists()) {
-              const userData = userDoc.data();
-              userEmail = userData.email || "—";
-              userName = userData.name || userData.displayName || "—";
-              userPhone = userData.phone || "—";
-            }
-          } catch (error) {
-            console.error("Error fetching user:", error);
-          }
-
-          const startDate = d.startDate?.toDate ? d.startDate.toDate() : new Date();
-          const expiryDate = d.expiryDate?.toDate ? d.expiryDate.toDate() : new Date();
-          const today = new Date();
-          const daysLeft = Math.max(0, Math.floor((expiryDate - today) / (1000 * 60 * 60 * 24)));
-          const status = expiryDate > today ? 'Active' : 'Expired';
-
-          const row = `
-            <tr>
-              <td>${userName}</td>
-              <td>${userEmail}</td>
-              <td>${userPhone}</td>
-              <td>${d.planName || "—"}</td>
-              <td>${startDate.toLocaleDateString()}</td>
-              <td>${expiryDate.toLocaleDateString()}</td>
-              <td><span class="badge ${daysLeft > 0 ? 'success' : 'danger'}">${daysLeft}</span></td>
-              <td><span class="badge ${status === 'Active' ? 'success' : 'danger'}">${status}</span></td>
-            </tr>
-          `;
-          tableBody.innerHTML += row;
-        }
-      } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = "<tr><td colspan='8'>Error loading premium users</td></tr>";
-      }
-    }
-
-    // ================= LOAD SUBSCRIPTIONS =================
-    async function loadSubscriptions() {
-      const tableBody = document.getElementById("subscriptionsTableBody");
-      tableBody.innerHTML = "<tr><td colspan='11'>Loading...</td></tr>";
-
-      try {
-        const q = query(
-          collection(db, "subscriptions"),
-          orderBy("createdAt", "desc"),
-          limit(subscriptionLimit)
-        );
-
-        const snapshot = await getDocs(q);
-        renderSubscriptions(snapshot, false);
-      } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = "<tr><td colspan='11'>Error loading subscriptions</td></tr>";
-      }
-    }
-
-    // ================= RENDER SUBSCRIPTIONS (WITH COUPON COLUMN) =================
-    function renderSubscriptions(snapshot, append = false) {
-      const tableBody = document.getElementById("subscriptionsTableBody");
-      if (!append) tableBody.innerHTML = "";
-
-      snapshot.forEach(docSnap => {
-        const d = docSnap.data();
-        const purchaseDate = d.createdAt?.toDate ? d.createdAt.toDate() : new Date();
-        const expiryDate = d.expiryDate?.toDate ? d.expiryDate.toDate() : new Date();
-        const today = new Date();
-        const status = expiryDate > today ? 'Active' : 'Expired';
-        
-        const originalAmount = d.originalAmount || d.amount || 0;
-        const paidAmount = d.amount || 0;
-        const couponCode = d.couponCode || "—";
-        const discountAmount = d.discountAmount || (originalAmount - paidAmount);
-
-        const row = `
-          <tr>
-            <td>${d.userName || "—"}</td>
-            <td>${d.userEmail || "—"}</td>
-            <td>${d.planName || "—"}</td>
-            <td>₹${originalAmount}</td>
-            <td>₹${paidAmount}</td>
-            <td>${couponCode !== "—" ? `<span class="badge" style="background:#4CAF50; color:white;">${couponCode}</span>` : "—"}</td>
-            <td>₹${discountAmount}</td>
-            <td>${d.paymentId ? d.paymentId.slice(-8) : "—"}</td>
-            <td>${purchaseDate.toLocaleDateString()}</td>
-            <td>${expiryDate.toLocaleDateString()}</td>
-            <td><span class="badge ${status === 'Active' ? 'success' : 'danger'}">${status}</span></td>
-          </tr>
-        `;
-        tableBody.innerHTML += row;
-      });
-    }
-
-    // ================= CHANGE ORDER LIMIT =================
-    window.changeOrderLimit = () => {
-      orderLimit = parseInt(document.getElementById("orderLimitSelect").value);
-      lastVisibleOrder = null;
-      loadOrders();
-    };
-
-    // ================= SEARCH USERS =================
-    window.searchUsers = async () => {
-      const searchTerm = document.getElementById("userSearch").value.toLowerCase();
-      if (!searchTerm) {
-        loadUsers();
-        return;
-      }
-
-      const tableBody = document.getElementById("usersTableBody");
-      tableBody.innerHTML = "<tr><td colspan='7'>Searching...</td></tr>";
-
-      try {
-        const snapshot = await getDocs(collection(db, "users"));
-        const filtered = [];
-        
-        snapshot.forEach(docSnap => {
-          const d = docSnap.data();
-          const name = (d.name || d.displayName || "").toLowerCase();
-          const email = (d.email || "").toLowerCase();
-          const phone = (d.phone || "").toLowerCase();
-          
-          if (name.includes(searchTerm) || email.includes(searchTerm) || phone.includes(searchTerm)) {
-            filtered.push({ id: docSnap.id, data: d });
-          }
-        });
-
-        if (filtered.length === 0) {
-          tableBody.innerHTML = "<tr><td colspan='7'>No users found</td></tr>";
-          return;
-        }
-
-        tableBody.innerHTML = "";
-        for (const user of filtered.slice(0, 20)) {
-          let premiumStatus = "Free";
-          let expiryDate = "—";
-          
-          try {
-            const premiumDoc = await getDoc(doc(db, "premium_users", user.id));
-            if (premiumDoc.exists()) {
-              const premiumData = premiumDoc.data();
-              premiumStatus = "Premium";
-              if (premiumData.expiryDate?.toDate()) {
-                expiryDate = premiumData.expiryDate.toDate().toLocaleDateString();
-              }
-            }
-          } catch (error) {}
-
-          const joinDate = user.data.createdAt?.toDate ? user.data.createdAt.toDate() : new Date();
-
-          const row = `
-            <tr>
-              <td>${user.data.name || user.data.displayName || "—"}</td>
-              <td>${user.data.email || "—"}</td>
-              <td>${user.data.phone || "—"}</td>
-              <td>${joinDate.toLocaleDateString()}</td>
-              <td><span class="badge ${premiumStatus === 'Premium' ? 'premium' : 'free'}">${premiumStatus}</span></td>
-              <td>${expiryDate}</td>
-              <td>
-                <button class="action-btn" onclick="viewUserDetails('${user.id}')">
-                  <i class="fas fa-user"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-          tableBody.innerHTML += row;
-        }
-      } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = "<tr><td colspan='7'>Error searching users</td></tr>";
-      }
-    };
-
-    // ================= EXPORT FUNCTIONS =================
-    window.exportExcel = async () => {
-      try {
-        const allSubs = await getAllDocuments("subscriptions");
-        const data = [];
-        
-        allSubs.forEach(docSnap => {
-          const d = docSnap.data();
-          data.push({
-            'Order ID': docSnap.id,
-            'User Name': d.userName || '—',
-            'Email': d.userEmail || '—',
-            'Phone': d.userPhone || '—',
-            'Plan': d.planName || '—',
-            'Original Amount': d.originalAmount || d.amount || 0,
-            'Paid Amount': d.amount || 0,
-            'Coupon Code': d.couponCode || '—',
-            'Discount': d.discountAmount || 0,
-            'Payment ID': d.paymentId || '—',
-            'Status': d.status || '—',
-            'Purchase Date': d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString() : '—',
-            'Expiry Date': d.expiryDate?.toDate ? d.expiryDate.toDate().toLocaleString() : '—'
-          });
-        });
-
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Subscriptions");
-        XLSX.writeFile(wb, `AgriAchiever_Subscriptions_${new Date().toISOString().split('T')[0]}.xlsx`);
-        
-        alert(`Exported ${data.length} subscriptions successfully!`);
-      } catch (error) {
-        console.error("Export error:", error);
-        alert("Error exporting data: " + error.message);
-      }
-    };
-
-    window.exportPremiumUsers = async () => {
-      try {
-        const allPremium = await getAllDocuments("premium_users");
-        const data = [];
-        
-        for (let i = 0; i < allPremium.length; i += 10) {
-          const batch = allPremium.slice(i, i + 10);
-          await Promise.all(batch.map(async (docSnap) => {
-            const d = docSnap.data();
-            
-            let userEmail = "—", userName = "—", userPhone = "—";
-            try {
-              const userDoc = await getDoc(doc(db, "users", docSnap.id));
-              if (userDoc.exists()) {
-                const userData = userDoc.data();
-                userEmail = userData.email || "—";
-                userName = userData.name || userData.displayName || "—";
-                userPhone = userData.phone || "—";
-              }
-            } catch (error) {}
-
-            data.push({
-              'User ID': docSnap.id,
-              'User Name': userName,
-              'Email': userEmail,
-              'Phone': userPhone,
-              'Plan': d.planName || '—',
-              'Amount': d.amount || 0,
-              'Coupon Used': d.couponCode || '—',
-              'Start Date': d.startDate?.toDate ? d.startDate.toDate().toLocaleString() : '—',
-              'Expiry Date': d.expiryDate?.toDate ? d.expiryDate.toDate().toLocaleString() : '—',
-              'Payment ID': d.paymentId || '—',
-              'Status': d.status || '—'
-            });
-          }));
-        }
-
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Premium Users");
-        XLSX.writeFile(wb, `AgriAchiever_Premium_Users_${new Date().toISOString().split('T')[0]}.xlsx`);
-        
-        alert(`Exported ${data.length} premium users successfully!`);
-      } catch (error) {
-        console.error("Export error:", error);
-        alert("Error exporting premium users: " + error.message);
-      }
-    };
-
-    window.exportUsers = async () => {
-      try {
-        const exportLimit = parseInt(
-    document.getElementById("exportUserLimit").value
-);
-
-const allUsers = await getAllDocuments("users", exportLimit);
-        const data = [];
-        
-        for (let i = 0; i < allUsers.length; i += 10) {
-          const batch = allUsers.slice(i, i + 10);
-          await Promise.all(batch.map(async (docSnap) => {
-            const d = docSnap.data();
-            
-            let premiumStatus = "Free";
-            try {
-              const premiumDoc = await getDoc(doc(db, "premium_users", docSnap.id));
-              if (premiumDoc.exists()) {
-                premiumStatus = "Premium";
-              }
-            } catch (error) {}
-
-            data.push({
-              'Name': d.name || d.displayName || '—',
-              'Email': d.email || '—',
-              'Phone': d.phone || '—',
-              'Joined': d.createdAt?.toDate ? d.createdAt.toDate().toLocaleString() : '—',
-              'Status': premiumStatus,
-              'Email Verified': d.emailVerified ? 'Yes' : 'No',
-              'User ID': docSnap.id
-            });
-          }));
-        }
-
-        const ws = XLSX.utils.json_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Users");
-        XLSX.writeFile(wb, `AgriAchiever_Users_${new Date().toISOString().split('T')[0]}.xlsx`);
-        
-        alert(`Exported ${data.length} users successfully!`);
-      } catch (error) {
-        console.error("Export error:", error);
-        alert("Error exporting users: " + error.message);
-      }
-    };
-
-    window.exportSubscriptions = window.exportExcel;
-
-    // ================= TAB SWITCHING =================
-    window.switchTab = (tabName) => {
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-
-      document.querySelectorAll('.tab-content').forEach(content => {
-        content.classList.remove('active');
-      });
-      document.getElementById(`${tabName}Tab`).classList.add('active');
-    };
-
-    // ================= VIEW DETAILS =================
-    window.viewOrderDetails = (orderId) => {
-      alert(`Viewing details for order: ${orderId}`);
-    };
-
-    window.viewUserDetails = (userId) => {
-      alert(`Viewing details for user: ${userId}`);
-    };
-  </script>
-
-  <!-- Styles -->
   <style>
     :root {
       --primary: #4CAF50;
@@ -1185,6 +47,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       --dark: #2D3E50;
       --light: #F5F7FA;
       --gray: #7F8C8D;
+      --light-gray: #e0e0e0;
       --danger: #f44336;
       --warning: #ff9800;
       --success: #4CAF50;
@@ -1192,26 +55,24 @@ const allUsers = await getAllDocuments("users", exportLimit);
       --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       --transition: all 0.3s ease;
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       color: var(--dark);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
     }
-    
-    .container {
-      width: 100%;
-      min-height: 100vh;
-    }
-    
-    /* Login Section */
+
+    .container { width: 100%; min-height: 100vh; }
+
+    /* ---------- LOGIN ---------- */
     .login-container {
       display: flex;
       justify-content: center;
@@ -1219,7 +80,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       min-height: 100vh;
       padding: 20px;
     }
-    
+
     .login-card {
       background: white;
       border-radius: var(--border-radius);
@@ -1227,16 +88,15 @@ const allUsers = await getAllDocuments("users", exportLimit);
       width: 100%;
       max-width: 420px;
       overflow: hidden;
-      transition: var(--transition);
     }
-    
+
     .login-header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       padding: 30px 20px;
       text-align: center;
     }
-    
+
     .logo {
       display: flex;
       align-items: center;
@@ -1244,7 +104,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       gap: 12px;
       margin-bottom: 10px;
     }
-    
+
     .logo-icon {
       width: 45px;
       height: 45px;
@@ -1257,30 +117,15 @@ const allUsers = await getAllDocuments("users", exportLimit);
       font-size: 1.5rem;
       transform: rotate(-5deg);
     }
-    
-    .logo h1 {
-      font-size: 28px;
-      font-weight: 700;
-    }
-    
-    .logo h1 span {
-      color: var(--secondary);
-    }
-    
-    .subtitle {
-      font-size: 16px;
-      opacity: 0.9;
-      font-weight: 300;
-    }
-    
-    .login-body {
-      padding: 30px;
-    }
-    
-    .input-group {
-      margin-bottom: 24px;
-    }
-    
+
+    .logo h1 { font-size: 28px; font-weight: 700; }
+    .logo h1 span { color: var(--secondary); }
+    .subtitle { font-size: 16px; opacity: 0.9; font-weight: 300; }
+
+    .login-body { padding: 30px; }
+
+    .input-group { margin-bottom: 24px; }
+
     .input-group label {
       display: flex;
       align-items: center;
@@ -1289,7 +134,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       margin-bottom: 8px;
       color: var(--dark);
     }
-    
+
     .input-group input,
     .input-group select {
       width: 100%;
@@ -1297,17 +142,17 @@ const allUsers = await getAllDocuments("users", exportLimit);
       border: 2px solid #e0e0e0;
       border-radius: 12px;
       font-size: 16px;
-      transition: var(--transition);
       font-family: 'Poppins', sans-serif;
+      transition: var(--transition);
     }
-    
+
     .input-group input:focus,
     .input-group select:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
     }
-    
+
     .login-btn {
       width: 100%;
       padding: 16px;
@@ -1325,12 +170,12 @@ const allUsers = await getAllDocuments("users", exportLimit);
       transition: var(--transition);
       margin-top: 10px;
     }
-    
+
     .login-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
     }
-    
+
     .login-footer {
       margin-top: 30px;
       text-align: center;
@@ -1341,14 +186,14 @@ const allUsers = await getAllDocuments("users", exportLimit);
       justify-content: center;
       gap: 8px;
     }
-    
-    /* Dashboard Section */
+
+    /* ---------- DASHBOARD ---------- */
     .dashboard-container {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
-    
+
     .dashboard-header {
       background: white;
       padding: 20px 30px;
@@ -1356,27 +201,22 @@ const allUsers = await getAllDocuments("users", exportLimit);
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 15px;
     }
-    
-    .header-left .logo {
-      justify-content: flex-start;
-    }
-    
-    .header-subtitle {
-      font-size: 14px;
-      color: var(--gray);
-      margin-top: 4px;
-    }
-    
+
+    .header-left .logo { justify-content: flex-start; }
+    .header-subtitle { font-size: 14px; color: var(--gray); margin-top: 4px; }
+
     .header-right {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    
+
     .btn-icon {
-      padding: 12px 24px;
+      padding: 12px 22px;
       background: var(--light);
       color: var(--dark);
       border: none;
@@ -1388,15 +228,13 @@ const allUsers = await getAllDocuments("users", exportLimit);
       gap: 8px;
       transition: var(--transition);
       font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
     }
-    
-    .btn-icon:hover {
-      background: var(--primary);
-      color: white;
-    }
-    
+
+    .btn-icon:hover { background: var(--primary); color: white; }
+
     .btn-logout {
-      padding: 12px 24px;
+      padding: 12px 22px;
       background: var(--danger);
       color: white;
       border: none;
@@ -1406,13 +244,11 @@ const allUsers = await getAllDocuments("users", exportLimit);
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: var(--transition);
+      font-size: 0.9rem;
     }
-    
-    .btn-logout:hover {
-      background: #d32f2f;
-    }
-    
+
+    .btn-logout:hover { background: #d32f2f; }
+
     .dashboard-content {
       flex: 1;
       padding: 30px;
@@ -1420,15 +256,15 @@ const allUsers = await getAllDocuments("users", exportLimit);
       margin: 0 auto;
       width: 100%;
     }
-    
-    /* Stats Grid */
+
+    /* ---------- STATS ---------- */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
       margin-bottom: 30px;
     }
-    
+
     .stat-card {
       background: white;
       border-radius: var(--border-radius);
@@ -1438,7 +274,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       gap: 20px;
       box-shadow: var(--box-shadow);
     }
-    
+
     .stat-icon {
       width: 60px;
       height: 60px;
@@ -1449,21 +285,19 @@ const allUsers = await getAllDocuments("users", exportLimit);
       justify-content: center;
       color: var(--primary);
       font-size: 1.8rem;
+      flex-shrink: 0;
     }
-    
+
     .stat-details h3 {
-      font-size: 2rem;
+      font-size: 1.7rem;
       font-weight: 700;
       color: var(--dark);
       line-height: 1.2;
     }
-    
-    .stat-details p {
-      color: var(--gray);
-      font-size: 0.9rem;
-    }
-    
-    /* Tab Navigation */
+
+    .stat-details p { color: var(--gray); font-size: 0.85rem; }
+
+    /* ---------- TABS ---------- */
     .tab-navigation {
       display: flex;
       gap: 10px;
@@ -1474,7 +308,7 @@ const allUsers = await getAllDocuments("users", exportLimit);
       box-shadow: var(--box-shadow);
       flex-wrap: wrap;
     }
-    
+
     .tab-btn {
       padding: 12px 24px;
       border: none;
@@ -1487,22 +321,19 @@ const allUsers = await getAllDocuments("users", exportLimit);
       align-items: center;
       gap: 8px;
       color: var(--gray);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
     }
-    
+
     .tab-btn.active {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
     }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    /* Cards */
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ---------- CARDS ---------- */
     .card {
       background: white;
       border-radius: var(--border-radius);
@@ -1510,9 +341,9 @@ const allUsers = await getAllDocuments("users", exportLimit);
       margin-bottom: 30px;
       overflow: hidden;
     }
-    
+
     .card-header {
-      padding: 25px;
+      padding: 22px 25px;
       border-bottom: 1px solid rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
@@ -1520,103 +351,101 @@ const allUsers = await getAllDocuments("users", exportLimit);
       flex-wrap: wrap;
       gap: 15px;
     }
-    
+
     .card-header h2 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
       gap: 10px;
       color: var(--dark);
     }
-    
+
+    .card-description {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
     .header-controls {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
-    
+
     .limit-select, .search-input {
       padding: 10px 16px;
       border: 2px solid #e0e0e0;
       border-radius: 12px;
       font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
       min-width: 120px;
     }
-    
-    .search-input {
-      min-width: 250px;
+
+    .search-input { min-width: 240px; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      transition: var(--transition);
     }
-    
-    /* Table */
-    .table-container {
-      overflow-x: auto;
-      padding: 0 25px 25px;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    table thead {
-      background: var(--light);
-    }
-    
+
+    .btn-primary:hover { transform: translateY(-1px); }
+
+    /* ---------- TABLE ---------- */
+    .table-container { overflow-x: auto; padding: 0 25px 25px; }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    table thead { background: var(--light); }
+
     table th {
-      padding: 16px 15px;
+      padding: 14px 12px;
       text-align: left;
       font-weight: 600;
       color: var(--dark);
       border-bottom: 2px solid #e0e0e0;
       white-space: nowrap;
+      font-size: 0.85rem;
     }
-    
+
     table td {
-      padding: 16px 15px;
+      padding: 14px 12px;
       border-bottom: 1px solid #f0f0f0;
+      font-size: 0.85rem;
     }
-    
-    table tbody tr:hover {
-      background-color: rgba(76, 175, 80, 0.04);
-    }
-    
-    /* Badges */
+
+    table tbody tr:hover { background-color: rgba(76, 175, 80, 0.04); }
+
+    /* ---------- BADGES ---------- */
     .badge {
-      padding: 6px 12px;
+      padding: 5px 11px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       display: inline-block;
+      white-space: nowrap;
     }
-    
-    .badge.success {
-      background: #E8F5E9;
-      color: var(--primary-dark);
-    }
-    
-    .badge.warning {
-      background: #FFF3E0;
-      color: var(--warning);
-    }
-    
-    .badge.danger {
-      background: #FFEBEE;
-      color: var(--danger);
-    }
-    
-    .badge.premium {
-      background: #FFF3E0;
-      color: #FF9800;
-    }
-    
-    .badge.free {
-      background: #E8F5E9;
-      color: var(--primary);
-    }
-    
-    /* Action buttons */
+
+    .badge.success { background: #E8F5E9; color: var(--primary-dark); }
+    .badge.warning { background: #FFF3E0; color: var(--warning); }
+    .badge.danger  { background: #FFEBEE; color: var(--danger); }
+    .badge.premium { background: #FFF3E0; color: #FF9800; }
+    .badge.free    { background: #E8F5E9; color: var(--primary); }
+    .badge.coupon  { background: #4CAF50; color: white; }
+
     .action-btn {
-      padding: 8px 12px;
+      padding: 7px 11px;
       background: var(--light);
       border: none;
       border-radius: 8px;
@@ -1624,733 +453,1156 @@ const allUsers = await getAllDocuments("users", exportLimit);
       transition: var(--transition);
       color: var(--gray);
     }
-    
-    .action-btn:hover {
-      background: var(--primary);
-      color: white;
-    }
-    
+
+    .action-btn:hover { background: var(--primary); color: white; }
+
+    /* ---------- FOOTER ---------- */
     .dashboard-footer {
       background: white;
       padding: 20px 30px;
       text-align: center;
       color: var(--gray);
-      font-size: 14px;
+      font-size: 13px;
       border-top: 1px solid rgba(0,0,0,0.05);
     }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      .dashboard-header {
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-      }
-      
-      .header-right {
-        width: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .tab-navigation {
-        flex-wrap: wrap;
-        border-radius: 20px;
-      }
-      
-      .tab-btn {
-        width: calc(50% - 5px);
-        justify-content: center;
-      }
-      
-      .card-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .header-controls {
-        flex-direction: column;
-      }
-      
-      .search-input {
-        width: 100%;
-        min-width: auto;
-      }
-      
-      .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      }
-      
-      .stat-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-      }
-    }
+
+    /* ---------- REVIEWS ---------- */
+    .reviews-admin-card { margin-top: 30px; }
 
     .review-stats {
-  display: grid;
-  grid-template-columns:
-    repeat(auto-fit, minmax(160px, 1fr));
-
-  gap: 15px;
-
-  padding: 20px 25px;
-
-  border-bottom:
-    1px solid var(--light-gray);
-}
-
-.review-stats > div {
-  background: var(--light);
-
-  padding: 18px;
-
-  border-radius: 10px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 5px;
-}
-
-.review-stats strong {
-  font-size: 28px;
-
-  font-weight: 700;
-
-  color: var(--primary);
-}
-
-.review-stats span {
-  color: var(--gray);
-
-  font-size: 13px;
-}
-
-
-.admin-reviews-list {
-  padding: 25px;
-}
-
-
-.admin-review {
-  border: 1px solid var(--light-gray);
-
-  border-radius: 12px;
-
-  padding: 20px;
-
-  margin-bottom: 15px;
-
-  background: white;
-
-  transition: 0.25s ease;
-}
-
-.admin-review:hover {
-  box-shadow:
-    0 5px 18px rgba(0,0,0,0.07);
-}
-
-
-.admin-review-top {
-  display: flex;
-
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 12px;
-}
-
-
-.admin-review-name {
-  font-weight: 700;
-
-  font-size: 16px;
-}
-
-
-.admin-review-email {
-  font-size: 13px;
-
-  color: var(--gray);
-
-  margin-top: 3px;
-}
-
-
-.admin-review-text {
-  background: var(--light);
-
-  padding: 15px;
-
-  border-radius: 8px;
-
-  line-height: 1.6;
-
-  margin: 15px 0;
-
-  word-break: break-word;
-}
-
-
-.admin-review-actions {
-  display: flex;
-
-  gap: 10px;
-
-  flex-wrap: wrap;
-}
-
-
-.review-btn {
-  border: none;
-
-  padding: 9px 15px;
-
-  border-radius: 7px;
-
-  cursor: pointer;
-
-  font-weight: 600;
-}
-
-
-.review-approve {
-  background: #06d6a0;
-
-  color: white;
-}
-
-
-.review-hide {
-  background: #ffd166;
-
-  color: #5c4800;
-}
-
-
-.review-delete {
-  background: #ef476f;
-
-  color: white;
-}
-
-
-.review-status {
-  display: inline-block;
-
-  padding: 5px 10px;
-
-  border-radius: 20px;
-
-  font-size: 12px;
-
-  font-weight: 600;
-}
-
-
-.review-status.pending {
-  background: #fff3cd;
-
-  color: #856404;
-}
-
-
-.review-status.approved {
-  background: #d1fae5;
-
-  color: #065f46;
-}
-
-
-@media (max-width: 600px) {
-
-  .admin-review-top {
-    flex-direction: column;
-  }
-
-  .review-btn {
-    flex: 1;
-  }
-
-}
-
-
-  </style>
-</body><script>
-(function () {
-    // Disable right click
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-    });
-
-    // Disable common copy shortcuts
-    document.addEventListener('keydown', function (e) {
-        const key = e.key.toLowerCase();
-
-        // Ctrl+C, Ctrl+X, Ctrl+S, Ctrl+U, Ctrl+A, Ctrl+P
-        if (
-            e.ctrlKey &&
-            ['c', 'x', 's', 'u', 'a', 'p'].includes(key)
-        ) {
-            e.preventDefault();
-        }
-
-        // Ctrl+Shift+I, Ctrl+Shift+J
-        if (
-            e.ctrlKey &&
-            e.shiftKey &&
-            ['i', 'j'].includes(key)
-        ) {
-            e.preventDefault();
-        }
-
-        // F12
-        if (e.key === 'F12') {
-            e.preventDefault();
-        }
-    });
-
-    // Disable text selection
-    document.addEventListener('selectstart', function (e) {
-        e.preventDefault();
-    });
-
-    // Disable copy/cut events
-    document.addEventListener('copy', function (e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener('cut', function (e) {
-        e.preventDefault();
-    });
-
-})();
-
-
-/* ==========================================
-   CUSTOMER REVIEWS ADMIN
-========================================== */
-
-
-/* ==========================================
-   SECURITY
-========================================== */
-
-async function verifyAdmin() {
-
-  const user = firebase.auth().currentUser;
-
-  if (!user) {
-    throw new Error("Not authenticated");
-  }
-
-
-  const adminDoc =
-    await firebase.firestore()
-      .collection("admins")
-      .doc(user.uid)
-      .get();
-
-
-  if (!adminDoc.exists) {
-    throw new Error("Administrator access required");
-  }
-
-
-  const adminData =
-    adminDoc.data();
-
-
-  if (
-    adminData.role !== "admin" ||
-    adminData.active !== true
-  ) {
-
-    throw new Error(
-      "Administrator account is inactive"
-    );
-
-  }
-
-
-  return user;
-
-}
-
-
-/* ==========================================
-   LOAD REVIEWS
-========================================== */
-
-window.loadReviews = async function() {
-
-  const list =
-    document.getElementById(
-      "adminReviewsList"
-    );
-
-
-  list.innerHTML = `
-    <div class="empty-row">
-      <i class="fas fa-spinner fa-spin"></i>
-      <p>Loading feedback...</p>
-    </div>
-  `;
-
-
-  try {
-
-    await verifyAdmin();
-
-
-    const snapshot =
-      await firebase.firestore()
-        .collection("reviews")
-        .orderBy("timestamp", "desc")
-        .get();
-
-
-    let total = 0;
-
-    let pending = 0;
-
-    let approved = 0;
-
-
-    list.innerHTML = "";
-
-
-    if (snapshot.empty) {
-
-      list.innerHTML = `
-        <div class="empty-row">
-          <i class="fas fa-comments"></i>
-          <p>No customer feedback found.</p>
-        </div>
-      `;
-
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 20px 25px;
+      border-bottom: 1px solid var(--light-gray);
     }
 
+    .review-stats > div {
+      background: var(--light);
+      padding: 16px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-    snapshot.forEach(doc => {
+    .review-stats strong {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary);
+    }
 
-      const review =
-        doc.data();
+    .review-stats span { color: var(--gray); font-size: 12px; }
 
+    .admin-reviews-list { padding: 22px 25px; }
 
-      total++;
+    .admin-review {
+      border: 1px solid var(--light-gray);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
+      background: white;
+      transition: 0.25s ease;
+    }
 
+    .admin-review:hover { box-shadow: 0 5px 18px rgba(0,0,0,0.07); }
 
-      if (review.approved === true) {
-        approved++;
-      } else {
-        pending++;
+    .admin-review-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .admin-review-name { font-weight: 700; font-size: 15px; }
+    .admin-review-email { font-size: 12px; color: var(--gray); margin-top: 3px; }
+
+    .admin-review-text {
+      background: var(--light);
+      padding: 14px;
+      border-radius: 8px;
+      line-height: 1.6;
+      margin: 14px 0;
+      word-break: break-word;
+      font-size: 0.9rem;
+    }
+
+    .admin-review-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .review-btn {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .review-approve { background: #06d6a0; color: white; }
+    .review-hide    { background: #ffd166; color: #5c4800; }
+    .review-delete  { background: #ef476f; color: white; }
+
+    .review-status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      height: fit-content;
+    }
+
+    .review-status.pending  { background: #fff3cd; color: #856404; }
+    .review-status.approved { background: #d1fae5; color: #065f46; }
+
+    .empty-row {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray);
+    }
+
+    .empty-row i { font-size: 2rem; margin-bottom: 10px; display: block; }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 768px) {
+      .dashboard-header { flex-direction: column; align-items: stretch; padding: 20px; }
+      .header-right { justify-content: center; }
+      .tab-navigation { border-radius: 20px; }
+      .tab-btn { width: calc(50% - 5px); justify-content: center; }
+      .card-header { flex-direction: column; align-items: stretch; }
+      .header-controls { flex-direction: column; align-items: stretch; }
+      .search-input { width: 100%; min-width: auto; }
+      .stats-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+      .stat-card { flex-direction: column; text-align: center; gap: 10px; padding: 20px 15px; }
+      .stat-icon { width: 50px; height: 50px; font-size: 1.4rem; }
+      .stat-details h3 { font-size: 1.4rem; }
+    }
+
+    @media (max-width: 600px) {
+      .admin-review-top { flex-direction: column; }
+      .review-btn { flex: 1; justify-content: center; }
+      .dashboard-content { padding: 20px 15px; }
+      .table-container { padding: 0 15px 15px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- ================= LOGIN ================= -->
+    <div id="loginSection" class="login-container">
+      <div class="login-card">
+        <div class="login-header">
+          <div class="logo">
+            <div class="logo-icon"><i class="fas fa-seedling"></i></div>
+            <h1>Agri<span>Achiever</span></h1>
+          </div>
+          <p class="subtitle">Admin Dashboard</p>
+        </div>
+
+        <div class="login-body">
+          <div class="input-group">
+            <label for="email"><i class="fas fa-envelope"></i> Admin Email</label>
+            <input type="email" id="email" placeholder="admin@agriachiever.com" autocomplete="username">
+          </div>
+
+          <div class="input-group">
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+          </div>
+
+          <button class="login-btn" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+
+          <div class="login-footer">
+            <p><i class="fas fa-shield-alt"></i> Secure access for administrators only</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= DASHBOARD ================= -->
+    <div id="dashboardSection" class="dashboard-container" style="display:none;">
+      <header class="dashboard-header">
+        <div class="header-left">
+          <div class="logo">
+            <div class="logo-icon"><i class="fas fa-seedling"></i></div>
+            <div>
+              <h1>Agri<span>Achiever</span></h1>
+              <p class="header-subtitle">Admin Dashboard</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="btn-icon" id="exportExcelBtn">
+            <i class="fas fa-file-excel"></i><span>Export</span>
+          </button>
+          <button class="btn-icon" id="exportPremiumBtn">
+            <i class="fas fa-crown"></i><span>Premium Users</span>
+          </button>
+          <button class="btn-logout" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-details"><h3 id="totalUsers">0</h3><p>Total Users</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FFF3E0;color:#FF9800;"><i class="fas fa-crown"></i></div>
+          <div class="stat-details"><h3 id="premiumUsers">0</h3><p>Premium Users</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#E8F5E9;color:#4CAF50;"><i class="fas fa-shopping-bag"></i></div>
+          <div class="stat-details"><h3 id="totalOrders">0</h3><p>Total Orders</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#FFEBEE;color:#F44336;"><i class="fas fa-indian-rupee-sign"></i></div>
+          <div class="stat-details"><h3 id="totalRevenue">₹0</h3><p>Total Revenue</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#E3F2FD;color:#2196F3;"><i class="fas fa-tag"></i></div>
+          <div class="stat-details"><h3 id="couponUsageCount">0</h3><p>Coupon Uses</p></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#F3E5F5;color:#9C27B0;"><i class="fas fa-chart-line"></i></div>
+          <div class="stat-details"><h3 id="totalDiscountGiven">₹0</h3><p>Total Discount</p></div>
+        </div>
+      </div>
+
+      <main class="dashboard-content">
+        <div class="tab-navigation">
+          <button class="tab-btn active" data-tab="orders"><i class="fas fa-shopping-bag"></i> Orders</button>
+          <button class="tab-btn" data-tab="users"><i class="fas fa-users"></i> Users</button>
+          <button class="tab-btn" data-tab="premium"><i class="fas fa-crown"></i> Premium Members</button>
+          <button class="tab-btn" data-tab="subscriptions"><i class="fas fa-history"></i> Subscriptions</button>
+          <button class="tab-btn" data-tab="reviews"><i class="fas fa-comments"></i> Reviews</button>
+        </div>
+
+        <!-- ORDERS -->
+        <div id="ordersTab" class="tab-content active">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-shopping-bag"></i> Orders List</h2>
+              <div class="header-controls">
+                <select id="orderLimitSelect" class="limit-select">
+                  <option value="20">Show 20</option>
+                  <option value="50">Show 50</option>
+                  <option value="100">Show 100</option>
+                </select>
+                <button class="btn-icon" id="reloadOrdersBtn"><i class="fas fa-sync"></i> Reload</button>
+                <button class="btn-icon" id="loadMoreOrdersBtn"><i class="fas fa-arrow-down"></i> Load More</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th><th>Phone</th><th>Email</th><th>Order ID</th><th>Plan</th>
+                    <th>Original</th><th>Paid</th><th>Coupon</th><th>Status</th>
+                    <th>Payment ID</th><th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <tr><td colspan="11" style="text-align:center;">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- USERS -->
+        <div id="usersTab" class="tab-content">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-users"></i> Registered Users</h2>
+              <div class="header-controls">
+                <input type="text" id="userSearch" placeholder="Search users..." class="search-input">
+                <select id="exportUserLimit" class="limit-select">
+                  <option value="100">Export 100</option>
+                  <option value="500">Export 500</option>
+                  <option value="1000" selected>Export 1000</option>
+                  <option value="5000">Export 5000</option>
+                  <option value="999999999">Export All</option>
+                </select>
+                <button class="btn-icon" id="exportUsersBtn"><i class="fas fa-download"></i> Export</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th><th>Email</th><th>Phone</th><th>Joined</th>
+                    <th>Premium Status</th><th>Premium Expiry</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                  <tr><td colspan="6" style="text-align:center;">Loading users...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PREMIUM -->
+        <div id="premiumTab" class="tab-content">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-crown"></i> Premium Members</h2>
+              <div class="header-controls">
+                <button class="btn-icon" id="exportPremiumUsersBtn"><i class="fas fa-download"></i> Export Premium</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th><th>Email</th><th>Phone</th><th>Plan</th>
+                    <th>Start Date</th><th>Expiry Date</th><th>Days Left</th><th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="premiumTableBody">
+                  <tr><td colspan="8" style="text-align:center;">Loading premium members...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBSCRIPTIONS -->
+        <div id="subscriptionsTab" class="tab-content">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-history"></i> Subscription History</h2>
+              <button class="btn-icon" id="exportSubscriptionsBtn"><i class="fas fa-download"></i> Export All</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th><th>Email</th><th>Plan</th><th>Original Amount</th>
+                    <th>Paid Amount</th><th>Coupon Code</th><th>Discount</th>
+                    <th>Payment ID</th><th>Purchase Date</th><th>Expiry Date</th><th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="subscriptionsTableBody">
+                  <tr><td colspan="11" style="text-align:center;">Loading subscriptions...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEWS -->
+        <div id="reviewsTab" class="tab-content">
+          <div class="card reviews-admin-card">
+            <div class="card-header">
+              <div>
+                <h2><i class="fas fa-comments"></i> Customer Feedback</h2>
+                <p class="card-description">Review, approve and remove customer feedback.</p>
+              </div>
+              <button class="btn-primary" id="refreshReviewsBtn">
+                <i class="fas fa-sync"></i> Refresh
+              </button>
+            </div>
+
+            <div class="review-stats">
+              <div><strong id="totalReviews">0</strong><span>Total</span></div>
+              <div><strong id="pendingReviews">0</strong><span>Pending</span></div>
+              <div><strong id="approvedReviews">0</strong><span>Approved</span></div>
+            </div>
+
+            <div id="adminReviewsList" class="admin-reviews-list">
+              <div class="empty-row">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading feedback...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer class="dashboard-footer">
+        <p><i class="fas fa-info-circle"></i> AgriAchiever Admin Panel • All data is securely stored</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FIREBASE + APP LOGIC (MODULAR v10 — SINGLE SOURCE)
+  ============================================================ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInWithEmailAndPassword,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      getDoc,
+      doc,
+      updateDoc,
+      deleteDoc,
+      query,
+      orderBy,
+      limit,
+      startAfter,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    /* ---------- FIREBASE CONFIG ---------- */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+      authDomain: "soilspark.firebaseapp.com",
+      projectId: "soilspark",
+      storageBucket: "soilspark.firebasestorage.app",
+      messagingSenderId: "22641848933",
+      appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+      measurementId: "G-1M406BN9JK"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    /* ---------- STATE ---------- */
+    let lastVisibleOrder = null;
+    let orderLimit = 20;
+
+    /* ---------- DOM HELPERS ---------- */
+    const $ = (id) => document.getElementById(id);
+
+    /* ============================================================
+       AUTH
+    ============================================================ */
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { showLogin(); return; }
+
+      try {
+        const adminSnap = await getDoc(doc(db, "admins", user.uid));
+        if (!adminSnap.exists()) {
+          alert("Access denied");
+          await signOut(auth);
+          showLogin();
+          return;
+        }
+
+        showDashboard();
+        // Kick off all loaders in parallel
+        loadStats();
+        loadOrders();
+        loadUsers();
+        loadPremiumUsers();
+        loadSubscriptions();
+        loadReviews();
+      } catch (err) {
+        console.error("Auth check failed:", err);
+        alert("Authentication error. Please log in again.");
+        await signOut(auth);
+        showLogin();
       }
-
-
-      const card =
-        document.createElement("div");
-
-      card.className =
-        "admin-review";
-
-
-      const top =
-        document.createElement("div");
-
-      top.className =
-        "admin-review-top";
-
-
-      const customer =
-        document.createElement("div");
-
-
-      const name =
-        document.createElement("div");
-
-      name.className =
-        "admin-review-name";
-
-      name.textContent =
-        review.name || "Customer";
-
-
-      const email =
-        document.createElement("div");
-
-      email.className =
-        "admin-review-email";
-
-      email.textContent =
-        review.email || "No email provided";
-
-
-      customer.appendChild(name);
-
-      customer.appendChild(email);
-
-
-      const status =
-        document.createElement("span");
-
-      status.className =
-        "review-status " +
-        (
-          review.approved === true
-            ? "approved"
-            : "pending"
-        );
-
-
-      status.textContent =
-        review.approved === true
-          ? "Approved"
-          : "Pending";
-
-
-      top.appendChild(customer);
-
-      top.appendChild(status);
-
-
-      const comment =
-        document.createElement("div");
-
-      comment.className =
-        "admin-review-text";
-
-      comment.textContent =
-        review.text || "";
-
-
-      const actions =
-        document.createElement("div");
-
-      actions.className =
-        "admin-review-actions";
-
-
-      if (review.approved === true) {
-
-        const hideBtn =
-          document.createElement("button");
-
-        hideBtn.className =
-          "review-btn review-hide";
-
-        hideBtn.innerHTML =
-          '<i class="fas fa-eye-slash"></i> Hide';
-
-        hideBtn.onclick = () =>
-          updateReviewStatus(
-            doc.id,
-            false
-          );
-
-        actions.appendChild(hideBtn);
-
-      } else {
-
-        const approveBtn =
-          document.createElement("button");
-
-        approveBtn.className =
-          "review-btn review-approve";
-
-        approveBtn.innerHTML =
-          '<i class="fas fa-check"></i> Approve';
-
-        approveBtn.onclick = () =>
-          updateReviewStatus(
-            doc.id,
-            true
-          );
-
-        actions.appendChild(
-          approveBtn
-        );
-
-      }
-
-
-      const deleteBtn =
-        document.createElement("button");
-
-      deleteBtn.className =
-        "review-btn review-delete";
-
-      deleteBtn.innerHTML =
-        '<i class="fas fa-trash"></i> Delete';
-
-
-      deleteBtn.onclick = () =>
-        deleteReview(doc.id);
-
-
-      actions.appendChild(
-        deleteBtn
-      );
-
-
-      card.appendChild(top);
-
-      card.appendChild(comment);
-
-      card.appendChild(actions);
-
-
-      list.appendChild(card);
-
     });
 
+    function showLogin() {
+      $("loginSection").style.display = "flex";
+      $("dashboardSection").style.display = "none";
+    }
 
-    document.getElementById(
-      "totalReviews"
-    ).textContent = total;
+    function showDashboard() {
+      $("loginSection").style.display = "none";
+      $("dashboardSection").style.display = "block";
+    }
 
+    /* ---------- LOGIN ---------- */
+    const MAX_ATTEMPTS = 3;
+    const LOCK_TIME = 5 * 60 * 1000;
 
-    document.getElementById(
-      "pendingReviews"
-    ).textContent = pending;
+    // Lock check on load
+    window.addEventListener("load", () => {
+      const lockUntil = Number(localStorage.getItem("adminLockUntil") || 0);
+      if (lockUntil && Date.now() < lockUntil) {
+        $("email").disabled = true;
+        $("password").disabled = true;
+        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+        const minutes = Math.floor(remaining / 60);
+        alert(`Login temporarily locked. Try again in ${minutes} minute(s).`);
+      }
+    });
 
+    async function loginAdmin() {
+      const emailInput = $("email");
+      const passwordInput = $("password");
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-    document.getElementById(
-      "approvedReviews"
-    ).textContent = approved;
+      const lockUntil = Number(localStorage.getItem("adminLockUntil") || 0);
+      const failedAttempts = Number(localStorage.getItem("adminFailedAttempts") || 0);
 
+      if (lockUntil && Date.now() < lockUntil) {
+        const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+        alert(`Too many failed attempts. Try again in ${Math.floor(remaining / 60)}m ${remaining % 60}s`);
+        return;
+      }
 
-  } catch (error) {
+      if (!email || !password) {
+        alert("Enter email and password");
+        return;
+      }
 
-    console.error(
-      "Review loading error:",
-      error
-    );
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        localStorage.removeItem("adminFailedAttempts");
+        localStorage.removeItem("adminLockUntil");
+      } catch (err) {
+        const attempts = failedAttempts + 1;
+        localStorage.setItem("adminFailedAttempts", attempts);
 
+        if (attempts >= MAX_ATTEMPTS) {
+          localStorage.setItem("adminLockUntil", Date.now() + LOCK_TIME);
+          alert("Too many incorrect attempts. Login locked for 5 minutes.");
+          emailInput.disabled = true;
+          passwordInput.disabled = true;
+        } else {
+          alert(`Incorrect credentials. Attempts left: ${MAX_ATTEMPTS - attempts}`);
+        }
+      }
+    }
 
-    list.innerHTML = `
-      <div class="empty-row">
-        <i class="fas fa-exclamation-triangle"></i>
-        <p>Unable to load feedback.</p>
-      </div>
-    `;
+    async function logout() {
+      await signOut(auth);
+      showLogin();
+    }
 
-  }
+    $("loginBtn").addEventListener("click", loginAdmin);
+    $("logoutBtn").addEventListener("click", logout);
 
-};
+    /* ============================================================
+       STATS
+    ============================================================ */
+    async function loadStats() {
+      try {
+        const [usersSnap, premiumSnap, subsSnap] = await Promise.all([
+          getDocs(collection(db, "users")),
+          getDocs(collection(db, "premium_users")),
+          getDocs(collection(db, "subscriptions"))
+        ]);
 
+        $("totalUsers").textContent   = usersSnap.size;
+        $("premiumUsers").textContent = premiumSnap.size;
+        $("totalOrders").textContent  = subsSnap.size;
 
-/* ==========================================
-   APPROVE / HIDE
-========================================== */
+        let revenue = 0;
+        let couponCount = 0;
+        let totalDiscount = 0;
 
-async function updateReviewStatus(
-  reviewId,
-  approved
-) {
+        subsSnap.forEach(d => {
+          const data = d.data();
+          revenue += Number(data.amount) || 0;
+          if (data.couponCode) {
+            couponCount++;
+            totalDiscount += Number(data.discountAmount) || 0;
+          }
+        });
 
-  try {
+        $("totalRevenue").textContent        = `₹${revenue}`;
+        $("couponUsageCount").textContent    = couponCount;
+        $("totalDiscountGiven").textContent  = `₹${totalDiscount}`;
+      } catch (err) {
+        console.error("Stats error:", err);
+      }
+    }
 
-    await verifyAdmin();
+    /* ============================================================
+       ORDERS
+    ============================================================ */
+    async function loadOrders() {
+      const body = $("ordersTableBody");
+      body.innerHTML = `<tr><td colspan="11" style="text-align:center;">Loading...</td></tr>`;
 
+      try {
+        const q = query(
+          collection(db, "subscriptions"),
+          orderBy("createdAt", "desc"),
+          limit(orderLimit)
+        );
+        const snap = await getDocs(q);
 
-    await firebase.firestore()
-      .collection("reviews")
-      .doc(reviewId)
-      .update({
+        if (snap.empty) {
+          body.innerHTML = `<tr><td colspan="11" style="text-align:center;">No orders found</td></tr>`;
+          return;
+        }
 
-        approved: approved,
+        lastVisibleOrder = snap.docs[snap.docs.length - 1];
+        renderOrders(snap, false);
+      } catch (err) {
+        console.error("Orders error:", err);
+        body.innerHTML = `<tr><td colspan="11" style="text-align:center;">Error loading orders</td></tr>`;
+      }
+    }
 
-        moderatedAt:
-          firebase.firestore
-            .FieldValue.serverTimestamp()
+    async function loadMoreOrders() {
+      if (!lastVisibleOrder) return;
+      try {
+        const q = query(
+          collection(db, "subscriptions"),
+          orderBy("createdAt", "desc"),
+          startAfter(lastVisibleOrder),
+          limit(orderLimit)
+        );
+        const snap = await getDocs(q);
+        if (snap.empty) { alert("No more orders"); return; }
+        lastVisibleOrder = snap.docs[snap.docs.length - 1];
+        renderOrders(snap, true);
+      } catch (err) { console.error(err); }
+    }
 
+    function renderOrders(snap, append) {
+      const body = $("ordersTableBody");
+      if (!append) body.innerHTML = "";
+
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        const date = d.createdAt?.toDate?.() || new Date();
+        const original = d.originalAmount ?? d.amount ?? 0;
+        const paid = d.amount ?? 0;
+        const coupon = d.couponCode || null;
+
+        body.innerHTML += `
+          <tr>
+            <td>${d.userName || "—"}</td>
+            <td>${d.userPhone || "—"}</td>
+            <td>${d.userEmail || "—"}</td>
+            <td>${docSnap.id.slice(0, 8)}...</td>
+            <td>${d.planName || "—"}</td>
+            <td>₹${original}</td>
+            <td>₹${paid}</td>
+            <td>${coupon ? `<span class="badge coupon">${coupon}</span>` : "—"}</td>
+            <td><span class="badge ${d.status === 'active' ? 'success' : 'warning'}">${d.status || "—"}</span></td>
+            <td>${d.paymentId ? d.paymentId.slice(-8) : "—"}</td>
+            <td>${date.toLocaleDateString()}</td>
+          </tr>`;
       });
+    }
 
+    /* ============================================================
+       USERS
+    ============================================================ */
+    async function loadUsers() {
+      const body = $("usersTableBody");
+      body.innerHTML = `<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>`;
 
-    await loadReviews();
+      try {
+        const q = query(collection(db, "users"), orderBy("createdAt", "desc"), limit(20));
+        const snap = await getDocs(q);
+        await renderUsers(snap.docs, body, false);
+      } catch (err) {
+        console.error("Users error:", err);
+        body.innerHTML = `<tr><td colspan="6" style="text-align:center;">Error loading users</td></tr>`;
+      }
+    }
 
+    async function renderUsers(docs, body, append) {
+      if (!append) body.innerHTML = "";
 
-  } catch (error) {
+      for (const docSnap of docs) {
+        const d = docSnap.data();
+        const joinDate = d.createdAt?.toDate?.() || new Date();
 
-    console.error(
-      "Status update error:",
-      error
-    );
+        let premiumStatus = "Free";
+        let expiryDate = "—";
+        try {
+          const pDoc = await getDoc(doc(db, "premium_users", docSnap.id));
+          if (pDoc.exists()) {
+            const pd = pDoc.data();
+            premiumStatus = "Premium";
+            if (pd.expiryDate?.toDate) expiryDate = pd.expiryDate.toDate().toLocaleDateString();
+          }
+        } catch (_) {}
 
-    alert(
-      "Unable to update this review."
-    );
+        body.innerHTML += `
+          <tr>
+            <td>${d.name || d.displayName || "—"}</td>
+            <td>${d.email || "—"}</td>
+            <td>${d.phone || "—"}</td>
+            <td>${joinDate.toLocaleDateString()}</td>
+            <td><span class="badge ${premiumStatus === 'Premium' ? 'premium' : 'free'}">${premiumStatus}</span></td>
+            <td>${expiryDate}</td>
+          </tr>`;
+      }
+    }
 
-  }
+    async function searchUsers() {
+      const term = $("userSearch").value.trim().toLowerCase();
+      const body = $("usersTableBody");
 
-}
+      if (!term) { loadUsers(); return; }
 
+      body.innerHTML = `<tr><td colspan="6" style="text-align:center;">Searching...</td></tr>`;
 
-/* ==========================================
-   DELETE
-========================================== */
+      try {
+        const snap = await getDocs(collection(db, "users"));
+        const matches = [];
+        snap.forEach(d => {
+          const u = d.data();
+          const hay = `${u.name || u.displayName || ""} ${u.email || ""} ${u.phone || ""}`.toLowerCase();
+          if (hay.includes(term)) matches.push(d);
+        });
 
-async function deleteReview(
-  reviewId
-) {
+        if (!matches.length) {
+          body.innerHTML = `<tr><td colspan="6" style="text-align:center;">No users found</td></tr>`;
+          return;
+        }
+        await renderUsers(matches.slice(0, 20), body, false);
+      } catch (err) {
+        console.error(err);
+        body.innerHTML = `<tr><td colspan="6" style="text-align:center;">Search error</td></tr>`;
+      }
+    }
 
-  const confirmed =
-    confirm(
-      "Are you sure you want to permanently delete this feedback?"
-    );
+    /* ============================================================
+       PREMIUM
+    ============================================================ */
+    async function loadPremiumUsers() {
+      const body = $("premiumTableBody");
+      body.innerHTML = `<tr><td colspan="8" style="text-align:center;">Loading...</td></tr>`;
 
+      try {
+        const snap = await getDocs(collection(db, "premium_users"));
+        if (snap.empty) {
+          body.innerHTML = `<tr><td colspan="8" style="text-align:center;">No premium users found</td></tr>`;
+          return;
+        }
 
-  if (!confirmed) {
-    return;
-  }
+        body.innerHTML = "";
 
+        for (const docSnap of snap.docs) {
+          const d = docSnap.data();
+          let userEmail = "—", userName = "—", userPhone = "—";
 
-  try {
+          try {
+            const uDoc = await getDoc(doc(db, "users", docSnap.id));
+            if (uDoc.exists()) {
+              const u = uDoc.data();
+              userEmail = u.email || "—";
+              userName  = u.name || u.displayName || "—";
+              userPhone = u.phone || "—";
+            }
+          } catch (_) {}
 
-    await verifyAdmin();
+          const start  = d.startDate?.toDate?.()  || new Date();
+          const expiry = d.expiryDate?.toDate?.() || new Date();
+          const daysLeft = Math.max(0, Math.floor((expiry - new Date()) / 86400000));
+          const status = expiry > new Date() ? "Active" : "Expired";
 
+          body.innerHTML += `
+            <tr>
+              <td>${userName}</td>
+              <td>${userEmail}</td>
+              <td>${userPhone}</td>
+              <td>${d.planName || "—"}</td>
+              <td>${start.toLocaleDateString()}</td>
+              <td>${expiry.toLocaleDateString()}</td>
+              <td><span class="badge ${daysLeft > 0 ? 'success' : 'danger'}">${daysLeft}</span></td>
+              <td><span class="badge ${status === 'Active' ? 'success' : 'danger'}">${status}</span></td>
+            </tr>`;
+        }
+      } catch (err) {
+        console.error("Premium error:", err);
+        body.innerHTML = `<tr><td colspan="8" style="text-align:center;">Error loading premium users</td></tr>`;
+      }
+    }
 
-    await firebase.firestore()
-      .collection("reviews")
-      .doc(reviewId)
-      .delete();
+    /* ============================================================
+       SUBSCRIPTIONS
+    ============================================================ */
+    async function loadSubscriptions() {
+      const body = $("subscriptionsTableBody");
+      body.innerHTML = `<tr><td colspan="11" style="text-align:center;">Loading...</td></tr>`;
 
+      try {
+        const q = query(collection(db, "subscriptions"), orderBy("createdAt", "desc"), limit(20));
+        const snap = await getDocs(q);
+        renderSubscriptions(snap, false);
+      } catch (err) {
+        console.error("Subscriptions error:", err);
+        body.innerHTML = `<tr><td colspan="11" style="text-align:center;">Error loading subscriptions</td></tr>`;
+      }
+    }
 
-    await loadReviews();
+    function renderSubscriptions(snap, append) {
+      const body = $("subscriptionsTableBody");
+      if (!append) body.innerHTML = "";
 
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
+        const purchase = d.createdAt?.toDate?.()  || new Date();
+        const expiry   = d.expiryDate?.toDate?.() || new Date();
+        const status   = expiry > new Date() ? "Active" : "Expired";
+        const original = d.originalAmount ?? d.amount ?? 0;
+        const paid     = d.amount ?? 0;
+        const coupon   = d.couponCode || null;
+        const discount = d.discountAmount ?? (original - paid);
 
-  } catch (error) {
+        body.innerHTML += `
+          <tr>
+            <td>${d.userName || "—"}</td>
+            <td>${d.userEmail || "—"}</td>
+            <td>${d.planName || "—"}</td>
+            <td>₹${original}</td>
+            <td>₹${paid}</td>
+            <td>${coupon ? `<span class="badge coupon">${coupon}</span>` : "—"}</td>
+            <td>₹${discount}</td>
+            <td>${d.paymentId ? d.paymentId.slice(-8) : "—"}</td>
+            <td>${purchase.toLocaleDateString()}</td>
+            <td>${expiry.toLocaleDateString()}</td>
+            <td><span class="badge ${status === 'Active' ? 'success' : 'danger'}">${status}</span></td>
+          </tr>`;
+      });
+    }
 
-    console.error(
-      "Delete review error:",
-      error
-    );
+    /* ============================================================
+       REVIEWS (fixed)
+    ============================================================ */
+    async function verifyAdmin() {
+      const user = auth.currentUser;
+      if (!user) throw new Error("Not authenticated");
 
-    alert(
-      "Unable to delete this feedback."
-    );
+      const adminDoc = await getDoc(doc(db, "admins", user.uid));
+      if (!adminDoc.exists()) throw new Error("Administrator access required");
 
-  }
+      const data = adminDoc.data();
+      if (data.role && data.role !== "admin") throw new Error("Administrator role required");
+      if (data.active === false) throw new Error("Administrator account is inactive");
 
-}
+      return user;
+    }
 
+    async function loadReviews() {
+      const list = $("adminReviewsList");
+      list.innerHTML = `<div class="empty-row"><i class="fas fa-spinner fa-spin"></i><p>Loading feedback...</p></div>`;
 
-</script>
+      try {
+        await verifyAdmin();
 
-<style>
-body {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+        const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+        const snap = await getDocs(q);
 
-    -webkit-touch-callout: none; /* iOS long-press menu */
-}
-</style>
+        let total = 0, pending = 0, approved = 0;
+        list.innerHTML = "";
+
+        if (snap.empty) {
+          list.innerHTML = `<div class="empty-row"><i class="fas fa-comments"></i><p>No customer feedback found.</p></div>`;
+        }
+
+        snap.forEach(docSnap => {
+          const review = docSnap.data();
+          total++;
+          if (review.approved === true) approved++; else pending++;
+
+          const card = document.createElement("div");
+          card.className = "admin-review";
+
+          const top = document.createElement("div");
+          top.className = "admin-review-top";
+
+          const customer = document.createElement("div");
+          const name = document.createElement("div");
+          name.className = "admin-review-name";
+          name.textContent = review.name || "Customer";
+
+          const email = document.createElement("div");
+          email.className = "admin-review-email";
+          email.textContent = review.email || "No email provided";
+
+          customer.appendChild(name);
+          customer.appendChild(email);
+
+          const status = document.createElement("span");
+          status.className = "review-status " + (review.approved === true ? "approved" : "pending");
+          status.textContent = review.approved === true ? "Approved" : "Pending";
+
+          top.appendChild(customer);
+          top.appendChild(status);
+
+          const comment = document.createElement("div");
+          comment.className = "admin-review-text";
+          comment.textContent = review.text || "";
+
+          const actions = document.createElement("div");
+          actions.className = "admin-review-actions";
+
+          if (review.approved === true) {
+            const hideBtn = document.createElement("button");
+            hideBtn.className = "review-btn review-hide";
+            hideBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
+            hideBtn.addEventListener("click", () => updateReviewStatus(docSnap.id, false));
+            actions.appendChild(hideBtn);
+          } else {
+            const approveBtn = document.createElement("button");
+            approveBtn.className = "review-btn review-approve";
+            approveBtn.innerHTML = '<i class="fas fa-check"></i> Approve';
+            approveBtn.addEventListener("click", () => updateReviewStatus(docSnap.id, true));
+            actions.appendChild(approveBtn);
+          }
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "review-btn review-delete";
+          deleteBtn.innerHTML = '<i class="fas fa-trash"></i> Delete';
+          deleteBtn.addEventListener("click", () => deleteReview(docSnap.id));
+          actions.appendChild(deleteBtn);
+
+          card.appendChild(top);
+          card.appendChild(comment);
+          card.appendChild(actions);
+          list.appendChild(card);
+        });
+
+        $("totalReviews").textContent    = total;
+        $("pendingReviews").textContent  = pending;
+        $("approvedReviews").textContent = approved;
+      } catch (err) {
+        console.error("Review loading error:", err);
+        list.innerHTML = `<div class="empty-row"><i class="fas fa-exclamation-triangle"></i><p>Unable to load feedback.</p><small style="display:block;margin-top:8px;color:#999;">${err.message}</small></div>`;
+      }
+    }
+
+    async function updateReviewStatus(reviewId, approved) {
+      try {
+        await verifyAdmin();
+        await updateDoc(doc(db, "reviews", reviewId), {
+          approved: approved,
+          moderatedAt: serverTimestamp()
+        });
+        await loadReviews();
+      } catch (err) {
+        console.error("Status update error:", err);
+        alert("Unable to update this review: " + err.message);
+      }
+    }
+
+    async function deleteReview(reviewId) {
+      if (!confirm("Are you sure you want to permanently delete this feedback?")) return;
+      try {
+        await verifyAdmin();
+        await deleteDoc(doc(db, "reviews", reviewId));
+        await loadReviews();
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Unable to delete this feedback: " + err.message);
+      }
+    }
+
+    /* ============================================================
+       EXPORTS
+    ============================================================ */
+    async function getAllDocuments(name, max = Infinity) {
+      const all = [];
+      let last = null;
+      const pageSize = 500;
+
+      while (all.length < max) {
+        const currentLimit = Math.min(pageSize, max - all.length);
+        let q;
+
+        if (last) {
+          q = query(collection(db, name), orderBy("createdAt", "desc"), startAfter(last), limit(currentLimit));
+        } else {
+          q = query(collection(db, name), orderBy("createdAt", "desc"), limit(currentLimit));
+        }
+
+        const snap = await getDocs(q);
+        if (snap.empty) break;
+
+        all.push(...snap.docs);
+        last = snap.docs[snap.docs.length - 1];
+        if (snap.docs.length < currentLimit) break;
+      }
+      return all;
+    }
+
+    async function exportExcel() {
+      try {
+        const subs = await getAllDocuments("subscriptions");
+        const data = subs.map(docSnap => {
+          const d = docSnap.data();
+          return {
+            "Order ID": docSnap.id,
+            "User Name": d.userName || "—",
+            "Email": d.userEmail || "—",
+            "Phone": d.userPhone || "—",
+            "Plan": d.planName || "—",
+            "Original Amount": d.originalAmount ?? d.amount ?? 0,
+            "Paid Amount": d.amount ?? 0,
+            "Coupon Code": d.couponCode || "—",
+            "Discount": d.discountAmount || 0,
+            "Payment ID": d.paymentId || "—",
+            "Status": d.status || "—",
+            "Purchase Date": d.createdAt?.toDate?.().toLocaleString() || "—",
+            "Expiry Date": d.expiryDate?.toDate?.().toLocaleString() || "—"
+          };
+        });
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Subscriptions");
+        XLSX.writeFile(wb, `AgriAchiever_Subscriptions_${new Date().toISOString().split("T")[0]}.xlsx`);
+        alert(`Exported ${data.length} subscriptions successfully!`);
+      } catch (err) {
+        console.error(err);
+        alert("Export failed: " + err.message);
+      }
+    }
+
+    async function exportPremiumUsers() {
+      try {
+        const docs = await getAllDocuments("premium_users");
+        const data = [];
+
+        for (let i = 0; i < docs.length; i += 10) {
+          const batch = docs.slice(i, i + 10);
+          await Promise.all(batch.map(async (docSnap) => {
+            const d = docSnap.data();
+            let email = "—", name = "—", phone = "—";
+
+            try {
+              const uDoc = await getDoc(doc(db, "users", docSnap.id));
+              if (uDoc.exists()) {
+                const u = uDoc.data();
+                email = u.email || "—";
+                name  = u.name || u.displayName || "—";
+                phone = u.phone || "—";
+              }
+            } catch (_) {}
+
+            data.push({
+              "User ID": docSnap.id,
+              "User Name": name,
+              "Email": email,
+              "Phone": phone,
+              "Plan": d.planName || "—",
+              "Amount": d.amount || 0,
+              "Coupon Used": d.couponCode || "—",
+              "Start Date": d.startDate?.toDate?.().toLocaleString() || "—",
+              "Expiry Date": d.expiryDate?.toDate?.().toLocaleString() || "—",
+              "Payment ID": d.paymentId || "—",
+              "Status": d.status || "—"
+            });
+          }));
+        }
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Premium Users");
+        XLSX.writeFile(wb, `AgriAchiever_Premium_Users_${new Date().toISOString().split("T")[0]}.xlsx`);
+        alert(`Exported ${data.length} premium users successfully!`);
+      } catch (err) {
+        console.error(err);
+        alert("Export failed: " + err.message);
+      }
+    }
+
+    async function exportUsers() {
+      try {
+        const exportLimit = parseInt($("exportUserLimit").value, 10);
+        const docs = await getAllDocuments("users", exportLimit);
+        const data = [];
+
+        for (let i = 0; i < docs.length; i += 10) {
+          const batch = docs.slice(i, i + 10);
+          await Promise.all(batch.map(async (docSnap) => {
+            const d = docSnap.data();
+            let status = "Free";
+            try {
+              const pDoc = await getDoc(doc(db, "premium_users", docSnap.id));
+              if (pDoc.exists()) status = "Premium";
+            } catch (_) {}
+
+            data.push({
+              "Name": d.name || d.displayName || "—",
+              "Email": d.email || "—",
+              "Phone": d.phone || "—",
+              "Joined": d.createdAt?.toDate?.().toLocaleString() || "—",
+              "Status": status,
+              "Email Verified": d.emailVerified ? "Yes" : "No",
+              "User ID": docSnap.id
+            });
+          }));
+        }
+
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Users");
+        XLSX.writeFile(wb, `AgriAchiever_Users_${new Date().toISOString().split("T")[0]}.xlsx`);
+        alert(`Exported ${data.length} users successfully!`);
+      } catch (err) {
+        console.error(err);
+        alert("Export failed: " + err.message);
+      }
+    }
+
+    /* ============================================================
+       UI WIRING
+    ============================================================ */
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab + "Tab").classList.add("active");
+      });
+    });
+
+    // Orders controls
+    $("orderLimitSelect").addEventListener("change", (e) => {
+      orderLimit = parseInt(e.target.value, 10);
+      lastVisibleOrder = null;
+      loadOrders();
+    });
+    $("reloadOrdersBtn").addEventListener("click", loadOrders);
+    $("loadMoreOrdersBtn").addEventListener("click", loadMoreOrders);
+
+    // Users search
+    let searchTimeout;
+    $("userSearch").addEventListener("input", () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(searchUsers, 300);
+    });
+
+    // Exports
+    $("exportExcelBtn").addEventListener("click", exportExcel);
+    $("exportPremiumBtn").addEventListener("click", exportPremiumUsers);
+    $("exportPremiumUsersBtn").addEventListener("click", exportPremiumUsers);
+    $("exportUsersBtn").addEventListener("click", exportUsers);
+    $("exportSubscriptionsBtn").addEventListener("click", exportExcel);
+
+    // Reviews refresh
+    $("refreshReviewsBtn").addEventListener("click", loadReviews);
+  </script>
+
+  <script>
+    // Anti-copy / anti-right-click (kept light)
+    (function () {
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('selectstart', e => e.preventDefault());
+      document.addEventListener('copy', e => e.preventDefault());
+      document.addEventListener('cut', e => e.preventDefault());
+    })();
+  </script>
+</body>
 </html>
