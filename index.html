@@ -1226,6 +1226,39 @@
         font-size: 1.1rem;
       }
     }
+  
+    /* ===== LIVE FEEDBACK ===== */
+    .live-feedback{max-width:1200px;margin:0 auto 70px;padding:0 24px;position:relative;z-index:2}
+    .feedback-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px;flex-wrap:wrap}
+    .feedback-kicker{display:inline-block;font-size:.76rem;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;color:#2c5fa8;background:#eaf2fb;border:1px solid #b9d1ec;padding:6px 11px;border-radius:999px;margin-bottom:9px}
+    .feedback-count{background:#fff;border:2px solid #c1d9f0;border-radius:999px;padding:9px 16px;color:#2c5fa8;font-size:.85rem;font-weight:700}
+    .feedback-layout{display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:22px;align-items:start}
+    .feedback-form-card{background:#fff;border:2px solid #d8e5f3;border-radius:24px;padding:24px;box-shadow:0 12px 30px rgba(15,31,61,.08);position:sticky;top:20px}
+    .feedback-form-card h3{color:#1a2a4a;font-size:1.25rem;margin-bottom:5px}
+    .feedback-muted{color:#65738c;font-size:.88rem;margin-bottom:18px}
+    .feedback-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .feedback-form-card input,.feedback-form-card select,.feedback-form-card textarea{width:100%;border:1.5px solid #d9e2ee;background:#fbfdff;border-radius:14px;padding:12px 13px;font:inherit;color:#162744;outline:none;margin-bottom:11px}
+    .feedback-form-card textarea{min-height:125px;resize:vertical}
+    .feedback-form-card input:focus,.feedback-form-card select:focus,.feedback-form-card textarea:focus{border-color:#2c5fa8;box-shadow:0 0 0 3px rgba(44,95,168,.09)}
+    .feedback-submit{width:100%;border:0;border-radius:14px;padding:12px 16px;background:linear-gradient(135deg,#1a2a4a,#2c5fa8);color:#fff;font:600 .93rem Inter,sans-serif;cursor:pointer}
+    .feedback-submit:disabled{opacity:.65;cursor:wait}
+    .feedback-message{display:none;margin-top:11px;padding:10px 12px;border-radius:12px;font-size:.82rem}
+    .feedback-message.show{display:block}
+    .feedback-message.success{background:#e9f7ee;color:#23623d;border:1px solid #b8dfc6}
+    .feedback-message.error{background:#fff0f0;color:#9b3030;border:1px solid #efc1c1}
+    .feedback-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .feedback-card{background:#fff;border:2px solid #e4ebf4;border-radius:20px;padding:19px;box-shadow:0 8px 20px rgba(15,31,61,.05);min-width:0}
+    .feedback-card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .feedback-author{display:flex;gap:11px;align-items:center;min-width:0}
+    .feedback-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#eaf2fb;color:#1a2a4a;font-weight:800;flex-shrink:0}
+    .feedback-author strong{display:block;color:#1a2a4a;font-size:.94rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .feedback-date{display:block;color:#8491a5;font-size:.72rem;margin-top:2px}
+    .feedback-stars{color:#d79b18;white-space:nowrap;font-size:.82rem}
+    .feedback-card p{margin-top:14px;color:#52627b;font-size:.9rem;line-height:1.65;word-break:break-word}
+    .feedback-empty,.feedback-loading{grid-column:1/-1;background:#fff;border:2px dashed #cfdceb;border-radius:20px;padding:28px;text-align:center;color:#718099}
+    @media(max-width:850px){.feedback-layout{grid-template-columns:1fr}.feedback-form-card{position:static}.feedback-list{grid-template-columns:1fr}}
+    @media(max-width:560px){.feedback-row{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -1429,7 +1462,50 @@
       </div>
     </div>
   </section>
+<!-- ====== LIVE STUDENT FEEDBACK ====== -->
+  <section class="live-feedback reveal" id="feedback">
+    <div class="feedback-head">
+      <div>
+        <span class="feedback-kicker">Student feedback</span>
+        <h2 class="section-title">What learners are saying</h2>
+        <p class="section-sub">Fresh feedback from SoilSpark students, loaded directly from our database.</p>
+      </div>
+      <div class="feedback-count" id="feedbackCount">0 reviews</div>
+    </div>
 
+    <div class="feedback-layout">
+      <div class="feedback-form-card">
+        <h3>Share your experience</h3>
+        <p class="feedback-muted">Your review will appear here after you submit it.</p>
+
+        <form id="feedbackForm">
+          <div class="feedback-row">
+            <input id="feedbackName" type="text" maxlength="60" placeholder="Your name" required>
+            <select id="feedbackRating" required aria-label="Rating">
+              <option value="5">5 — Excellent</option>
+              <option value="4">4 — Very good</option>
+              <option value="3">3 — Good</option>
+              <option value="2">2 — Needs improvement</option>
+              <option value="1">1 — Poor</option>
+            </select>
+          </div>
+          <textarea id="feedbackComment" maxlength="500" placeholder="Tell us about your SoilSpark experience..." required></textarea>
+          <button class="feedback-submit" type="submit" id="feedbackSubmit">
+            <i class="fas fa-paper-plane"></i> Submit feedback
+          </button>
+          <div id="feedbackMessage" class="feedback-message" role="status"></div>
+        </form>
+      </div>
+
+      <div class="feedback-list" id="feedbackList">
+        <div class="feedback-loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Loading student feedback...
+        </div>
+      </div>
+    </div>
+  </section>
+  
   <!-- Testimonials -->
   <section class="testimonials reveal">
     <h2 class="section-title">Student stories</h2>
@@ -1458,6 +1534,9 @@
       </div>
     </div>
   </section>
+
+
+  
 
   <!-- CTA -->
   <section class="cta-section reveal">
@@ -1568,6 +1647,125 @@
       }
     });
   });
+</script>
+
+
+<script type="module">
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+    authDomain: "soilspark.firebaseapp.com",
+    projectId: "soilspark",
+    storageBucket: "soilspark.firebasestorage.app",
+    messagingSenderId: "22641848933",
+    appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+    measurementId: "G-1M406BN9JK"
+  };
+
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const list = document.getElementById("feedbackList");
+  const count = document.getElementById("feedbackCount");
+  const form = document.getElementById("feedbackForm");
+  const submit = document.getElementById("feedbackSubmit");
+  const message = document.getElementById("feedbackMessage");
+
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+
+  function formatDate(ts) {
+    const d = ts?.toDate ? ts.toDate() : (ts ? new Date(ts) : null);
+    if (!d || Number.isNaN(d.getTime())) return "Recently";
+    return d.toLocaleDateString("en-IN", {day:"numeric", month:"short", year:"numeric"});
+  }
+
+  function renderFeedback(docs) {
+    count.textContent = `${docs.length} ${docs.length === 1 ? "review" : "reviews"}`;
+    if (!docs.length) {
+      list.innerHTML = '<div class="feedback-empty"><i class="far fa-comment-dots"></i><br><strong>No reviews yet.</strong><br>Be the first SoilSpark learner to share your experience.</div>';
+      return;
+    }
+    list.innerHTML = docs.map(item => {
+      const d = item.data();
+      const name = (d.name || "SoilSpark Student").trim();
+      const rating = Math.min(5, Math.max(1, Number(d.rating) || 5));
+      const initial = esc(name.charAt(0).toUpperCase());
+      return `
+        <article class="feedback-card">
+          <div class="feedback-card-top">
+            <div class="feedback-author">
+              <div class="feedback-avatar">${initial}</div>
+              <div>
+                <strong>${esc(name)}</strong>
+                <span class="feedback-date">${formatDate(d.createdAt)}</span>
+              </div>
+            </div>
+            <div class="feedback-stars" aria-label="${rating} out of 5 stars">${"★".repeat(rating)}${"☆".repeat(5-rating)}</div>
+          </div>
+          <p>${esc(d.comment)}</p>
+        </article>`;
+    }).join("");
+  }
+
+  const feedbackQuery = query(collection(db, "feedback"), orderBy("createdAt", "desc"));
+  onSnapshot(feedbackQuery, snap => renderFeedback(snap.docs), err => {
+    console.error("Feedback listener:", err);
+    list.innerHTML = '<div class="feedback-empty">Feedback could not be loaded. Check your Firestore rules and indexes.</div>';
+  });
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById("feedbackName").value = user.displayName || "";
+    }
+  });
+
+  form?.addEventListener("submit", async e => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user) {
+      showMessage("Please log in before submitting feedback.", "error");
+      return;
+    }
+    const name = document.getElementById("feedbackName").value.trim();
+    const comment = document.getElementById("feedbackComment").value.trim();
+    const rating = Number(document.getElementById("feedbackRating").value);
+    if (!name || !comment || !rating) return;
+
+    submit.disabled = true;
+    submit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    try {
+      await addDoc(collection(db, "feedback"), {
+        name,
+        comment,
+        rating,
+        uid: user.uid,
+        email: user.email || "",
+        createdAt: serverTimestamp(),
+        approved: true
+      });
+      form.reset();
+      document.getElementById("feedbackRating").value = "5";
+      showMessage("Thank you. Your feedback is now live.", "success");
+    } catch (err) {
+      console.error("Feedback save:", err);
+      showMessage("Could not save feedback: " + (err.code || err.message), "error");
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML = '<i class="fas fa-paper-plane"></i> Submit feedback';
+    }
+  });
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = `feedback-message show ${type}`;
+    setTimeout(() => message.className = "feedback-message", 5000);
+  }
 </script>
 
 </body>
