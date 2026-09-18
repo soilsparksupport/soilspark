@@ -1226,7 +1226,158 @@
         font-size: 1.1rem;
       }
     }
-  
+
+    /* ===== ANNOUNCEMENTS TICKER ===== */
+    .announcements-section {
+      padding: 30px 0 40px;
+    }
+
+    .announcements-ticker {
+      position: relative;
+      max-width: 780px;
+      height:10vh;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 2px solid #f7d44a;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(139, 94, 60, 0.06);
+      padding: 18px 22px;
+      overflow: hidden;
+    }
+
+    .announcements-ticker::before,
+    .announcements-ticker::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 22px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .announcements-ticker::before {
+      top: 0;
+      background: linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0) 100%);
+    }
+    .announcements-ticker::after {
+      bottom: 0;
+      background: linear-gradient(to top, #ffffff 0%, rgba(255,255,255,0) 100%);
+    }
+
+    .ticker-window {
+      height: 90px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ticker-track {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: tickerScroll 22s linear infinite;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes tickerScroll {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #fefcf5;
+      border: 1px solid #f0e6d6;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #4a3724;
+      line-height: 1.45;
+      min-height: 40px;
+    }
+
+    .ticker-item .ticker-icon {
+      flex: 0 0 28px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #fef3d9;
+      border: 1.5px solid #f7d44a;
+      color: #b87c4b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .ticker-item .ticker-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .ticker-item .ticker-title {
+      font-weight: 600;
+      color: #4a3724;
+      display: inline;
+    }
+
+    .ticker-item .ticker-body {
+      color: #6b4a2e;
+      display: inline;
+    }
+
+    .ticker-item .ticker-body::before {
+      content: ' — ';
+      color: #b87c4b;
+      font-weight: 600;
+    }
+
+    .ticker-item .ticker-date {
+      flex: 0 0 auto;
+      font-size: 0.72rem;
+      color: #8b5e3c;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Type accent */
+    .ticker-item.type-info      { border-left: 3px solid #2c5fa8; }
+    .ticker-item.type-important { border-left: 3px solid #9b3030; }
+    .ticker-item.type-update    { border-left: 3px solid #23623d; }
+    .ticker-item.type-event     { border-left: 3px solid #b87c4b; }
+
+    .announcements-empty,
+    .announcements-loading {
+      background: #ffffff;
+      border: 2px dashed #e3d3b5;
+      border-radius: 20px;
+      padding: 30px 22px;
+      text-align: center;
+      color: #8b5e3c;
+      font-size: 0.92rem;
+    }
+
+    .announcements-empty i,
+    .announcements-loading i {
+      font-size: 1.6rem;
+      margin-right: 8px;
+      color: #d4b896;
+      vertical-align: middle;
+    }
+
+    @media (max-width: 700px) {
+      .announcements-ticker { padding: 14px 16px; border-radius: 16px; }
+      .ticker-window { height: 78px; }
+      .ticker-item { font-size: 0.88rem; padding: 9px 12px; gap: 9px; }
+      .ticker-item .ticker-icon { flex: 0 0 24px; width: 24px; height: 24px; font-size: 0.75rem; }
+      .ticker-item .ticker-date { font-size: 0.68rem; }
+      .ticker-track { animation-duration: 18s; }
+    }
+
     /* ===== LIVE FEEDBACK ===== */
     .live-feedback{max-width:1200px;margin:0 auto 70px;padding:0 24px;position:relative;z-index:2}
     .feedback-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px;flex-wrap:wrap}
@@ -1341,7 +1492,19 @@
       <!-- <div class="hero-badge"><i class="fas fa-seedling" style="margin-right: 6px;"></i> Learn · Grow · Succeed</div> -->
       <h1>Nurture your <span class="highlight">knowledge</span> with SoilSparks</h1>
       <p>A calmer way to prepare, practice and improve. Test series, crisp notes, and expert guidance — all in one place.</p>
-      
+       <!-- ====== ANNOUNCEMENTS (Firebase-backed, upward scrolling ticker) ====== -->
+  <section class="announcements-section reveal" id="announcements">
+    <h2 class="section-title">Latest Announcements</h2>
+    <p class="section-sub">Stay updated with the latest news, updates, and important notices from SoilSparks.</p>
+
+    <div class="announcements-ticker">
+      <div class="ticker-window" id="announcementsList">
+        <div class="announcements-loading">
+          <i class="fas fa-spinner fa-spin"></i> Loading announcements...
+        </div>
+      </div>
+    </div>
+  </section>
       <div class="trust-indicators">
         <span><i class="fas fa-circle-check"></i> Structured Learning</span>
         <span><i class="fas fa-circle-check"></i> Practice Tests</span>
@@ -1435,34 +1598,9 @@
     </div>
   </section>
 
-  <!-- Why students choose SoilSpark -->
-  <section class="why-section reveal">
-    <h2 class="section-title">Why students choose SoilSparks</h2>
-    <p class="section-sub">Human-centered learning, without the noise.</p>
-    <div class="why-grid">
-      <div class="why-item">
-        <i class="fas fa-feather"></i>
-        <h4>Less clutter. More focus.</h4>
-        <p>A calm, clean interface that keeps your attention on what matters.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-chart-pie"></i>
-        <h4>Know where you're improving.</h4>
-        <p>Clear analytics that show your progress without overwhelming you.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-heart"></i>
-        <h4>Practice without pressure.</h4>
-        <p>Take your time. Revisit concepts. Build confidence at your own pace.</p>
-      </div>
-      <div class="why-item">
-        <i class="fas fa-box-open"></i>
-        <h4>Everything in one place.</h4>
-        <p>Notes, tests, mentorship and community — all together.</p>
-      </div>
-    </div>
-  </section>
-<!-- ====== LIVE STUDENT FEEDBACK ====== -->
+ 
+
+  <!-- ====== LIVE STUDENT FEEDBACK ====== -->
   <section class="live-feedback reveal" id="feedback">
     <div class="feedback-head">
       <div>
@@ -1534,9 +1672,6 @@
       </div>
     </div>
   </section>
-
-
-  
 
   <!-- CTA -->
   <section class="cta-section reveal">
@@ -1648,7 +1783,6 @@
     });
   });
 </script>
-
 
 <script type="module">
   import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
@@ -1766,6 +1900,112 @@
     message.className = `feedback-message show ${type}`;
     setTimeout(() => message.className = "feedback-message", 5000);
   }
+</script>
+
+<script type="module">
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+  import { getFirestore, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+    authDomain: "soilspark.firebaseapp.com",
+    projectId: "soilspark",
+    storageBucket: "soilspark.firebasestorage.app",
+    messagingSenderId: "22641848933",
+    appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+    measurementId: "G-1M406BN9JK"
+  };
+
+  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const listEl = document.getElementById("announcementsList");
+
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+
+  function formatDate(ts) {
+    const d = ts?.toDate ? ts.toDate() : (ts ? new Date(ts) : null);
+    if (!d || Number.isNaN(d.getTime())) return "";
+    return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  }
+
+  const typeConfig = {
+    info:      { icon: "fa-info-circle",           cls: "type-info" },
+    important: { icon: "fa-exclamation-triangle",  cls: "type-important" },
+    update:    { icon: "fa-sync-alt",              cls: "type-update" },
+    event:     { icon: "fa-calendar-star",         cls: "type-event" }
+  };
+
+  function buildTickerRow(item) {
+    const d = item.data();
+    const typeKey = ["info", "important", "update", "event"].includes(d.type) ? d.type : "info";
+    const type = typeConfig[typeKey];
+    const title = d.title || "Announcement";
+    const body = d.body || "";
+    const date = formatDate(d.createdAt);
+
+    return `
+      <div class="ticker-item ${type.cls}">
+        <span class="ticker-icon"><i class="fas ${type.icon}"></i></span>
+        <span class="ticker-content">
+          <span class="ticker-title">${esc(title)}</span>
+          ${body ? `<span class="ticker-body">${esc(body)}</span>` : ""}
+        </span>
+        ${date ? `<span class="ticker-date">${esc(date)}</span>` : ""}
+      </div>`;
+  }
+
+  function renderAnnouncements(docs) {
+    if (!docs.length) {
+      listEl.innerHTML = `
+        <div class="announcements-empty">
+          <i class="far fa-bell"></i>
+          No announcements yet — check back soon.
+        </div>`;
+      return;
+    }
+
+    // Build one set of rows
+    const rowsHtml = docs.map(buildTickerRow).join("");
+
+    // Duplicate the set so the animation can loop seamlessly at -50%
+    listEl.innerHTML = `
+      <div class="ticker-track">
+        ${rowsHtml}
+        ${rowsHtml}
+      </div>`;
+
+    // Slow the animation based on content length, so it doesn't fly by
+    const track = listEl.querySelector(".ticker-track");
+    if (track) {
+      const seconds = Math.max(14, Math.min(50, docs.length * 6));
+      track.style.animationDuration = seconds + "s";
+    }
+  }
+
+  // Only fetch published announcements; sort client-side (no composite index needed)
+  const announcementsQuery = query(
+    collection(db, "announcements"),
+    where("published", "==", true)
+  );
+
+  onSnapshot(announcementsQuery, snap => {
+    const docs = [...snap.docs].sort((a, b) => {
+      const ta = a.data().createdAt?.toMillis?.() ?? 0;
+      const tb = b.data().createdAt?.toMillis?.() ?? 0;
+      return tb - ta;
+    });
+    renderAnnouncements(docs);
+  }, err => {
+    console.error("Announcements listener:", err);
+    listEl.innerHTML = `
+      <div class="announcements-empty">
+        <i class="fas fa-triangle-exclamation"></i>
+        Unable to load announcements.
+      </div>`;
+  });
 </script>
 
 </body>
