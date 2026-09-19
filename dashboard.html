@@ -37,7 +37,6 @@
       overflow-x: hidden;
     }
 
-    /* soft colored blobs in background */
     body::before {
       content: "";
       position: fixed;
@@ -336,7 +335,7 @@
       transform: translateX(3px);
     }
 
-    /* ---------- TEST LIST ---------- */
+    /* ---------- TEST LIST / EXAM CARDS ---------- */
     .test-list {
       display: flex;
       flex-direction: column;
@@ -357,6 +356,9 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
     }
 
     .test-item::before {
@@ -519,7 +521,6 @@
       border-color: var(--blue-mid);
     }
 
-    /* progress ring */
     .ring {
       width: 72px;
       height: 72px;
@@ -720,6 +721,17 @@
     .fade-in.d2 { animation-delay: 0.12s; }
     .fade-in.d3 { animation-delay: 0.19s; }
     .fade-in.d4 { animation-delay: 0.26s; }
+
+    /* loading & error states for stats */
+    .stat-loading {
+      font-size: 0.9rem;
+      color: var(--brown-mid);
+      opacity: 0.7;
+    }
+    .stat-error {
+      font-size: 0.8rem;
+      color: #c96b5c;
+    }
   </style>
 </head>
 <body>
@@ -742,60 +754,60 @@
   <section class="welcome-banner fade-in d1">
     <div class="welcome-text">
       <h2>Welcome back, learner! <span class="wave">🌱</span></h2>
-      <p>Here are your soil science tests. Keep growing, keep sparking.</p>
+      <p>Your exam preparation hub. Choose an exam and keep growing, keep sparking.</p>
     </div>
     <div class="welcome-avatar">
       <i class="fas fa-user-graduate"></i>
     </div>
   </section>
 
-  <!-- Stats -->
-  <section class="stats-grid fade-in d2">
+  <!-- Stats (now populated from JRF history / Firebase) -->
+  <section class="stats-grid fade-in d2" id="statsGrid">
     <div class="stat-card">
       <div class="stat-icon"><i class="fas fa-book-open"></i></div>
-      <div class="stat-value">5</div>
-      <div class="stat-label">Available Tests</div>
+      <div class="stat-value" id="statAvailableTests">—</div>
+      <div class="stat-label">Available Exams</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-      <div class="stat-value">2</div>
-      <div class="stat-label">Completed</div>
+      <div class="stat-value" id="statCompleted">—</div>
+      <div class="stat-label">Tests Completed</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon"><i class="fas fa-clock"></i></div>
-      <div class="stat-value">3</div>
-      <div class="stat-label">Pending</div>
+      <div class="stat-value" id="statQuestions">—</div>
+      <div class="stat-label">Questions Answered</div>
     </div>
     <div class="stat-card">
       <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-      <div class="stat-value">78%</div>
+      <div class="stat-value" id="statAvgScore">—</div>
       <div class="stat-label">Avg. Score</div>
     </div>
   </section>
 
-  <!-- Progress strip -->
+  <!-- Progress strip (dynamic) -->
   <section class="progress-strip fade-in d2">
     <div class="progress-card">
-      <div class="ring">
-        <span class="ring-text">78%</span>
+      <div class="ring" id="accuracyRing">
+        <span class="ring-text" id="accuracyPercent">—</span>
       </div>
       <div class="progress-info">
         <h4>Overall Accuracy</h4>
-        <p>You're improving every week</p>
+        <p id="accuracySubtext">Calculating...</p>
       </div>
     </div>
     <div class="progress-card">
-      <div class="ring">
-        <span class="ring-text">45%</span>
+      <div class="ring" id="coverageRing">
+        <span class="ring-text" id="coveragePercent">—</span>
       </div>
       <div class="progress-info">
-        <h4>Syllabus Covered</h4>
-        <p>9 of 20 chapters done</p>
+        <h4>Exams Attempted</h4>
+        <p id="coverageSubtext">—</p>
       </div>
     </div>
   </section>
 
-  <!-- Badges -->
+  <!-- Badges (static) -->
   <section class="fade-in d3">
     <div class="section-head">
       <h2>Recent Achievements</h2>
@@ -808,97 +820,79 @@
     </div>
   </section>
 
-  <!-- Test List -->
+  <!-- Exam list: JRF, SRF, ASRB NET, ARO -->
   <div class="section-head fade-in d3">
-    <h2>Soil Science Tests</h2>
-    <a href="#">View All <i class="fas fa-arrow-right"></i></a>
+    <h2>Available Exams</h2>
   </div>
 
   <div class="test-list fade-in d3">
-    <!-- Test 1 -->
-    <div class="test-item">
+    <!-- JRF -->
+    <a href="JRF/JRF.html" class="test-item">
       <div class="test-icon"><i class="fas fa-flask"></i></div>
       <div class="test-info">
-        <h3>Soil Physical Properties</h3>
+        <h3>JRF (Junior Research Fellowship)</h3>
         <div class="test-meta">
-          <span><i class="fas fa-question-circle"></i> 20 Questions</span>
-          <span><i class="fas fa-clock"></i> 25 mins</span>
-          <span><i class="fas fa-signal"></i> Medium</span>
+          <span><i class="fas fa-question-circle"></i> Question Book</span>
+          <span><i class="fas fa-clock"></i> Self-paced</span>
+          <span><i class="fas fa-signal"></i> All levels</span>
         </div>
-        <span class="test-tag">Chapter Test</span>
+        <span class="test-tag">Full Question Book</span>
       </div>
       <div class="test-action">
-        <a href="#" class="btn-start"><i class="fas fa-play"></i> Start</a>
+        <span class="btn-start"><i class="fas fa-play"></i> Open</span>
       </div>
-    </div>
+    </a>
 
-    <!-- Test 2 -->
-    <div class="test-item">
+    <!-- SRF -->
+    <a href="SRF/SRF.html" class="test-item">
       <div class="test-icon"><i class="fas fa-droplet"></i></div>
       <div class="test-info">
-        <h3>Soil Water & Irrigation</h3>
+        <h3>SRF (Senior Research Fellowship)</h3>
         <div class="test-meta">
-          <span><i class="fas fa-question-circle"></i> 25 Questions</span>
-          <span><i class="fas fa-clock"></i> 30 mins</span>
-          <span><i class="fas fa-signal"></i> Medium</span>
+          <span><i class="fas fa-question-circle"></i> Question Book</span>
+          <span><i class="fas fa-clock"></i> Self-paced</span>
+          <span><i class="fas fa-signal"></i> Advanced</span>
         </div>
-        <span class="test-tag">Chapter Test</span>
+        <span class="test-tag">Full Question Book</span>
       </div>
       <div class="test-action">
-        <a href="#" class="btn-start"><i class="fas fa-play"></i> Start</a>
+        <span class="btn-start"><i class="fas fa-play"></i> Open</span>
       </div>
-    </div>
+    </a>
 
-    <!-- Test 3 -->
-    <div class="test-item">
+    <!-- ASRB NET -->
+    <a href="ASRB_NET/ASRB_NET.html" class="test-item">
       <div class="test-icon"><i class="fas fa-leaf"></i></div>
       <div class="test-info">
-        <h3>Soil Fertility & Nutrients</h3>
+        <h3>ASRB NET</h3>
         <div class="test-meta">
-          <span><i class="fas fa-question-circle"></i> 30 Questions</span>
-          <span><i class="fas fa-clock"></i> 35 mins</span>
+          <span><i class="fas fa-question-circle"></i> Question Book</span>
+          <span><i class="fas fa-clock"></i> Self-paced</span>
           <span><i class="fas fa-signal"></i> Hard</span>
         </div>
-        <span class="test-tag">Advanced</span>
+        <span class="test-tag">Full Question Book</span>
       </div>
       <div class="test-action">
-        <a href="#" class="btn-start"><i class="fas fa-play"></i> Start</a>
+        <span class="btn-start"><i class="fas fa-play"></i> Open</span>
       </div>
-    </div>
+    </a>
 
-    <!-- Test 4 -->
-    <div class="test-item">
+    <!-- ARO -->
+    <a href="ARO/ARO.html" class="test-item">
       <div class="test-icon"><i class="fas fa-mountain"></i></div>
       <div class="test-info">
-        <h3>Soil Classification & Survey</h3>
+        <h3>ARO (Agricultural Research Officer)</h3>
         <div class="test-meta">
-          <span><i class="fas fa-question-circle"></i> 22 Questions</span>
-          <span><i class="fas fa-clock"></i> 28 mins</span>
+          <span><i class="fas fa-question-circle"></i> Question Book</span>
+          <span><i class="fas fa-clock"></i> Self-paced</span>
           <span><i class="fas fa-signal"></i> Medium</span>
         </div>
-        <span class="test-tag">Chapter Test</span>
+        <span class="test-tag">Full Question Book</span>
       </div>
       <div class="test-action">
-        <a href="#" class="btn-start"><i class="fas fa-play"></i> Start</a>
+        <span class="btn-start"><i class="fas fa-play"></i> Open</span>
       </div>
-    </div>
-
-    <!-- Test 5 -->
-    <div class="test-item">
-      <div class="test-icon"><i class="fas fa-seedling"></i></div>
-      <div class="test-info">
-        <h3>Soil Conservation & Management</h3>
-        <div class="test-meta">
-          <span><i class="fas fa-question-circle"></i> 28 Questions</span>
-          <span><i class="fas fa-clock"></i> 32 mins</span>
-          <span><i class="fas fa-signal"></i> Medium</span>
-        </div>
-        <span class="test-tag">Full Length</span>
-      </div>
-      <div class="test-action">
-        <a href="#" class="btn-start"><i class="fas fa-play"></i> Start</a>
-      </div>
-    </div>
+    </a>
   </div>
 
   <!-- Footer -->
@@ -913,10 +907,11 @@
   </footer>
 </div>
 
-<!-- FIREBASE MODULE — REAL LOGOUT -->
+<!-- FIREBASE MODULE — REAL LOGOUT + STATS FROM JRF HISTORY -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
@@ -930,19 +925,150 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  // Protect the page: if not logged in, kick to login
+  // DOM elements for stats
+  const statCompleted = document.getElementById('statCompleted');
+  const statQuestions = document.getElementById('statQuestions');
+  const statAvgScore = document.getElementById('statAvgScore');
+  const statAvailableTests = document.getElementById('statAvailableTests');
+  const accuracyPercent = document.getElementById('accuracyPercent');
+  const accuracySubtext = document.getElementById('accuracySubtext');
+  const coveragePercent = document.getElementById('coveragePercent');
+  const coverageSubtext = document.getElementById('coverageSubtext');
+  const accuracyRing = document.getElementById('accuracyRing');
+  const coverageRing = document.getElementById('coverageRing');
+
+  // Helper to update ring conic-gradient
+  function setRing(ringEl, percent, color1, color2) {
+    const deg = Math.min(100, Math.max(0, percent)) * 3.6;
+    ringEl.style.background = `conic-gradient(${color1} 0% ${deg}deg, ${color2} ${deg}deg 100%)`;
+  }
+
+  // Load stats from Firestore (JRF testHistory + local fallback)
+  async function loadUserStats(user) {
+    if (!user) {
+      // Reset to default/placeholder
+      statCompleted.textContent = '0';
+      statQuestions.textContent = '0';
+      statAvgScore.textContent = '0%';
+      statAvailableTests.textContent = '4';
+      accuracyPercent.textContent = '0%';
+      accuracySubtext.textContent = 'Sign in to view stats';
+      coveragePercent.textContent = '0%';
+      coverageSubtext.textContent = 'No attempts';
+      setRing(accuracyRing, 0, '#f7d44a', '#c1d9f0');
+      setRing(coverageRing, 0, '#7fb2d9', '#fef3d9');
+      return;
+    }
+
+    try {
+      // 1) Try to load from Firebase testHistory (JRF format)
+      const historyRef = collection(db, "users", user.uid, "testHistory");
+      const q = query(historyRef, orderBy("completedAt", "desc"), limit(50));
+      const snap = await getDocs(q);
+
+      // Also check localStorage for JRF history (key: soilspark_history_<uid>)
+      let localHistory = [];
+      try {
+        const stored = localStorage.getItem(`soilspark_history_${user.uid}`);
+        if (stored) localHistory = JSON.parse(stored);
+      } catch (e) { /* ignore */ }
+
+      // Merge: prefer Firebase, but include local if Firebase empty
+      let attempts = [];
+      if (!snap.empty) {
+        attempts = snap.docs.map(d => d.data());
+      } else if (localHistory.length > 0) {
+        attempts = localHistory;
+      }
+
+      // Calculate stats
+      const totalTests = attempts.length;
+      const totalQuestions = attempts.reduce((sum, a) => sum + (a.total || 0), 0);
+      const totalCorrect = attempts.reduce((sum, a) => sum + (a.correct || 0), 0);
+      const totalWrong = attempts.reduce((sum, a) => sum + (a.wrong || 0), 0);
+      const totalUnanswered = attempts.reduce((sum, a) => sum + (a.unanswered || 0), 0);
+      const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+      const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / (totalCorrect + totalWrong || 1)) * 100) : 0;
+
+      // Update UI
+      statCompleted.textContent = totalTests;
+      statQuestions.textContent = totalQuestions;
+      statAvgScore.textContent = avgScore + '%';
+      statAvailableTests.textContent = '4'; // JRF, SRF, ASRB NET, ARO
+
+      // Accuracy ring
+      accuracyPercent.textContent = accuracy + '%';
+      accuracySubtext.textContent = accuracy >= 80 ? 'Excellent work!' : accuracy >= 60 ? 'Good progress!' : 'Keep practicing!';
+      setRing(accuracyRing, accuracy, '#f7d44a', '#c1d9f0');
+
+      // Coverage ring (attempts relative to 10 as a target)
+      const coverageValue = Math.min(100, totalTests * 10); // 10 attempts = 100%
+      coveragePercent.textContent = totalTests;
+      coverageSubtext.textContent = totalTests === 0 ? 'No attempts yet' : `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
+      setRing(coverageRing, coverageValue, '#7fb2d9', '#fef3d9');
+
+    } catch (err) {
+      console.warn('Could not load stats from Firebase:', err);
+      // Fallback: try localStorage
+      try {
+        const stored = localStorage.getItem(`soilspark_history_${user.uid}`);
+        if (stored) {
+          const localHistory = JSON.parse(stored);
+          const totalTests = localHistory.length;
+          const totalQuestions = localHistory.reduce((sum, a) => sum + (a.total || 0), 0);
+          const totalCorrect = localHistory.reduce((sum, a) => sum + (a.correct || 0), 0);
+          const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+          statCompleted.textContent = totalTests;
+          statQuestions.textContent = totalQuestions;
+          statAvgScore.textContent = avgScore + '%';
+          statAvailableTests.textContent = '4';
+          accuracyPercent.textContent = avgScore + '%';
+          accuracySubtext.textContent = avgScore >= 80 ? 'Excellent work!' : 'Keep practicing!';
+          setRing(accuracyRing, avgScore, '#f7d44a', '#c1d9f0');
+          coveragePercent.textContent = totalTests;
+          coverageSubtext.textContent = `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
+          setRing(coverageRing, Math.min(100, totalTests * 10), '#7fb2d9', '#fef3d9');
+        } else {
+          // No local history either
+          statCompleted.textContent = '0';
+          statQuestions.textContent = '0';
+          statAvgScore.textContent = '0%';
+          statAvailableTests.textContent = '4';
+          accuracyPercent.textContent = '0%';
+          accuracySubtext.textContent = 'No attempts yet';
+          coveragePercent.textContent = '0';
+          coverageSubtext.textContent = 'No attempts';
+          setRing(accuracyRing, 0, '#f7d44a', '#c1d9f0');
+          setRing(coverageRing, 0, '#7fb2d9', '#fef3d9');
+        }
+      } catch (e) {
+        // Final fallback: placeholders
+        statCompleted.textContent = '—';
+        statQuestions.textContent = '—';
+        statAvgScore.textContent = '—';
+        statAvailableTests.textContent = '4';
+        accuracyPercent.textContent = '—';
+        accuracySubtext.textContent = 'Could not load stats';
+        coveragePercent.textContent = '—';
+        coverageSubtext.textContent = 'Could not load stats';
+      }
+    }
+  }
+
+  // Auth state listener
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       window.location.replace('login.html');
-    } else if (!user.emailVerified) {
-      // optionally enforce verification
-      // window.location.replace('login.html');
     } else {
-      // optional: personalize greeting
+      // Personalize greeting
       const name = user.displayName?.split(' ')[0] || 'learner';
       const h2 = document.querySelector('.welcome-text h2');
       if (h2) h2.innerHTML = `Welcome back, ${name}! <span class="wave">🌱</span>`;
+
+      // Load stats for this user
+      loadUserStats(user);
     }
   });
 
