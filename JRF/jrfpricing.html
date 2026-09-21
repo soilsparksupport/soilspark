@@ -548,7 +548,7 @@ async function startPurchase(planId){
   const finalAmount = Math.max(1, Number(plan.price) - discount);
 
   try{
-    const orderRes = await fetch("/JRF/api/create-order.js",{
+    const orderRes = await fetch("/api/create-order.js",{
       method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
         amount: finalAmount,
@@ -573,7 +573,7 @@ async function startPurchase(planId){
       theme:{color:"#111827"},
       handler:async response=>{
         try{
-          const vr=await fetch("/JRF/api/verify-payment.js",{
+          const vr=await fetch("/api/verify-payment.js",{
             method:"POST",headers:{"Content-Type":"application/json"},
             body:JSON.stringify({
               ...response,
