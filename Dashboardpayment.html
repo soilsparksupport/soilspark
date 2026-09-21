@@ -534,14 +534,15 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc, addDoc, serverTimestamp, Timestamp, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-  const firebaseConfig = {
-    apiKey: "AIzaSyC7IW1gTzEl61cj1Y8_nsPT7V8IgWoQDK8",
-    authDomain: "saksham-27f2a.firebaseapp.com",
-    projectId: "saksham-27f2a",
-    storageBucket: "saksham-27f2a.appspot.com",
-    messagingSenderId: "584948456348",
-    appId: "1:584948456348:web:13f9ad789dbd4c18a00659"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+  authDomain: "soilspark.firebaseapp.com",
+  projectId: "soilspark",
+  storageBucket: "soilspark.firebasestorage.app",
+  messagingSenderId: "22641848933",
+  appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+  measurementId: "G-1M406BN9JK"
+};
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
