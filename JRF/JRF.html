@@ -427,7 +427,7 @@ function closePurchase(){ $("purchaseOverlay").style.display="none"; purchaseSub
 async function startPurchase(planId){
  const plan=PLANS.find(x=>x.id===planId);if(!plan||!purchaseSubjectId||!user)return;
  try{
-  const orderRes=await fetch("/api/create-order.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:plan.price,planId})});
+  const orderRes=await fetch("/api/create-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:plan.price,planId})});
   const orderData=await orderRes.json();
   if(!orderRes.ok||!orderData.success)throw new Error(orderData.message||"Could not create Razorpay order.");
   const options={
@@ -437,7 +437,7 @@ async function startPurchase(planId){
    theme:{color:"#111827"},
    handler:async response=>{
     try{
-     const vr=await fetch("/api/verify-payment.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});
+     const vr=await fetch("/api/verify-payment", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});
      const vd=await vr.json();
      if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
      const expiry=new Date(Date.now()+plan.days*86400000).toISOString();
