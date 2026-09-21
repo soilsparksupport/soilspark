@@ -374,6 +374,12 @@ const PLANS=[
  {id:"halfyearly180",name:"6 Months Access",days:180,price:599,badge:"Value"},
  {id:"yearly365",name:"1 Year Access",days:365,price:999,badge:"Save"}
 ];
+async function safeJson(res){
+  const text = await res.text();
+  try { return JSON.parse(text); }
+  catch { throw new Error(`Server error (${res.status}): ${text.slice(0,120)}`); }
+}
+
 let subscriptions=[],purchaseSubjectId=null,purchaseSectionName="";
 const SUBJECT_ALIASES={
  "agronomy":"Agronomy","horticulture":"Horticulture","plant sciences":"Plant Sciences",
@@ -427,8 +433,7 @@ function closePurchase(){ $("purchaseOverlay").style.display="none"; purchaseSub
 async function startPurchase(planId){
  const plan=PLANS.find(x=>x.id===planId);if(!plan||!purchaseSubjectId||!user)return;
  try{
-  const orderRes=await fetch("/api/create-order", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:plan.price,planId})});
-  const orderData=await orderRes.json();
+const orderRes=await fetch("/JRF/api/create-order.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:plan.price,planId,subjectId:purchaseSubjectId})});  const orderData=await safeJson(orderRes);
   if(!orderRes.ok||!orderData.success)throw new Error(orderData.message||"Could not create Razorpay order.");
   const options={
    key:orderData.keyId,amount:orderData.order.amount,currency:"INR",name:"AgriAchiever",
@@ -437,8 +442,7 @@ async function startPurchase(planId){
    theme:{color:"#111827"},
    handler:async response=>{
     try{
-     const vr=await fetch("/api/verify-payment", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});
-     const vd=await vr.json();
+const vr=await fetch("/JRF/api/verify-payment.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});     const vd=await safeJson(vr);
      if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
      const expiry=new Date(Date.now()+plan.days*86400000).toISOString();
      await addDoc(collection(db,"subscriptions"),{
