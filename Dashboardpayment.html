@@ -545,7 +545,7 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  const RAZORPAY_KEY_ID = "rzp_live_SMdQqXXnqY87rh";
+  const RAZORPAY_KEY_ID = "rzp_live_TeGdgpWLm6VWFy";
 
   // MULTI-PLAN CONFIGURATION
   const PLANS = [
@@ -874,7 +874,7 @@
     const loading = document.getElementById('loadingOverlay');
     if(payBtn) payBtn.disabled = true; if(loading) loading.classList.add('active');
     try {
-      const orderRes = await fetch('https://agriachiever.vercel.app/api/create-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount }) });
+      const orderRes = await fetch('https://soilspark.vercel.app/api/create-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount }) });
       const orderData = await orderRes.json();
       if (!orderRes.ok || !orderData.success) throw new Error(orderData.message);
       const options = {
@@ -883,7 +883,7 @@
         order_id: orderData.order.id, prefill: { name, email, contact: phone }, theme: { color: "#b86b3a" },
         handler: async (response) => {
           try {
-            const verifyRes = await fetch('https://agriachiever.vercel.app/api/verify-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, razorpay_order_id: response.razorpay_order_id, razorpay_signature: response.razorpay_signature }) });
+            const verifyRes = await fetch('https://soilspark.vercel.app/api/verify-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, razorpay_order_id: response.razorpay_order_id, razorpay_signature: response.razorpay_signature }) });
             const verifyData = await verifyRes.json();
             if (!verifyData.success) throw new Error('Payment verification failed.');
             await addSubscriptionWithRetry(selectedSubject.id, selectedPlan, { paymentId: response.razorpay_payment_id, amount });
