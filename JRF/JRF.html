@@ -29,7 +29,6 @@
   --danger:#c96b5c;
   --danger-soft:#fff1ef;
   --shadow:0 12px 35px rgba(110,85,55,.10);
-  /* NEW COLORFUL TOKENS */
   --orange:#f4a261;
   --orange-light:#fff0e1;
   --orange-soft:#ffd9b3;
@@ -354,6 +353,11 @@ button,input{font:inherit}
       <input id="purchaseName" type="text" placeholder="Name" autocomplete="name">
       <input id="purchasePhone" type="tel" placeholder="Phone (optional)" autocomplete="tel">
     </div>
+    <div class="purchase-coupon" style="display:flex;gap:8px;margin:10px 0">
+      <input id="purchaseCoupon" type="text" placeholder="Coupon code (optional)" style="flex:1;padding:10px;border:1px solid #dbe2ea;border-radius:9px;text-transform:uppercase">
+      <button id="applyCouponBtn" type="button" style="border:0;background:#111827;color:#fff;padding:0 16px;border-radius:9px;font-weight:700;cursor:pointer">Apply</button>
+    </div>
+    <div id="couponFeedback" style="font-size:12px;margin:-4px 0 10px"></div>
     <div id="purchasePlans" class="purchase-plans"></div>
     <p class="purchase-note">Payment is processed securely by Razorpay. Your section access starts after successful payment verification.</p>
   </div>
@@ -362,18 +366,35 @@ button,input{font:inherit}
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
 import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomain:"soilspark.firebaseapp.com",projectId:"soilspark",storageBucket:"soilspark.firebasestorage.app",messagingSenderId:"22641848933",appId:"1:22641848933:web:4c08ce5046681dbb698c8c",measurementId:"G-1M406BN9JK"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
-const PLANS=[
- {id:"monthly30",name:"1 Month Access",days:30,price:149,badge:"Popular"},
- {id:"trial7",name:"7 Days Sprint",days:7,price:1,badge:"Trial"},
- {id:"quarterly90",name:"3 Months Access",days:90,price:349,badge:"Value"},
- {id:"halfyearly180",name:"6 Months Access",days:180,price:599,badge:"Value"},
- {id:"yearly365",name:"1 Year Access",days:365,price:999,badge:"Save"}
+
+/* ===== PLANS (dynamic) ===== */
+let PLANS = [];
+let appliedCoupon = null;
+const DEFAULT_PLANS = [
+  {id:"trial7",name:"7 Days Sprint",days:7,price:1,badge:"Trial"},
+  {id:"monthly30",name:"1 Month Access",days:30,price:149,badge:"Popular"},
+  {id:"quarterly90",name:"3 Months Access",days:90,price:349,badge:"Value"},
+  {id:"halfyearly180",name:"6 Months Access",days:180,price:599,badge:"Value"},
+  {id:"yearly365",name:"1 Year Access",days:365,price:999,badge:"Save"}
 ];
+
+async function loadPlans(){
+  try{
+    const snap = await getDocs(query(collection(db,"pricing_plans"), where("active","==",true)));
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}))
+      .sort((a,b)=>(a.order??999)-(b.order??999));
+    PLANS = rows.length ? rows : DEFAULT_PLANS;
+  }catch(e){
+    console.warn("Plan load failed, using defaults.", e);
+    PLANS = DEFAULT_PLANS;
+  }
+}
+
 async function safeJson(res){
   const text = await res.text();
   try { return JSON.parse(text); }
@@ -425,42 +446,128 @@ function showPurchase(subjectId,sectionName){
  $("purchaseSubtitle").textContent=`Unlock all topics in ${purchaseSectionName}.`;
  $("purchaseName").value=user.displayName||"";
  $("purchasePhone").value="";
- $("purchasePlans").innerHTML=PLANS.map(p=>`<button class="purchase-plan" type="button" data-plan="${p.id}"><strong>${p.name}</strong><b>₹${p.price}</b><small>${p.days} days · ${p.badge}</small></button>`).join("");
- $("purchasePlans").querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>startPurchase(b.dataset.plan));
+ $("purchaseCoupon").value="";
+ $("couponFeedback").textContent="";
+ $("couponFeedback").style.color="#667085";
+ appliedCoupon=null;
+ renderPlanButtons();
  $("purchaseOverlay").style.display="flex";
 }
-function closePurchase(){ $("purchaseOverlay").style.display="none"; purchaseSubjectId=null; }
+function renderPlanButtons(){
+ $("purchasePlans").innerHTML=PLANS.map(p=>`
+   <button class="purchase-plan" type="button" data-plan="${esc(p.id)}">
+     <strong>${esc(p.name)}</strong>
+     <b>₹${Number(p.price).toLocaleString("en-IN")}</b>
+     <small>${p.days} days${p.badge?" · "+esc(p.badge):""}</small>
+   </button>`).join("");
+ $("purchasePlans").querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>startPurchase(b.dataset.plan));
+}
+function closePurchase(){
+ $("purchaseOverlay").style.display="none";
+ purchaseSubjectId=null;
+ appliedCoupon=null;
+ if($("purchaseCoupon"))$("purchaseCoupon").value="";
+ if($("couponFeedback"))$("couponFeedback").textContent="";
+}
+
+$("applyCouponBtn").onclick = async () => {
+  const code = $("purchaseCoupon").value.trim().toUpperCase();
+  const fb = $("couponFeedback");
+  appliedCoupon = null;
+  if(!code){fb.textContent="";return;}
+  fb.style.color="#667085";
+  fb.textContent="Validating...";
+  try{
+    const snap = await getDoc(doc(db,"coupons",code));
+    if(!snap.exists()){fb.style.color="#c96b5c";fb.textContent="Invalid coupon code.";return;}
+    const c = {id:snap.id, ...snap.data()};
+    if(c.active===false){fb.style.color="#c96b5c";fb.textContent="This coupon is inactive.";return;}
+    if(c.expiryDate && new Date(c.expiryDate).getTime()<Date.now()){fb.style.color="#c96b5c";fb.textContent="This coupon has expired.";return;}
+    if(c.maxUses!=null && (c.usedCount||0)>=c.maxUses){fb.style.color="#c96b5c";fb.textContent="This coupon has reached its usage limit.";return;}
+    appliedCoupon = c;
+    fb.style.color="#198754";
+    const desc = c.type==="percent"?`${c.value}% off`:`₹${c.value} off`;
+    fb.textContent = `✓ Coupon applied: ${desc}${c.minOrder?` (min order ₹${c.minOrder})`:""}`;
+  }catch(e){
+    console.error(e);
+    fb.style.color="#c96b5c";fb.textContent="Could not validate coupon.";
+  }
+};
+
 async function startPurchase(planId){
- const plan=PLANS.find(x=>x.id===planId);if(!plan||!purchaseSubjectId||!user)return;
- try{
-const orderRes=await fetch("/JRF/api/create-order.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:plan.price,planId,subjectId:purchaseSubjectId})});  const orderData=await safeJson(orderRes);
-  if(!orderRes.ok||!orderData.success)throw new Error(orderData.message||"Could not create Razorpay order.");
-  const options={
-   key:orderData.keyId,amount:orderData.order.amount,currency:"INR",name:"AgriAchiever",
-   description:`${purchaseSectionName} - ${plan.name}`,order_id:orderData.order.id,
-   prefill:{name:$("purchaseName").value||user.displayName||"",email:user.email||"",contact:$("purchasePhone").value||""},
-   theme:{color:"#111827"},
-   handler:async response=>{
-    try{
-const vr=await fetch("/JRF/api/verify-payment.js", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(response)});     const vd=await safeJson(vr);
-     if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
-     const expiry=new Date(Date.now()+plan.days*86400000).toISOString();
-     await addDoc(collection(db,"subscriptions"),{
-      userId:user.uid,userEmail:user.email||"",userName:$("purchaseName").value||user.displayName||"",
-      userPhone:$("purchasePhone").value||"",subjectId:purchaseSubjectId,sectionName:purchaseSectionName,
-      planId:plan.id,planName:plan.name,planDays:plan.days,amount:plan.price,
-      paymentId:response.razorpay_payment_id,razorpayOrderId:response.razorpay_order_id,
-      status:"active",createdAt:serverTimestamp(),expiryDate:expiry
-     });
-     alert(`Payment successful. ${purchaseSectionName} is unlocked for ${plan.days} days.`);
-     closePurchase();await loadSubscriptions();renderBook();
-    }catch(e){console.error(e);alert(e.message||"Payment verification failed.")}
-   },
-   modal:{ondismiss:()=>{}}
-  };
-  if(!window.Razorpay)throw new Error("Razorpay checkout failed to load. Refresh and try again.");
-  new window.Razorpay(options).open();
- }catch(e){console.error(e);alert(e.message||"Payment failed.")}
+  const plan = PLANS.find(x=>x.id===planId);
+  if(!plan||!purchaseSubjectId||!user)return;
+
+  let discount = 0;
+  if(appliedCoupon){
+    const base = Number(plan.price);
+    if(base < (appliedCoupon.minOrder||0)){
+      alert(`This coupon requires a minimum order of ₹${appliedCoupon.minOrder}.`);
+      return;
+    }
+    discount = appliedCoupon.type==="percent"
+      ? Math.round(base * appliedCoupon.value / 100)
+      : Math.min(appliedCoupon.value, base);
+  }
+  const finalAmount = Math.max(1, Number(plan.price) - discount);
+
+  try{
+    const orderRes = await fetch("/JRF/api/create-order.js",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        amount: finalAmount,
+        baseAmount: plan.price,
+        discount,
+        planId,
+        subjectId: purchaseSubjectId,
+        couponCode: appliedCoupon?.id || null
+      })
+    });
+    const orderData = await safeJson(orderRes);
+    if(!orderRes.ok||!orderData.success)throw new Error(orderData.message||"Could not create Razorpay order.");
+
+    const options={
+      key:orderData.keyId,
+      amount:orderData.order.amount,
+      currency:"INR",
+      name:"AgriAchiever",
+      description:`${purchaseSectionName} - ${plan.name}`,
+      order_id:orderData.order.id,
+      prefill:{name:$("purchaseName").value||user.displayName||"",email:user.email||"",contact:$("purchasePhone").value||""},
+      theme:{color:"#111827"},
+      handler:async response=>{
+        try{
+          const vr=await fetch("/JRF/api/verify-payment.js",{
+            method:"POST",headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              ...response,
+              planId: plan.id,
+              planDays: plan.days,
+              planName: plan.name,
+              planAmount: plan.price,
+              discount,
+              finalAmount,
+              subjectId: purchaseSubjectId,
+              sectionName: purchaseSectionName,
+              couponCode: appliedCoupon?.id || null,
+              userName: $("purchaseName").value||user.displayName||"",
+              userPhone: $("purchasePhone").value||""
+            })
+          });
+          const vd = await safeJson(vr);
+          if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
+          alert(`Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`);
+          appliedCoupon=null;
+          closePurchase();
+          await loadSubscriptions();
+          renderBook();
+        }catch(e){console.error(e);alert(e.message||"Payment verification failed.")}
+      },
+      modal:{ondismiss:()=>{}}
+    };
+    if(!window.Razorpay)throw new Error("Razorpay checkout failed to load.");
+    new window.Razorpay(options).open();
+  }catch(e){console.error(e);alert(e.message||"Payment failed.")}
 }
 
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
@@ -470,7 +577,10 @@ onAuthStateChanged(auth,async u=>{
  user=u||null;
  if(!u){$("userEmail").textContent="Not signed in";$("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the JRF question book.</p></div>';return}
  $("userEmail").textContent=u.email||"Student";$("logoutBtn").style.display="block";
- loadLocalHistory();await loadSubscriptions();await loadBook();
+ loadLocalHistory();
+ await loadSubscriptions();
+ await loadPlans();
+ await loadBook();
 });
 $("logoutBtn").onclick=()=>signOut(auth);$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
 $("topicSearch").addEventListener("input",renderBook);$("purchaseClose").onclick=closePurchase;$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
@@ -555,7 +665,7 @@ function showHistory(){
  $("historyList").querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>toggleReview(Number(b.dataset.review)));
 }
 function toggleReview(i){
- const r=history[i],el=$("review-"+i);if(el.style.display==="block"){el.style.display="none";return}el.innerHTML=r.review.map((x,n)=>`<div class="review-item ${x.isCorrect?"correct":"wrong"}"><h4>${n+1}. ${esc(x.question)}</h4><p>Your answer: ${x.selectedIndex===null?"Not answered":String.fromCharCode(65+x.selectedIndex)} · Correct answer: ${String.fromCharCode(65+x.correctIndex)}</p><span class="tag ${x.isCorrect?"correct":"wrong"}>${x.isCorrect?"CORRECT":"WRONG"}</span></div>`).join("");el.style.display="block";
+ const r=history[i],el=$("review-"+i);if(el.style.display==="block"){el.style.display="none";return}el.innerHTML=r.review.map((x,n)=>`<div class="review-item ${x.isCorrect?"correct":"wrong"}"><h4>${n+1}. ${esc(x.question)}</h4><p>Your answer: ${x.selectedIndex===null?"Not answered":String.fromCharCode(65+x.selectedIndex)} · Correct answer: ${String.fromCharCode(65+x.correctIndex)}</p><span class="tag ${x.isCorrect?"correct":"wrong"}">${x.isCorrect?"CORRECT":"WRONG"}</span></div>`).join("");el.style.display="block";
 }
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 </script>
