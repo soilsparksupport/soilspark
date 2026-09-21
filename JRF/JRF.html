@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,6 +92,18 @@ button,input{font:inherit}
   padding:9px 12px;border-radius:10px;font-size:12px;font-weight:700;
   max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+.auth-link{
+  border:1px solid var(--border-blue);
+  background:linear-gradient(135deg,var(--sky-light),var(--mint-light));
+  color:var(--blue-dark);
+  padding:10px 15px;border-radius:10px;font-weight:700;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;transition:.2s;
+}
+.auth-link:hover{
+  background:linear-gradient(135deg,var(--mint-light),var(--sky-light));
+  border-color:var(--orange-soft);
+}
 .logout{
   border:1px solid #f0d1cb;background:var(--danger-soft);color:var(--danger);
   padding:10px 13px;border-radius:10px;font-weight:700;cursor:pointer;
@@ -119,8 +132,32 @@ button,input{font:inherit}
   padding:18px 20px;display:flex;align-items:center;justify-content:space-between;
   gap:15px;background:linear-gradient(135deg,var(--orange-light),var(--mint-light));
   border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+  transition:background .2s;
 }
-.section-title{display:flex;gap:12px;align-items:center}
+.section-head:hover{
+  background:linear-gradient(135deg,var(--orange-soft),var(--mint));
+}
+.section-head .chevron{
+  font-size:16px;color:var(--orange);transition:transform .25s ease;
+  margin-left:8px;
+}
+.section.collapsed .section-head .chevron{
+  transform:rotate(-90deg);
+}
+.section-body{
+  transition:max-height .3s ease,opacity .25s ease,padding .25s ease;
+  overflow:hidden;
+  max-height:2000px;
+  opacity:1;
+  padding:16px;
+}
+.section.collapsed .section-body{
+  max-height:0;
+  opacity:0;
+  padding:0 16px;
+}
+.section-title{display:flex;gap:12px;align-items:center;flex:1}
 .section-icon{
   width:42px;height:42px;border-radius:12px;
   background:linear-gradient(135deg,var(--peach-light),var(--lime-light));
@@ -129,10 +166,10 @@ button,input{font:inherit}
 }
 .section h3{font:700 18px Poppins;color:var(--text-dark)}
 .section p{font-size:11px;color:var(--muted);margin-top:2px}
-.section-count{font-size:11px;font-weight:800;color:var(--brown)}
+.section-count{font-size:11px;font-weight:800;color:var(--brown);white-space:nowrap}
 
 /* ===== TOPIC GRID ===== */
-.topic-grid{padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 .topic{
   background:#fff;border:1px solid var(--border);border-radius:15px;
   padding:16px;cursor:pointer;transition:.2s;
@@ -328,7 +365,7 @@ button,input{font:inherit}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>JRF Question Book</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><button id="logoutBtn" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></div></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>JRF Question Book</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
 <div class="hero"><div><h2>JRF Question Book</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
@@ -512,7 +549,7 @@ async function startPurchase(planId){
   const finalAmount = Math.max(1, Number(plan.price) - discount);
 
   try{
-    const orderRes = await fetch("/JRF/api/create-order.js",{
+    const orderRes = await fetch("/api/create-order.js",{
       method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
         amount: finalAmount,
@@ -537,7 +574,7 @@ async function startPurchase(planId){
       theme:{color:"#111827"},
       handler:async response=>{
         try{
-          const vr=await fetch("/JRF/api/verify-payment.js",{
+          const vr=await fetch("/api/verify-payment.js",{
             method:"POST",headers:{"Content-Type":"application/json"},
             body:JSON.stringify({
               ...response,
@@ -575,14 +612,23 @@ localStorage.removeItem("soilspark_jrf_book_v2");
 
 onAuthStateChanged(auth,async u=>{
  user=u||null;
- if(!u){$("userEmail").textContent="Not signed in";$("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the JRF question book.</p></div>';return}
- $("userEmail").textContent=u.email||"Student";$("logoutBtn").style.display="block";
+ if(!u){
+   $("userEmail").textContent="Not signed in";
+   $("authActionBtn").href="https://soilsparks.in/login.html";
+   $("authActionBtn").innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';
+   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the JRF question book.</p></div>';
+   return;
+ }
+ $("userEmail").textContent=u.email||"Student";
+ $("authActionBtn").href="https://soilsparks.in/dashboard.html";
+ $("authActionBtn").innerHTML='<i class="fa-solid fa-gauge-high"></i> Dashboard';
  loadLocalHistory();
  await loadSubscriptions();
  await loadPlans();
  await loadBook();
 });
-$("logoutBtn").onclick=()=>signOut(auth);$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
+// Removed the logout button event listener since the button was removed.
+$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
 $("topicSearch").addEventListener("input",renderBook);$("purchaseClose").onclick=closePurchase;$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
 
 async function loadBook(){
@@ -597,20 +643,61 @@ async function loadBook(){
 function readCache(){try{const x=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");if(!x||Date.now()-x.savedAt>6*60*60*1000)return null;return x}catch(_){return null}}
 function saveCache(data){try{localStorage.setItem(CACHE_KEY,JSON.stringify({...data,savedAt:Date.now()}))}catch(_){}}
 function orderName(a,b){return (a.order??9999)-(b.order??9999)||(a.name||"").localeCompare(b.name||"")}
+
+// State to track collapsed sections
+const collapsedSections = new Set();
+
 function renderBook(){
  const s=$("topicSearch").value.toLowerCase().trim();
  let secs=sections.map(sec=>({...sec,topics:topics.filter(t=>t.sectionId===sec.id)}));
  const legacy=topics.filter(t=>!t.sectionId);
  if(legacy.length)secs.push({id:"legacy",name:"Existing Topics",description:"Topics created before the section structure was introduced.",order:9998,topics:legacy});
  if(s)secs=secs.map(x=>({...x,topics:x.topics.filter(t=>(x.name+" "+(x.description||"")+" "+t.name+" "+(t.description||"")).toLowerCase().includes(s))})).filter(x=>x.topics.length);
+
  $("book").innerHTML=secs.length?secs.map(sec=>{
    const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
-   return `<article class="section">
-    <div class="section-head"><div class="section-title"><div class="section-icon"><i class="fa-solid fa-layer-group"></i></div><div><h3>${esc(sec.name)}</h3><p>${esc(sec.description||"Choose a topic below.")}</p></div></div><span class="section-count">${sec.topics.length} topic${sec.topics.length===1?"":"s"}</span></div>
-    <div class="section-lock ${paid?"section-paid":""}"><span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}</div>
-    <div class="topic-grid">${sec.topics.map(t=>`<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p><div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`).join("")}</div>
+   const isCollapsed = collapsedSections.has(sec.id);
+   return `<article class="section ${isCollapsed ? 'collapsed' : ''}" data-section-id="${esc(sec.id)}">
+    <div class="section-head" data-toggle-section="${esc(sec.id)}">
+      <div class="section-title">
+        <div class="section-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <h3>${esc(sec.name)}</h3>
+          <p>${esc(sec.description||"Choose a topic below.")}</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <span class="section-count">${sec.topics.length} topic${sec.topics.length===1?"":"s"}</span>
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="section-lock ${paid?"section-paid":""}">
+        <span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>
+        ${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}
+      </div>
+      <div class="topic-grid">${sec.topics.map(t=>`<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p><div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`).join("")}</div>
+    </div>
    </article>`;
  }).join(""):'<div class="empty"><i class="fa-regular fa-folder-open"></i><h3>No topics found</h3><p>No active sections/topics match your search.</p></div>';
+
+ // Toggle section collapse/expand
+ $("book").querySelectorAll("[data-toggle-section]").forEach(head=>{
+   head.addEventListener("click", (e) => {
+     // Don't toggle if clicking a button/link inside the head
+     if (e.target.closest("button") || e.target.closest("a")) return;
+     const sectionId = head.dataset.toggleSection;
+     const sectionEl = head.closest(".section");
+     if (collapsedSections.has(sectionId)) {
+       collapsedSections.delete(sectionId);
+       sectionEl.classList.remove("collapsed");
+     } else {
+       collapsedSections.add(sectionId);
+       sectionEl.classList.add("collapsed");
+     }
+   });
+ });
+
  $("book").querySelectorAll("[data-section]").forEach(b=>b.onclick=()=>{
    const sec=sections.find(x=>x.id===b.dataset.section);
    if(sec)showPurchase(subjectIdForSection(sec),sec.name);
