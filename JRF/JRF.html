@@ -656,7 +656,7 @@ function renderBook(){
 
  $("book").innerHTML=secs.length?secs.map(sec=>{
    const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
-   const isCollapsed = collapsedSections.has(sec.id);
+   const isCollapsed = true;
    return `<article class="section ${isCollapsed ? 'collapsed' : ''}" data-section-id="${esc(sec.id)}">
     <div class="section-head" data-toggle-section="${esc(sec.id)}">
       <div class="section-title">
