@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18151546873"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18151546873');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Soilsparks | Subject Store - ICAR JRF Plans</title>
+
+  <!-- Razorpay SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="control.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #b86b3a;       /* warm brown-orange */
+      --primary-dark: #8b4e2a;
+      --primary-light: #e09d6b;
+      --secondary: #ffd966;      /* soft yellow */
+      --accent: #d98c3a;
+      --dark: #4a2e1e;
+      --light: #fef9f2;
+      --gray: #8b6b5a;
+      --white: #ffffff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 16px 32px rgba(0,0,0,0.12);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 28px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+      min-height: 100vh;
+      color: var(--dark);
+    }
+    .header {
+      background: rgba(255, 248, 240, 0.96);
+      backdrop-filter: blur(12px);
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+      border-bottom: 1px solid rgba(184, 107, 58, 0.2);
+    }
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: #b86b3a;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.4rem;
+      transform: rotate(-3deg);
+      box-shadow: 0 6px 12px rgba(184, 107, 58, 0.3);
+    }
+    .logo-text {
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--dark);
+    }
+    .logo-text span { color: #b86b3a; }
+    .user-profile { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+    .user-avatar {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, #b86b3a, #8b4e2a);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+    .login-btn-header {
+      background: linear-gradient(95deg, #b86b3a, #8b4e2a);
+      color: white;
+      border: none;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.25s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .login-btn-header:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .logout-btn {
+      background: #d98c3a;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: 0.25s;
+    }
+    .logout-btn:hover {
+      background: #b86b3a;
+    }
+    .back-btn, .home-btn {
+      background: #fff2e6;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.25s;
+      color: #4a2e1e;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: 1px solid rgba(184, 107, 58, 0.2);
+    }
+    .back-btn:hover, .home-btn:hover {
+      background: #b86b3a;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .container { max-width: 1280px; margin: 30px auto; padding: 0 20px; }
+    .hero-section { text-align: center; margin-bottom: 40px; }
+    .hero-section h1 { font-size: 2.5rem; font-weight: 800; color: #4a2e1e; margin-bottom: 12px; }
+    .hero-section p { font-size: 1.1rem; color: #6b4c3a; max-width: 650px; margin: 0 auto; }
+    .offer-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #fff4e6, #ffe6cc);
+      color: #5c3b1e;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-top: 22px;
+      box-shadow: 0 6px 18px rgba(184, 107, 58, 0.15);
+      border: 1px solid rgba(184, 107, 58, 0.15);
+      text-align: center;
+      gap: 6px;
+      transition: 0.3s;
+    }
+    .offer-badge:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(184, 107, 58, 0.25);
+    }
+    .offer-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .offer-top i { color: #d98c3a; font-size: 1rem; }
+    .coupon { color: #8b4e2a; font-weight: 700; letter-spacing: 1px; }
+    .discount { font-size: 0.85rem; color: #7a5a4a; }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+      margin: 35px 0;
+    }
+    .subject-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px 26px;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(184, 107, 58, 0.08);
+      border: 1px solid rgba(184, 107, 58, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .subject-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(184, 107, 58, 0.15);
+      border-color: #e09d6b;
+    }
+    .subject-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(125deg, #fde7d9, #fbd2b5);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.9rem;
+      color: #8b4e2a;
+      margin-bottom: 18px;
+    }
+    .subject-name {
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #3d2a1c;
+    }
+    .plan-selector {
+      margin: 15px 0 10px;
+      background: #fef7f0;
+      border-radius: 60px;
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      border: 1px solid #f0d9c8;
+    }
+    .plan-dropdown {
+      flex: 2;
+      padding: 10px 12px;
+      border-radius: 40px;
+      border: 1px solid #dbbfa8;
+      background: white;
+      font-weight: 500;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #4a2e1e;
+    }
+    .plan-dropdown:focus {
+      outline: none;
+      border-color: #b86b3a;
+    }
+    .price-tag {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #8b4e2a;
+      margin: 12px 0 8px;
+    }
+    .price-tag span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #7a5a4a;
+    }
+    .duration-badge {
+      display: inline-block;
+      background: #fff2e0;
+      color: #a15e2e;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 30px;
+      margin-left: 8px;
+      font-weight: 500;
+    }
+    .feature-list {
+      list-style: none;
+      margin: 18px 0 20px;
+    }
+    .feature-list li {
+      font-size: 0.85rem;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4f3a2a;
+    }
+    .feature-list i {
+      color: #b86b3a;
+      width: 18px;
+      font-size: 0.8rem;
+    }
+    .buy-subject-btn {
+      width: 100%;
+      background: linear-gradient(95deg, #b86b3a, #8b4e2a);
+      border: none;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.25s;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .buy-subject-btn:hover {
+      background: linear-gradient(95deg, #a15e2e, #7a3f1e);
+      transform: scale(1.01);
+    }
+    .purchased-badge, .expiring-badge, .expired-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      border-radius: 40px;
+      padding: 5px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 2;
+    }
+    .purchased-badge { background: #8b4e2a; color: white; }
+    .expiring-badge { background: #d98c3a; color: white; }
+    .expired-badge { background: #b8a99a; color: white; }
+    .my-subjects-section {
+      background: #fef9f4;
+      border-radius: var(--radius-lg);
+      padding: 20px 25px;
+      margin-top: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid #f0d9c8;
+    }
+    .my-subjects-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #8b4e2a;
+      flex-wrap: wrap;
+    }
+    .purchased-subjects-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .purchased-subject-chip {
+      background: #fde7d9;
+      border-radius: 60px;
+      padding: 10px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #e6c9b2;
+      color: #4a2e1e;
+    }
+    .purchased-subject-chip:hover {
+      background: #fbd2b5;
+      border-color: #b86b3a;
+    }
+    .expired-chip {
+      background: #f0e8e0;
+      color: #9e8b7a;
+      border-color: #ddd0c4;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .expiring-soon {
+      background: #fff1e0;
+      border-color: #e6b17e;
+    }
+    .payment-modal, .loading-overlay, .success-view, .content-loader-overlay { display: none; }
+    .payment-modal.active { display: flex; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); z-index:1000; align-items: center; justify-content: center; }
+    .modal-content { background: white; border-radius: var(--radius-lg); padding: 28px; max-width: 520px; width: 90%; max-height: 90vh; overflow-y: auto; border-top: 6px solid #b86b3a; }
+    .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+    .close-btn { background: none; border: none; font-size: 1.6rem; cursor: pointer; color: #8b4e2a; }
+    .selected-plan-details { background: #fef7f0; padding: 18px; border-radius: var(--radius-md); margin-bottom: 20px; border: 1px solid #f0d9c8; }
+    .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #dbbfa8; }
+    .coupon-input-group { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .apply-coupon-btn { background: #b86b3a; color: white; border: none; padding: 12px 18px; border-radius: 40px; font-weight: 600; cursor: pointer; }
+    .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 14px; border: 1px solid #dbbfa8; margin-top: 6px; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #b86b3a; box-shadow: 0 0 0 3px rgba(184, 107, 58, 0.1); }
+    .btn-primary { background: #b86b3a; color: white; border: none; padding: 14px; border-radius: 40px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; }
+    .btn-primary:hover { background: #8b4e2a; }
+    .message { padding: 10px; border-radius: 14px; margin: 10px 0; display: none; }
+    .message.show { display: block; }
+    .success { background: #e8f5e9; color: #1e5a1e; }
+    .error { background: #ffebee; color: #c62828; }
+    .info { background: #fff2e0; color: #8b4e2a; }
+    .loading-overlay.active { display: flex; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); z-index:2000; align-items: center; justify-content: center; color: white; flex-direction: column; gap: 15px; }
+    .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #b86b3a; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .success-view.active { display: block; text-align: center; background: white; max-width: 550px; margin: 40px auto; padding: 40px; border-radius: 40px; box-shadow: var(--shadow-lg); border: 1px solid #f0d9c8; }
+    .action-buttons { display: flex; gap: 15px; justify-content: center; margin-top: 25px; flex-wrap: wrap; }
+    .footer { text-align: center; color: #7a5a4a; margin-top: 40px; padding: 20px; }
+    .guest-notice {
+      background: #fff6e9;
+      border-left: 4px solid #e09d6b;
+      padding: 12px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .content-loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 248, 240, 0.92);
+      backdrop-filter: blur(4px);
+      z-index: 1500;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      transition: all 0.2s ease;
+    }
+    .content-loader-overlay.active { display: flex; }
+    .content-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f0d9c8;
+      border-top: 5px solid #b86b3a;
+      border-right: 5px solid #e09d6b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @media (max-width: 700px) { .hero-section h1 { font-size: 1.8rem; } .subject-card { padding: 18px; } .plan-selector { flex-direction: column; align-items: stretch; } }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K5XJZHT26S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K5XJZHT26S', { page_title: document.title, page_location: window.location.href });
+  </script>
+</head>
+<body>
+<div class="header">
+  <div class="header-content">
+    <div class="logo-section" onclick="window.location.href='index.html'">
+      <div class="logo-icon"><i class="fas fa-seedling"></i></div>
+      <div class="logo-text">Soil<span>sparks</span></div>
+    </div>
+    <div class="user-profile" id="userProfileSection"></div>
+    <a href="index.html" class="home-btn"><i class="fas fa-home"></i> Home</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hero-section">
+    <h1>🌱 Soilsparks Subject Store</h1>
+    <p>Flexible plans for every aspirant — 7-day trial, monthly, quarterly & yearly access with PYQs + Mock tests</p>
+
+    <div class="offer-badge">
+      <div class="offer-top"><i class="fas fa-tag"></i> Use code <span class="coupon">SOIL20</span> — get 20% off</div>
+      <div class="discount">on all plans above ₹199</div>
+    </div>
+
+    <div id="guestNotice" class="guest-notice" style="display: none;">
+      <span><i class="fas fa-info-circle"></i> You are browsing as a guest. Login to purchase subjects and track subscriptions!</span>
+      <button class="login-btn-header" id="guestLoginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+    </div>
+    <div id="mySubjectsSection" class="my-subjects-section" style="display: none;">
+      <div class="my-subjects-title"><i class="fas fa-crown" style="color:#d98c3a;"></i> Your Active Subscriptions</div>
+      <div id="purchasedSubjectsList" class="purchased-subjects-list"></div>
+      <div id="expiredSubjectsList" class="purchased-subjects-list" style="margin-top: 15px;"></div>
+      <p class="note" style="margin-top: 12px; font-size:0.8rem;"><i class="fas fa-info-circle"></i> Click on any active subject to start practicing on YearWise platform</p>
+    </div>
+    <div id="subjectsContainer" class="subjects-grid"></div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="payment-modal" id="paymentModal">
+    <div class="modal-content">
+      <div class="modal-header"><h3>Complete Your Purchase</h3><button class="close-btn" onclick="closePaymentModal()"><i class="fas fa-times"></i></button></div>
+      <div id="selectedPlanDetails" class="selected-plan-details"></div>
+      <div class="form-group">
+        <label><i class="fas fa-tag"></i> Coupon Code</label>
+        <div class="coupon-input-group">
+          <input type="text" id="couponCodeInput" placeholder="Have A Coupon?">
+          <button type="button" class="apply-coupon-btn" id="applyCouponBtn"><i class="fas fa-gift"></i> Apply</button>
+        </div>
+        <div id="couponMessage" class="message"></div>
+      </div>
+      <div id="paymentMessage" class="message"></div>
+      <form id="paymentForm">
+        <div class="form-group"><label>Full Name</label><input type="text" id="customerName" required></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" id="customerPhone" maxlength="10" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="customerEmail" required></div>
+        <div class="form-group"><label>Payment Method</label><select id="paymentMethod" required><option value="">Select</option><option value="Razorpay">Razorpay (UPI/Card/NetBanking)</option></select></div>
+        <button type="submit" class="btn-primary" id="payButton"><i class="fas fa-lock"></i> Pay ₹<span id="payAmount">0</span></button>
+      </form>
+      <p style="text-align:center; margin-top:12px; font-size:0.75rem;"><i class="fas fa-shield-alt"></i> Secure Razorpay • Flexible plans</p>
+    </div>
+  </div>
+
+  <div class="success-view" id="successView">
+    <div><i class="fas fa-check-circle" style="font-size:4rem; color:#b86b3a;"></i></div>
+    <h2>Purchase Successful! 🎉</h2>
+    <p>Your subject plan is activated. Happy learning!</p>
+    <div id="subscriptionDetails"></div>
+    <div class="action-buttons">
+      <button class="back-btn" onclick="location.reload()"><i class="fas fa-sync-alt"></i> Continue Shopping</button>
+      <button class="btn-primary" id="gotoSubjectBtn" style="width:auto; padding:12px 24px;"><i class="fas fa-chalkboard-user"></i> Start Learning</button>
+    </div>
+  </div>
+  <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div><p>Processing your payment...</p></div>
+  <div class="content-loader-overlay" id="contentLoaderOverlay"><div class="loader-icon"><i class="fas fa-leaf"></i></div><div class="content-spinner"></div><p>Loading your dashboard...</p></div>
+  <div class="footer"><p>© 2025 Soilsparks | ICAR JRF Special Subjects | Flexible access plans</p></div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, addDoc, serverTimestamp, Timestamp, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyC7IW1gTzEl61cj1Y8_nsPT7V8IgWoQDK8",
+    authDomain: "saksham-27f2a.firebaseapp.com",
+    projectId: "saksham-27f2a",
+    storageBucket: "saksham-27f2a.appspot.com",
+    messagingSenderId: "584948456348",
+    appId: "1:584948456348:web:13f9ad789dbd4c18a00659"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const RAZORPAY_KEY_ID = "rzp_live_SMdQqXXnqY87rh";
+
+  // MULTI-PLAN CONFIGURATION
+  const PLANS = [
+    { id: "monthly30", name: "1 Month Access", days: 30, price: 149, badge: "Most Popular" },
+    { id: "trial7", name: "7 Days Sprint", days: 7, price: 49, badge: "🔥 Trial" },
+    { id: "quarterly90", name: "3 Months Access", days: 90, price: 349, badge: "Best Value" },
+    { id: "halfyearly180", name: "6 Months Days Access", days: 180, price: 599, badge: "Best Value" },
+    { id: "yearly365", name: "1 Year Access", days: 365, price: 999, badge: "Save 58%" }
+  ];
+  const DEFAULT_PLAN = PLANS[0];
+
+  const subjectsList = [
+    { id: "Agronomy", name: "Agronomy", icon: "🌾", page: "agronomy.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "Horticulture", name: "Horticulture", icon: "🍎", page: "horticulture.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "PlantSciences", name: "Plant Sciences", icon: "🌱", page: "plantsciences.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "PhysicalScience", name: "Physical Science", icon: "⚛️", page: "physicalscience.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "Entomology", name: "Entomology", icon: "🐞", page: "entomology.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "SocialSciences", name: "Social Sciences", icon: "📘", page: "socialsciences.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "Engineering", name: "Agricultural Engineering", icon: "⚙️", page: "engineering.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "StatisticalScience", name: "Statistical Science", icon: "📊", page: "statisticalscience.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "DairyScience", name: "Dairy Science", icon: "🥛", page: "dairyscience.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "DairyTech", name: "Dairy Tech", icon: "🧀", page: "dairytech.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "PlantBiotechnology", name: "Plant Biotechnology", icon: "🧬", page: "plantbiotechnology.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]},
+    { id: "FoodScience", name: "Food Science", icon: "🍽️", page: "foodscience.html", features: [
+      "📅 7 Years of ICAR JRF PYQs (2019–2025) with Expert Explanations",
+      "📊 Personalised Progress & Deep Analytics Dashboard",
+      "🎯 Accurate JRF Rank Prediction Engine",
+      "🧪 Unlimited Full-Length Mock Tests",
+      "🏆 Competitive Leaderboard — See Where You Stand Nationally",
+      "🌟 Access To All Premium Features of App"
+    ]}
+  ];
+
+  let currentUser = null;
+  let selectedSubject = null;
+  let selectedPlan = { ...DEFAULT_PLAN };
+  let appliedCoupon = null;
+  let discountedPrice = null;
+  let activeSubscriptions = [];
+
+  // COUPONS (original logic preserved, code changed to SOIL20 for consistency)
+  const COUPONS = [
+    { code: "SOIL20", discountType: "percentage", value: 20, minAmount: 199 },
+    { code: "SPROUT10", discountType: "percentage", value: 10, minAmount: 99 },
+    { code: "FLAT50", discountType: "flat", value: 50, minAmount: 299 }
+  ];
+
+  function showContentLoader() { document.getElementById('contentLoaderOverlay')?.classList.add('active'); }
+  function hideContentLoader() { document.getElementById('contentLoaderOverlay')?.classList.remove('active'); }
+  function isSubscriptionExpired(expiryDate) { if(!expiryDate) return true; const expiry = expiryDate.toDate ? expiryDate.toDate() : new Date(expiryDate); return new Date() > expiry; }
+  function getDaysRemaining(expiryDate) { const expiry = expiryDate.toDate ? expiryDate.toDate() : new Date(expiryDate); return Math.ceil((expiry - new Date()) / (86400000)); }
+
+  async function loadActiveSubscriptions() {
+    if (!currentUser) { activeSubscriptions = []; return; }
+    try {
+      const premiumDoc = await getDoc(doc(db, "premium_users", currentUser.uid));
+      let subsFromPremium = [];
+      let needsRepair = false;
+      if (premiumDoc.exists()) {
+        const data = premiumDoc.data();
+        if (data.subscriptions && Array.isArray(data.subscriptions)) {
+          subsFromPremium = data.subscriptions;
+        } else if (data.purchasedSubjects && data.expiryDate && !isSubscriptionExpired(data.expiryDate)) {
+          subsFromPremium = [{ subjectId: data.purchasedSubjects?.[0] || "Unknown", expiryDate: data.expiryDate }];
+        }
+      }
+      const subscriptionsQuery = await getDocs(query(collection(db, "subscriptions"), where("userId", "==", currentUser.uid), where("status", "==", "active")));
+      const fallbackSubscriptions = [];
+      subscriptionsQuery.forEach(doc => {
+        const subData = doc.data();
+        const expiry = subData.expiryDate?.toDate ? subData.expiryDate.toDate() : new Date(subData.expiryDate);
+        if (expiry <= new Date()) return;
+        const existsInPremium = subsFromPremium.some(s => s.paymentId === subData.paymentId || (s.subjectId === subData.planName && Math.abs(new Date(s.expiryDate?.toDate?.() || s.expiryDate) - expiry) < 1000));
+        if (!existsInPremium) {
+          fallbackSubscriptions.push({
+            subjectId: subData.planName,
+            planId: getPlanIdFromName(subData.planDetails),
+            planDays: subData.planDays,
+            purchaseDate: subData.createdAt?.toDate?.() || new Date(),
+            expiryDate: subData.expiryDate,
+            paymentId: subData.paymentId,
+            amount: subData.amount || subData.originalAmount
+          });
+          needsRepair = true;
+        }
+      });
+      let allSubscriptions = [...subsFromPremium, ...fallbackSubscriptions];
+      if (needsRepair && fallbackSubscriptions.length > 0) {
+        try {
+          await setDoc(doc(db, "premium_users", currentUser.uid), { subscriptions: allSubscriptions, repairedAt: serverTimestamp() }, { merge: true });
+        } catch (repairError) { console.error("Failed to repair:", repairError); }
+      }
+      activeSubscriptions = allSubscriptions.filter(sub => !isSubscriptionExpired(sub.expiryDate));
+    } catch (err) { console.error("Error:", err); activeSubscriptions = []; }
+  }
+
+  function getPlanIdFromName(planName) {
+    if (!planName) return "quarterly90";
+    const planMap = {
+      "1 Month Access": "monthly30",
+      "7 Days Sprint": "trial7",
+      "3 Months Access": "quarterly90",
+      "6 Months Days Access": "halfyearly180",
+      "1 Year Access": "yearly365"
+    };
+    return planMap[planName] || "quarterly90";
+  }
+
+  async function addSubscription(subjectId, planDetails, paymentDetails) {
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + planDetails.days);
+    const newSubscription = {
+      subjectId: subjectId,
+      planId: planDetails.id,
+      planDays: planDetails.days,
+      purchaseDate: new Date(),
+      expiryDate: Timestamp.fromDate(expiryDate),
+      paymentId: paymentDetails.paymentId,
+      amount: paymentDetails.amount
+    };
+    const userPremiumRef = doc(db, "premium_users", currentUser.uid);
+    const docSnap = await getDoc(userPremiumRef);
+    let existingSubs = docSnap.exists() && docSnap.data().subscriptions ? docSnap.data().subscriptions : [];
+    existingSubs = existingSubs.filter(sub => sub.subjectId !== subjectId);
+    existingSubs.push(newSubscription);
+    await setDoc(userPremiumRef, { subscriptions: existingSubs, updatedAt: serverTimestamp() }, { merge: true });
+    await setDoc(doc(db, "users", currentUser.uid), { isPremium: true, updatedAt: serverTimestamp() }, { merge: true });
+  }
+
+  async function addSubscriptionWithRetry(subjectId, planDetails, paymentDetails, retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        await addSubscription(subjectId, planDetails, paymentDetails);
+        return;
+      } catch (error) {
+        console.error(`Subscription write failed (attempt ${attempt}/${retries})`, error);
+        if (attempt === retries) throw error;
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+  }
+
+  function renderSubjectsGrid() {
+    const activeSubjectIds = activeSubscriptions.map(s => s.subjectId);
+    const container = document.getElementById('subjectsContainer');
+    if (!container) return;
+    container.innerHTML = subjectsList.map(sub => {
+      const isActive = activeSubjectIds.includes(sub.id);
+      const planOptionsHtml = PLANS.map(plan => `<option value="${plan.id}" data-price="${plan.price}" data-days="${plan.days}" data-name="${plan.name}">${plan.name} - ₹${plan.price}</option>`).join('');
+      return `<div class="subject-card" data-subject-id="${sub.id}">
+        ${isActive ? '<div class="purchased-badge"><i class="fas fa-check-circle"></i> Active</div>' : ''}
+        <div class="subject-icon">${sub.icon}</div>
+        <div class="subject-name">${sub.name}</div>
+        <div class="plan-selector">
+          <select class="plan-dropdown" data-subject="${sub.id}">
+            ${planOptionsHtml}
+          </select>
+        </div>
+        <div class="price-tag" id="price-display-${sub.id}">₹${DEFAULT_PLAN.price}<span> / ${DEFAULT_PLAN.name}</span></div>
+        <ul class="feature-list">${sub.features.map(f => `<li><i class="fas fa-check-circle"></i> ${f}</li>`).join('')}</ul>
+        ${!isActive ? `<button class="buy-subject-btn buy-now-btn" data-id="${sub.id}">Choose Plan & Buy <i class="fas fa-arrow-right"></i></button>` : `<button class="buy-subject-btn practice-now-btn" data-id="${sub.id}" style="background:#8b4e2a;"><i class="fas fa-play"></i> Practice Now</button>`}
+      </div>`;
+    }).join('');
+
+    subjectsList.forEach(sub => {
+      const dropdown = document.querySelector(`.plan-dropdown[data-subject="${sub.id}"]`);
+      const priceSpan = document.getElementById(`price-display-${sub.id}`);
+      if (dropdown && priceSpan) {
+        dropdown.addEventListener('change', (e) => {
+          const selectedOpt = dropdown.options[dropdown.selectedIndex];
+          const price = selectedOpt.getAttribute('data-price');
+          const name = selectedOpt.getAttribute('data-name');
+          priceSpan.innerHTML = `₹${price}<span> / ${name}</span>`;
+        });
+      }
+    });
+    document.querySelectorAll('.buy-now-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); const subjectId = btn.dataset.id; selectSubjectWithPlan(subjectId); }));
+    document.querySelectorAll('.practice-now-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); window.location.href = `YearWise.html?subject=${encodeURIComponent(btn.dataset.id)}`; }));
+  }
+
+  function selectSubjectWithPlan(subjectId) {
+    if (!currentUser) { alert("Please login to purchase subjects!"); window.location.href = 'login1.html'; return; }
+    if (activeSubscriptions.some(s => s.subjectId === subjectId)) { alert("You already have an active subscription for this subject! Redirecting to practice..."); window.location.href = `YearWise.html?subject=${encodeURIComponent(subjectId)}`; return; }
+    selectedSubject = subjectsList.find(s => s.id === subjectId);
+    const subjectCard = document.querySelector(`.subject-card[data-subject-id="${subjectId}"]`);
+    const planDropdown = subjectCard?.querySelector('.plan-dropdown');
+    if (planDropdown && planDropdown.value) {
+      const planId = planDropdown.value;
+      const foundPlan = PLANS.find(p => p.id === planId);
+      if (foundPlan) selectedPlan = { ...foundPlan };
+      else selectedPlan = { ...DEFAULT_PLAN };
+    } else selectedPlan = { ...DEFAULT_PLAN };
+    appliedCoupon = null; discountedPrice = null;
+    updateModalPrice();
+    document.getElementById('paymentModal').classList.add('active');
+  }
+
+  function updateModalPrice() {
+    const basePrice = selectedPlan ? selectedPlan.price : 299;
+    const finalPrice = discountedPrice !== null ? discountedPrice : basePrice;
+    document.getElementById('payAmount').innerText = finalPrice;
+    const detailsDiv = document.getElementById('selectedPlanDetails');
+    if (selectedSubject && selectedPlan && detailsDiv) {
+      let discountHtml = '';
+      if (appliedCoupon && discountedPrice !== null && discountedPrice < basePrice) {
+        const saved = basePrice - discountedPrice;
+        discountHtml = `<div class="detail-row" style="background:#fde7d9;"><span>Coupon Discount (${appliedCoupon.code}):</span><span style="color:#8b4e2a;">- ₹${saved}</span></div>`;
+      }
+      detailsDiv.innerHTML = `<div class="detail-row"><span>Subject:</span><span>${selectedSubject.name}</span></div>
+                              <div class="detail-row"><span>Plan:</span><span>${selectedPlan.name} (${selectedPlan.days} days)</span></div>
+                              <div class="detail-row"><span>Original Price:</span><span>₹${basePrice}</span></div>
+                              ${discountHtml}
+                              <div class="detail-row total-amount"><strong>Total Amount:</strong><strong>₹${finalPrice}</strong></div>`;
+    }
+  }
+
+  window.closePaymentModal = function() { document.getElementById('paymentModal').classList.remove('active'); };
+  document.getElementById('applyCouponBtn')?.addEventListener('click', () => {
+    const code = document.getElementById('couponCodeInput').value;
+    if (!selectedSubject || !selectedPlan) { showMsg('couponMessage', 'Select subject & plan first', 'error'); return; }
+    const upperCode = code.trim().toUpperCase();
+    const coupon = COUPONS.find(c => c.code.toUpperCase() === upperCode);
+    if (!coupon) { showMsg('couponMessage', 'Invalid coupon', 'error'); return; }
+    const base = selectedPlan.price;
+    if (base < coupon.minAmount) { showMsg('couponMessage', `Min ₹${coupon.minAmount} required`, 'error'); return; }
+    let newPrice = coupon.discountType === "percentage" ? base - (base * coupon.value / 100) : base - coupon.value;
+    newPrice = Math.max(0, Math.round(newPrice));
+    appliedCoupon = coupon;
+    discountedPrice = newPrice;
+    updateModalPrice();
+    showMsg('couponMessage', `Applied! You saved ${coupon.discountType === 'percentage' ? coupon.value+'%' : '₹'+coupon.value}`, 'success');
+  });
+  function showMsg(elId, msg, type) { const el = document.getElementById(elId); if(el) { el.textContent = msg; el.className = `message show ${type}`; setTimeout(() => el.classList.remove('show'), 5000); } }
+
+  document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentUser) { alert("Please login first"); return; }
+    const name = document.getElementById('customerName').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+    const email = document.getElementById('customerEmail').value.trim();
+    const method = document.getElementById('paymentMethod').value;
+    if (!name || !phone || !email || !method) { showMsg('paymentMessage', 'All fields required', 'error'); return; }
+    const finalAmount = discountedPrice !== null ? discountedPrice : selectedPlan.price;
+    await processPayment(name, phone, email, finalAmount);
+  });
+
+  async function processPayment(name, phone, email, amount) {
+    const payBtn = document.getElementById('payButton');
+    const loading = document.getElementById('loadingOverlay');
+    if(payBtn) payBtn.disabled = true; if(loading) loading.classList.add('active');
+    try {
+      const orderRes = await fetch('https://agriachiever.vercel.app/api/create-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ amount }) });
+      const orderData = await orderRes.json();
+      if (!orderRes.ok || !orderData.success) throw new Error(orderData.message);
+      const options = {
+        key: RAZORPAY_KEY_ID, amount: orderData.order.amount, currency: 'INR', name: 'Soilsparks',
+        description: `${selectedSubject.name} - ${selectedPlan.name} (${selectedPlan.days} days)`,
+        order_id: orderData.order.id, prefill: { name, email, contact: phone }, theme: { color: "#b86b3a" },
+        handler: async (response) => {
+          try {
+            const verifyRes = await fetch('https://agriachiever.vercel.app/api/verify-payment', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, razorpay_order_id: response.razorpay_order_id, razorpay_signature: response.razorpay_signature }) });
+            const verifyData = await verifyRes.json();
+            if (!verifyData.success) throw new Error('Payment verification failed.');
+            await addSubscriptionWithRetry(selectedSubject.id, selectedPlan, { paymentId: response.razorpay_payment_id, amount });
+            await addDoc(collection(db, "subscriptions"), { userId: currentUser.uid, userName: name, userEmail: email, userPhone: phone, planName: selectedSubject.name, planDetails: selectedPlan.name, planDays: selectedPlan.days, originalAmount: selectedPlan.price, amount: amount, couponCode: appliedCoupon ? appliedCoupon.code : null, discountAmount: appliedCoupon ? (selectedPlan.price - amount) : 0, paymentId: response.razorpay_payment_id, status: "active", createdAt: serverTimestamp(), expiryDate: Timestamp.fromDate(new Date(Date.now() + selectedPlan.days * 86400000)) });
+            if(loading) loading.classList.remove('active');
+            closePaymentModal();
+            await renderUI();
+            const subDetailsDiv = document.getElementById('subscriptionDetails');
+            if(subDetailsDiv) subDetailsDiv.innerHTML = `<p><i class="fas fa-crown"></i> Subject: ${selectedSubject.name}</p><p><i class="fas fa-calendar-check"></i> ${selectedPlan.name} (${selectedPlan.days} days)</p><p><i class="fas fa-rupee-sign"></i> Paid: ₹${amount}</p>`;
+            const successDiv = document.getElementById('successView');
+            if(successDiv) successDiv.classList.add('active');
+            document.querySelector('.subjects-grid')?.setAttribute('style', 'display:none');
+            document.getElementById('mySubjectsSection')?.setAttribute('style', 'display:none');
+            const gotoBtn = document.getElementById('gotoSubjectBtn');
+            if(gotoBtn) gotoBtn.onclick = () => window.location.href = `YearWise.html?subject=${selectedSubject.id}`;
+            if(payBtn) payBtn.disabled = false;
+          } catch (err) { if(loading) loading.classList.remove('active'); showMsg('paymentMessage', err.message, 'error'); if(payBtn) payBtn.disabled = false; }
+        },
+        modal: { ondismiss: () => { if(loading) loading.classList.remove('active'); if(payBtn) payBtn.disabled = false; } }
+      };
+      new Razorpay(options).open();
+    } catch (err) { if(loading) loading.classList.remove('active'); showMsg('paymentMessage', err.message, 'error'); if(payBtn) payBtn.disabled = false; }
+  }
+
+  function updateHeaderUI() {
+    const profileDiv = document.getElementById('userProfileSection');
+    if (currentUser && profileDiv) {
+      profileDiv.innerHTML = `<div class="user-avatar">${currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U'}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+      document.getElementById('logoutBtn')?.addEventListener('click', async () => { await signOut(auth); window.location.reload(); });
+      const guestNotice = document.getElementById('guestNotice');
+      if(guestNotice) guestNotice.style.display = 'none';
+    } else if(profileDiv) {
+      profileDiv.innerHTML = `<a href="login1.html" class="login-btn-header"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+      const guestNotice = document.getElementById('guestNotice');
+      if(guestNotice) guestNotice.style.display = 'flex';
+    }
+  }
+  document.getElementById('guestLoginBtn')?.addEventListener('click', () => { window.location.href = 'login1.html'; });
+
+  async function renderUI() {
+    showContentLoader();
+    try {
+      await loadActiveSubscriptions();
+      renderSubjectsGrid();
+      const mySection = document.getElementById('mySubjectsSection');
+      if (mySection) {
+        if (currentUser && activeSubscriptions.length > 0) {
+          mySection.style.display = 'block';
+          const activeContainer = document.getElementById('purchasedSubjectsList');
+          if (activeContainer) {
+            activeContainer.innerHTML = activeSubscriptions.map(sub => {
+              const subject = subjectsList.find(s => s.id === sub.subjectId);
+              const daysLeft = getDaysRemaining(sub.expiryDate);
+              const isExpiringSoon = daysLeft <= 7;
+              return `<div class="purchased-subject-chip ${isExpiringSoon ? 'expiring-soon' : ''}" data-subject-id="${sub.subjectId}"><i class="fas fa-book-open"></i> ${subject ? subject.name : sub.subjectId} <span style="font-size:0.7rem;">${daysLeft} days left</span></div>`;
+            }).join('');
+            document.querySelectorAll('.purchased-subject-chip').forEach(chip => chip.addEventListener('click', () => { window.location.href = `YearWise.html?subject=${encodeURIComponent(chip.dataset.subjectId)}`; }));
+          }
+        } else if (currentUser) {
+          mySection.style.display = 'block';
+          document.getElementById('purchasedSubjectsList').innerHTML = '<p style="color:#8b6b5a;"><i class="fas fa-shopping-cart"></i> No active subscriptions. Choose a flexible plan above!</p>';
+        } else mySection.style.display = 'none';
+      }
+    } catch(err) { console.error(err); } finally { hideContentLoader(); }
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    updateHeaderUI();
+    if (user) {
+      try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          if(document.getElementById('customerName')) document.getElementById('customerName').value = userDoc.data().name || '';
+          if(document.getElementById('customerEmail')) document.getElementById('customerEmail').value = userDoc.data().email || user.email || '';
+          if(document.getElementById('customerPhone')) document.getElementById('customerPhone').value = userDoc.data().phone || '';
+        } else if(document.getElementById('customerEmail')) document.getElementById('customerEmail').value = user.email || '';
+      } catch(e) { console.error(e); }
+    }
+    await renderUI();
+  });
+  const urlParams = new URLSearchParams(window.location.search);
+  const couponFromURL = urlParams.get("coupon");
+  if (couponFromURL) { setTimeout(() => { const input = document.getElementById("couponCodeInput"); if(input) { input.value = couponFromURL; document.getElementById("applyCouponBtn")?.click(); } }, 500); }
+</script>
+</body>
+<script>
+  (function () {
+    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    document.addEventListener('keydown', function (e) {
+      const key = e.key.toLowerCase();
+      if (e.ctrlKey && ['c', 'x', 's', 'u', 'a', 'p'].includes(key)) { e.preventDefault(); }
+      if (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(key)) { e.preventDefault(); }
+      if (e.key === 'F12') { e.preventDefault(); }
+    });
+    document.addEventListener('selectstart', function (e) { e.preventDefault(); });
+    document.addEventListener('copy', function (e) { e.preventDefault(); });
+    document.addEventListener('cut', function (e) { e.preventDefault(); });
+  })();
+</script>
+<style>
+  body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+</style>
+</html>
