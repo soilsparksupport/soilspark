@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin · Pricing & Coupons · SoilSpark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+  --blue:#1769aa;--blue-dark:#0d4775;--blue-light:#eaf4fc;
+  --white:#fff;--bg:#f5f9fc;--text:#183247;--muted:#718394;
+  --border:#dbe8f1;--danger:#dc3545;--success:#198754;
+  --amber:#b45309;--shadow:0 12px 35px rgba(25,74,109,.09);--radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:radial-gradient(circle at top right,rgba(42,139,207,.10),transparent 30%),var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font-family:inherit}
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{width:100%;max-width:430px;background:var(--white);border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow);overflow:hidden}
+.login-top{padding:38px 30px 32px;background:linear-gradient(135deg,#0d4775,#1d78b7);color:#fff;text-align:center}
+.login-logo{width:72px;height:72px;border-radius:22px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px}
+.login-top h1{font-family:Poppins,sans-serif;font-size:29px;margin-bottom:6px}
+.login-top p{opacity:.85;font-size:14px}
+.login-body{padding:30px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.field-wrap{position:relative}
+.field-wrap i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8da2b2}
+.field input{width:100%;height:50px;border:1.5px solid var(--border);border-radius:13px;padding:0 15px 0 45px;outline:none;font-size:14px;background:#fbfdff}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(23,105,170,.10);background:#fff}
+#loginBtn{width:100%;height:52px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-weight:700;cursor:pointer;margin-top:5px}
+#loginBtn:disabled{opacity:.65;cursor:not-allowed}
+.login-error{display:none;margin-bottom:18px;padding:12px 14px;border-radius:11px;background:#fff1f2;border:1px solid #ffc7cd;color:#a61b29;font-size:13px}
+#dashboardScreen{display:none;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--border);box-shadow:0 4px 18px rgba(25,74,109,.05);position:sticky;top:0;z-index:50}
+.topbar-inner{max-width:1300px;margin:auto;padding:17px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-icon{width:45px;height:45px;border-radius:13px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand h2{font-family:Poppins,sans-serif;font-size:20px;color:var(--blue-dark)}
+.brand small{color:var(--muted);font-size:11px;display:block;margin-top:1px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.admin-email{background:var(--blue-light);color:var(--blue-dark);padding:9px 13px;border-radius:10px;font-size:12px;font-weight:600;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{border:0;background:#fff0f1;color:var(--danger);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+.page{max-width:1300px;margin:auto;padding:32px 24px 60px}
+.welcome{margin-bottom:22px}
+.welcome h1{font-family:Poppins,sans-serif;font-size:28px;color:var(--blue-dark)}
+.welcome p{margin-top:5px;color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.tab{border:1px solid var(--border);background:#fff;color:var(--muted);padding:11px 18px;border-radius:11px;font-weight:700;cursor:pointer;font-size:13px}
+.tab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.panel-header{padding:22px 25px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.panel-header h2{font-family:Poppins,sans-serif;font-size:20px;color:var(--blue-dark)}
+.panel-header p{color:var(--muted);font-size:12px;margin-top:3px}
+.primary-btn{border:0;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;padding:11px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px}
+.primary-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(23,105,170,.22)}
+.ghost-btn{border:1px solid var(--border);background:#fff;color:var(--blue-dark);padding:10px 15px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px}
+.table-wrap{padding:0 0 6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:14px 16px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);border-bottom:1px solid var(--border);background:#f7fafc;font-weight:800}
+td{padding:14px 16px;border-bottom:1px solid #eef4f8;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#f9fcfe}
+.badge{display:inline-block;padding:4px 9px;border-radius:20px;font-size:10px;font-weight:800}
+.badge-active{background:#e8f7ee;color:var(--success)}
+.badge-inactive{background:#fff4dc;color:var(--amber)}
+.badge-type{background:var(--blue-light);color:var(--blue-dark)}
+.icon-btn{border:0;background:#edf3f7;color:var(--blue-dark);width:32px;height:32px;border-radius:8px;cursor:pointer;margin-right:5px}
+.icon-btn:hover{background:var(--blue-light)}
+.icon-btn.danger{background:#fff0f1;color:var(--danger)}
+.icon-btn.danger:hover{background:#ffe0e3}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty i{font-size:42px;margin-bottom:15px;color:#bfd2df}
+.empty h3{color:var(--text);margin-bottom:5px}
+.loading{text-align:center;padding:50px;color:var(--muted)}
+.loading i{color:var(--blue);font-size:25px;margin-bottom:10px}
+.error-box{margin:20px 25px;padding:16px;border-radius:12px;background:#fff1f2;border:1px solid #ffc7cd;color:#a61b29;font-size:13px;line-height:1.6}
+#modal{position:fixed;inset:0;background:rgba(10,35,53,.52);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000;backdrop-filter:blur(4px)}
+.modal{background:#fff;width:100%;max-width:520px;border-radius:20px;padding:26px;box-shadow:0 25px 70px rgba(0,0,0,.2);max-height:92vh;overflow:auto}
+.modal h3{font-family:Poppins,sans-serif;margin-bottom:6px;color:var(--text)}
+.modal .sub{color:var(--muted);font-size:12px;margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.form-row label{display:block;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.form-row input,.form-row select,.form-row textarea{width:100%;height:42px;border:1.5px solid var(--border);border-radius:10px;padding:0 12px;font-size:13px;outline:none;background:#fbfdff}
+.form-row textarea{height:70px;padding:10px 12px;resize:vertical}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,105,170,.10);background:#fff}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}
+.modal-cancel,.modal-confirm{border:0;padding:11px 18px;border-radius:9px;font-weight:700;cursor:pointer;font-size:13px}
+.modal-cancel{background:#edf3f7;color:var(--text)}
+.modal-confirm{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
+.modal-confirm.danger{background:var(--danger)}
+#toast{position:fixed;right:22px;bottom:22px;max-width:360px;background:#183247;color:#fff;padding:13px 17px;border-radius:11px;box-shadow:0 12px 30px rgba(0,0,0,.18);font-size:13px;transform:translateY(100px);opacity:0;pointer-events:none;transition:.3s;z-index:2000}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-left:4px solid #25a45b}
+#toast.error{border-left:4px solid var(--danger)}
+@media(max-width:800px){.topbar-inner{padding:14px 16px}.admin-email{display:none}.page{padding:25px 15px 40px}}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}.login-body{padding:24px 20px}.login-top{padding:30px 20px}}
+</style>
+</head>
+<body>
+
+<section id="loginScreen">
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-logo"><i class="fas fa-tags"></i></div>
+      <h1>SoilSpark</h1>
+      <p>Pricing & Coupon Control</p>
+    </div>
+    <div class="login-body">
+      <div id="loginError" class="login-error"></div>
+      <div class="field">
+        <label for="adminEmail">Administrator Email</label>
+        <div class="field-wrap"><i class="fas fa-envelope"></i>
+          <input type="email" id="adminEmail" placeholder="Enter admin email" autocomplete="username">
+        </div>
+      </div>
+      <div class="field">
+        <label for="adminPassword">Password</label>
+        <div class="field-wrap"><i class="fas fa-lock"></i>
+          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password">
+        </div>
+      </div>
+      <button id="loginBtn"><i class="fas fa-right-to-bracket"></i> Login as Administrator</button>
+    </div>
+  </div>
+</section>
+
+<section id="dashboardScreen">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon"><i class="fas fa-tags"></i></div>
+        <div><h2>SoilSpark</h2><small>Pricing & Coupon Console</small></div>
+      </div>
+      <div class="top-actions">
+        <div id="adminEmailDisplay" class="admin-email">Administrator</div>
+        <button id="logoutBtn" class="logout-btn"><i class="fas fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="welcome">
+      <h1>Pricing & Coupons</h1>
+      <p>Control plan prices, access durations, and discount codes. Changes reflect instantly in the JRF question book.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="plans"><i class="fas fa-layer-group"></i> Plans</button>
+      <button class="tab" data-tab="coupons"><i class="fas fa-ticket"></i> Coupons</button>
+    </div>
+
+    <section class="panel" id="plansPanel">
+      <div class="panel-header">
+        <div>
+          <h2><i class="fas fa-layer-group"></i> Subscription Plans</h2>
+          <p>Configure price, duration, and visibility for each plan.</p>
+        </div>
+        <div>
+          <button class="ghost-btn" id="seedBtn"><i class="fas fa-seedling"></i> Seed Defaults</button>
+          <button class="primary-btn" id="newPlanBtn"><i class="fas fa-plus"></i> New Plan</button>
+        </div>
+      </div>
+      <div class="table-wrap" id="plansTable">
+        <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading plans...</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="couponsPanel" style="display:none">
+      <div class="panel-header">
+        <div>
+          <h2><i class="fas fa-ticket"></i> Coupon Codes</h2>
+          <p>Create percentage or flat discounts with usage limits and expiry.</p>
+        </div>
+        <button class="primary-btn" id="newCouponBtn"><i class="fas fa-plus"></i> New Coupon</button>
+      </div>
+      <div class="table-wrap" id="couponsTable">
+        <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading coupons...</p></div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<div id="modal">
+  <div class="modal" id="modalBody"></div>
+</div>
+<div id="toast"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}
+  from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+import {getFirestore,collection,getDocs,getDoc,doc,addDoc,setDoc,updateDoc,deleteDoc,query,orderBy,where,serverTimestamp}
+  from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+  authDomain:"soilspark.firebaseapp.com",
+  projectId:"soilspark",
+  storageBucket:"soilspark.firebasestorage.app",
+  messagingSenderId:"22641848933",
+  appId:"1:22641848933:web:4c08ce5046681dbb698c8c",
+  measurementId:"G-1M406BN9JK"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let allPlans=[],allCoupons=[],currentTab="plans";
+
+function toast(msg,type="success"){const el=$("toast");el.textContent=msg;el.className="";el.classList.add(type);requestAnimationFrame(()=>el.classList.add("show"));setTimeout(()=>el.classList.remove("show"),3500);}
+function showLoginError(m){const el=$("loginError");el.textContent=m;el.style.display="block";}
+function clearLoginError(){$("loginError").style.display="none";}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+
+/* ---------- ADMIN GUARD (same as Review-Admin) ---------- */
+async function verifyAdministrator(user){
+  if(!user)throw new Error("You are not authenticated.");
+  const snap=await getDoc(doc(db,"admins",user.uid));
+  if(!snap.exists())throw new Error("Access denied. This account is not registered as an administrator.");
+  const data=snap.data();
+  if(data.role&&String(data.role).toLowerCase()!=="admin")throw new Error("Access denied. Administrator role required.");
+  if(data.active===false)throw new Error("This administrator account is inactive.");
+  return data;
+}
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){showLogin();return;}
+  try{
+    await verifyAdministrator(user);
+    $("adminEmailDisplay").textContent=user.email||"Administrator";
+    showDashboard();
+    await Promise.all([loadPlans(),loadCoupons()]);
+    renderActiveTab();
+  }catch(e){
+    console.error(e);await signOut(auth);showLogin();showLoginError(e.message);
+  }
+});
+
+function showLogin(){$("loginScreen").style.display="flex";$("dashboardScreen").style.display="none";}
+function showDashboard(){$("loginScreen").style.display="none";$("dashboardScreen").style.display="block";}
+
+async function loginAdmin(){
+  clearLoginError();
+  const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+  if(!email||!password){showLoginError("Please enter both email and password.");return;}
+  const btn=$("loginBtn");btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+  try{
+    const cred=await signInWithEmailAndPassword(auth,email,password);
+    await verifyAdministrator(cred.user);
+    toast("Administrator authentication successful.");
+  }catch(e){
+    console.error(e);
+    let msg="Unable to sign in.";
+    if(e.code==="auth/invalid-credential")msg="Incorrect email or password.";
+    else if(e.code==="auth/invalid-email")msg="Please enter a valid email address.";
+    else if(e.code==="auth/too-many-requests")msg="Too many attempts. Try later.";
+    else if(e.message&&/Access denied|Administrator|inactive/i.test(e.message))msg=e.message;
+    try{await signOut(auth);}catch(_){}
+    showLogin();showLoginError(msg);
+  }finally{btn.disabled=false;btn.innerHTML='<i class="fas fa-right-to-bracket"></i> Login as Administrator';}
+}
+$("loginBtn").onclick=loginAdmin;
+$("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")loginAdmin();});
+$("adminEmail").addEventListener("keydown",e=>{if(e.key==="Enter")loginAdmin();});
+$("logoutBtn").onclick=async()=>{await signOut(auth);allPlans=[];allCoupons=[];showLogin();toast("Logged out.");};
+
+/* ---------- TABS ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  currentTab=t.dataset.tab;
+  renderActiveTab();
+});
+function renderActiveTab(){
+  $("plansPanel").style.display=currentTab==="plans"?"block":"none";
+  $("couponsPanel").style.display=currentTab==="coupons"?"block":"none";
+  if(currentTab==="plans")renderPlans();else renderCoupons();
+}
+
+/* ---------- PLANS ---------- */
+async function loadPlans(){
+  try{
+    await verifyAdministrator(auth.currentUser);
+    const snap=await getDocs(query(collection(db,"pricing_plans"),orderBy("order","asc")));
+    allPlans=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+    console.warn("Plan query with order failed, falling back:",e);
+    const snap=await getDocs(collection(db,"pricing_plans"));
+    allPlans=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order??999)-(b.order??999));
+  }
+}
+function renderPlans(){
+  const c=$("plansTable");
+  if(!allPlans.length){
+    c.innerHTML=`<div class="empty"><i class="fas fa-layer-group"></i><h3>No plans yet</h3><p>Click "Seed Defaults" to create the starter plans or add a new one.</p></div>`;
+    return;
+  }
+  c.innerHTML=`<table>
+    <thead><tr><th>Order</th><th>Plan ID</th><th>Name</th><th>Days</th><th>Price (₹)</th><th>Badge</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${allPlans.map(p=>`
+      <tr>
+        <td>${p.order??0}</td>
+        <td><code>${esc(p.planId||p.id)}</code></td>
+        <td><strong>${esc(p.name||"")}</strong></td>
+        <td>${p.days??0}</td>
+        <td>₹${Number(p.price||0).toLocaleString("en-IN")}</td>
+        <td>${p.badge?`<span class="badge badge-type">${esc(p.badge)}</span>`:"—"}</td>
+        <td><span class="badge ${p.active===false?"badge-inactive":"badge-active"}">${p.active===false?"Inactive":"Active"}</span></td>
+        <td>
+          <button class="icon-btn" data-edit-plan="${p.id}"><i class="fas fa-pen"></i></button>
+          <button class="icon-btn danger" data-del-plan="${p.id}"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`).join("")}
+    </tbody></table>`;
+  c.querySelectorAll("[data-edit-plan]").forEach(b=>b.onclick=()=>openPlanModal(allPlans.find(x=>x.id===b.dataset.editPlan)));
+  c.querySelectorAll("[data-del-plan]").forEach(b=>b.onclick=()=>askDelete("plan",b.dataset.delPlan));
+}
+
+function openPlanModal(plan){
+  const isNew=!plan;
+  const p=plan||{planId:"",name:"",days:30,price:149,badge:"",order:allPlans.length+1,active:true};
+  $("modalBody").innerHTML=`
+    <h3>${isNew?"New Plan":"Edit Plan"}</h3>
+    <p class="sub">${isNew?"Create a subscription plan for a section.":"Update the details of this plan."}</p>
+    <div class="form-grid">
+      <div class="form-row"><label>Plan ID</label><input id="f_planId" value="${esc(p.planId||p.id||"")}" ${isNew?"":"disabled"} placeholder="monthly30"></div>
+      <div class="form-row"><label>Display Name</label><input id="f_name" value="${esc(p.name)}" placeholder="1 Month Access"></div>
+      <div class="form-row"><label>Duration (days)</label><input id="f_days" type="number" min="1" value="${p.days}"></div>
+      <div class="form-row"><label>Price (₹)</label><input id="f_price" type="number" min="1" value="${p.price}"></div>
+      <div class="form-row"><label>Badge (optional)</label><input id="f_badge" value="${esc(p.badge||"")}" placeholder="Popular"></div>
+      <div class="form-row"><label>Order</label><input id="f_order" type="number" value="${p.order??0}"></div>
+      <div class="form-row"><label>Status</label>
+        <select id="f_active"><option value="true" ${p.active!==false?"selected":""}>Active</option><option value="false" ${p.active===false?"selected":""}>Inactive</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="mCancel">Cancel</button>
+      <button class="modal-confirm" id="mSave">${isNew?"Create Plan":"Save Changes"}</button>
+    </div>`;
+  $("modal").style.display="flex";
+  $("mCancel").onclick=closeModal;
+  $("mSave").onclick=async()=>{
+    const data={
+      planId:$("f_planId").value.trim(),
+      name:$("f_name").value.trim(),
+      days:Number($("f_days").value),
+      price:Number($("f_price").value),
+      badge:$("f_badge").value.trim(),
+      order:Number($("f_order").value)||0,
+      active:$("f_active").value==="true",
+      updatedAt:serverTimestamp()
+    };
+    if(!data.planId||!data.name||!data.days||!data.price){toast("Please fill all required fields.","error");return;}
+    try{
+      await verifyAdministrator(auth.currentUser);
+      if(isNew){
+        await setDoc(doc(db,"pricing_plans",data.planId),{...data,createdAt:serverTimestamp()});
+      }else{
+        const {planId,...rest}=data;
+        await updateDoc(doc(db,"pricing_plans",plan.id),rest);
+      }
+      toast(isNew?"Plan created.":"Plan updated.");
+      closeModal();await loadPlans();renderPlans();
+    }catch(e){console.error(e);toast("Save failed: "+e.message,"error");}
+  };
+}
+
+$("newPlanBtn").onclick=()=>openPlanModal(null);
+$("seedBtn").onclick=async()=>{
+  if(!confirm("Create the default 5 plans in Firestore? Existing plan IDs will be overwritten."))return;
+  const defaults=[
+    {planId:"trial7",name:"7 Days Sprint",days:7,price:1,badge:"Trial",order:1,active:true},
+    {planId:"monthly30",name:"1 Month Access",days:30,price:149,badge:"Popular",order:2,active:true},
+    {planId:"quarterly90",name:"3 Months Access",days:90,price:349,badge:"Value",order:3,active:true},
+    {planId:"halfyearly180",name:"6 Months Access",days:180,price:599,badge:"Value",order:4,active:true},
+    {planId:"yearly365",name:"1 Year Access",days:365,price:999,badge:"Save",order:5,active:true}
+  ];
+  try{
+    await verifyAdministrator(auth.currentUser);
+    for(const p of defaults)await setDoc(doc(db,"pricing_plans",p.planId),{...p,createdAt:serverTimestamp()});
+    toast("Default plans seeded.");
+    await loadPlans();renderPlans();
+  }catch(e){console.error(e);toast("Seed failed: "+e.message,"error");}
+};
+
+/* ---------- COUPONS ---------- */
+async function loadCoupons(){
+  try{
+    await verifyAdministrator(auth.currentUser);
+    const snap=await getDocs(query(collection(db,"coupons"),orderBy("createdAt","desc")));
+    allCoupons=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }catch(e){
+    console.warn("Coupon query failed, fallback:",e);
+    const snap=await getDocs(collection(db,"coupons"));
+    allCoupons=snap.docs.map(d=>({id:d.id,...d.data()}));
+  }
+}
+function couponActive(c){
+  if(c.active===false)return false;
+  if(c.expiryDate&&new Date(c.expiryDate).getTime()<Date.now())return false;
+  if(c.maxUses!=null&&c.usedCount!=null&&c.usedCount>=c.maxUses)return false;
+  return true;
+}
+function renderCoupons(){
+  const c=$("couponsTable");
+  if(!allCoupons.length){
+    c.innerHTML=`<div class="empty"><i class="fas fa-ticket"></i><h3>No coupons yet</h3><p>Create your first discount code.</p></div>`;
+    return;
+  }
+  c.innerHTML=`<table>
+    <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Min Order</th><th>Uses</th><th>Expiry</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>${allCoupons.map(cp=>{
+      const live=couponActive(cp);
+      const expiry=cp.expiryDate?new Date(cp.expiryDate).toLocaleDateString():"No expiry";
+      const uses=`${cp.usedCount||0}/${cp.maxUses==null?"∞":cp.maxUses}`;
+      const value=cp.type==="percent"?`${cp.value}%`:`₹${cp.value}`;
+      return `<tr>
+        <td><strong>${esc(cp.code)}</strong></td>
+        <td><span class="badge badge-type">${cp.type==="percent"?"Percent":"Flat"}</span></td>
+        <td>${value}</td>
+        <td>${cp.minOrder?`₹${cp.minOrder}`:"—"}</td>
+        <td>${uses}</td>
+        <td>${expiry}</td>
+        <td><span class="badge ${live?"badge-active":"badge-inactive"}">${live?"Active":"Inactive"}</span></td>
+        <td>
+          <button class="icon-btn" data-edit-coupon="${cp.id}"><i class="fas fa-pen"></i></button>
+          <button class="icon-btn danger" data-del-coupon="${cp.id}"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`;
+    }).join("")}</tbody></table>`;
+  c.querySelectorAll("[data-edit-coupon]").forEach(b=>b.onclick=()=>openCouponModal(allCoupons.find(x=>x.id===b.dataset.editCoupon)));
+  c.querySelectorAll("[data-del-coupon]").forEach(b=>b.onclick=()=>askDelete("coupon",b.dataset.delCoupon));
+}
+
+function openCouponModal(coupon){
+  const isNew=!coupon;
+  const c=coupon||{code:"",type:"percent",value:10,minOrder:0,maxUses:null,expiryDate:"",active:true,description:""};
+  const expiryVal=c.expiryDate?new Date(c.expiryDate).toISOString().slice(0,10):"";
+  $("modalBody").innerHTML=`
+    <h3>${isNew?"New Coupon":"Edit Coupon"}</h3>
+    <p class="sub">${isNew?"Create a discount code for your plans.":"Update this coupon."}</p>
+    <div class="form-grid">
+      <div class="form-row"><label>Code</label><input id="c_code" value="${esc(c.code)}" placeholder="WELCOME10" style="text-transform:uppercase"></div>
+      <div class="form-row"><label>Type</label>
+        <select id="c_type"><option value="percent" ${c.type==="percent"?"selected":""}>Percent (%)</option><option value="flat" ${c.type==="flat"?"selected":""}>Flat (₹)</option></select>
+      </div>
+      <div class="form-row"><label>Value</label><input id="c_value" type="number" min="1" value="${c.value}"></div>
+      <div class="form-row"><label>Min Order (₹)</label><input id="c_min" type="number" min="0" value="${c.minOrder||0}"></div>
+      <div class="form-row"><label>Max Uses (blank = ∞)</label><input id="c_max" type="number" min="1" value="${c.maxUses??""}"></div>
+      <div class="form-row"><label>Expiry Date (optional)</label><input id="c_expiry" type="date" value="${expiryVal}"></div>
+      <div class="form-row full"><label>Description (optional)</label><input id="c_desc" value="${esc(c.description||"")}" placeholder="First order welcome discount"></div>
+      <div class="form-row"><label>Status</label>
+        <select id="c_active"><option value="true" ${c.active!==false?"selected":""}>Active</option><option value="false" ${c.active===false?"selected":""}>Inactive</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="mCancel">Cancel</button>
+      <button class="modal-confirm" id="mSave">${isNew?"Create Coupon":"Save Changes"}</button>
+    </div>`;
+  $("modal").style.display="flex";
+  $("mCancel").onclick=closeModal;
+  $("mSave").onclick=async()=>{
+    const code=$("c_code").value.trim().toUpperCase();
+    const data={
+      code,
+      type:$("c_type").value,
+      value:Number($("c_value").value),
+      minOrder:Number($("c_min").value)||0,
+      maxUses:$("c_max").value?Number($("c_max").value):null,
+      expiryDate:$("c_expiry").value?new Date($("c_expiry").value).toISOString():"",
+      description:$("c_desc").value.trim(),
+      active:$("c_active").value==="true",
+      updatedAt:serverTimestamp()
+    };
+    if(!code||!data.value){toast("Code and value are required.","error");return;}
+    try{
+      await verifyAdministrator(auth.currentUser);
+      if(isNew){
+        data.usedCount=0;data.createdAt=serverTimestamp();
+        await setDoc(doc(db,"coupons",code),data);
+      }else{
+        await updateDoc(doc(db,"coupons",coupon.id),data);
+      }
+      toast(isNew?"Coupon created.":"Coupon updated.");
+      closeModal();await loadCoupons();renderCoupons();
+    }catch(e){console.error(e);toast("Save failed: "+e.message,"error");}
+  };
+}
+$("newCouponBtn").onclick=()=>openCouponModal(null);
+
+/* ---------- DELETE ---------- */
+function askDelete(kind,id){
+  $("modalBody").innerHTML=`
+    <h3>Delete ${kind}?</h3>
+    <p class="sub">This will permanently remove <strong>${esc(id)}</strong> from Firestore.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="dCancel">Cancel</button>
+      <button class="modal-confirm danger" id="dConfirm">Delete</button>
+    </div>`;
+  $("modal").style.display="flex";
+  $("dCancel").onclick=closeModal;
+  $("dConfirm").onclick=async()=>{
+    try{
+      await verifyAdministrator(auth.currentUser);
+      await deleteDoc(doc(db,kind==="plan"?"pricing_plans":"coupons",id));
+      toast(`${kind} deleted.`);
+      closeModal();
+      if(kind==="plan"){await loadPlans();renderPlans();}
+      else{await loadCoupons();renderCoupons();}
+    }catch(e){console.error(e);toast("Delete failed: "+e.message,"error");}
+  };
+}
+
+function closeModal(){$("modal").style.display="none";$("modalBody").innerHTML="";}
+$("modal").onclick=e=>{if(e.target.id==="modal")closeModal();};
+</script>
+</body>
+</html>
