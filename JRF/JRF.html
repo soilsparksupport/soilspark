@@ -369,7 +369,7 @@ const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 const PLANS=[
  {id:"monthly30",name:"1 Month Access",days:30,price:149,badge:"Popular"},
- {id:"trial7",name:"7 Days Sprint",days:7,price:49,badge:"Trial"},
+ {id:"trial7",name:"7 Days Sprint",days:7,price:1,badge:"Trial"},
  {id:"quarterly90",name:"3 Months Access",days:90,price:349,badge:"Value"},
  {id:"halfyearly180",name:"6 Months Access",days:180,price:599,badge:"Value"},
  {id:"yearly365",name:"1 Year Access",days:365,price:999,badge:"Save"}
