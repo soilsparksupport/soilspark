@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · SoilSpark — Users & Subscriptions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    /* ============================================================
+       IDENTICAL THEME TO Review-Admin.html
+    ============================================================ */
+    :root {
+      --blue: #1769aa;
+      --blue-dark: #0d4775;
+      --blue-light: #eaf4fc;
+      --white: #ffffff;
+      --bg: #f5f9fc;
+      --text: #183247;
+      --muted: #718394;
+      --border: #dbe8f1;
+      --danger: #dc3545;
+      --danger-dark: #b42332;
+      --success: #198754;
+      --shadow: 0 12px 35px rgba(25, 74, 109, 0.09);
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(42, 139, 207, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    /* =========================
+       LOGIN
+    ========================= */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .login-top {
+      padding: 38px 30px 32px;
+      background: linear-gradient(135deg, #0d4775, #1d78b7);
+      color: white;
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 30px;
+    }
+
+    .login-top h1 {
+      font-family: "Poppins", sans-serif;
+      font-size: 29px;
+      margin-bottom: 6px;
+    }
+
+    .login-top p {
+      opacity: .85;
+      font-size: 14px;
+    }
+
+    .login-body {
+      padding: 30px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-wrap i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8da2b2;
+    }
+
+    .field input {
+      width: 100%;
+      height: 50px;
+      border: 1.5px solid var(--border);
+      border-radius: 13px;
+      padding: 0 15px 0 45px;
+      outline: none;
+      font-size: 14px;
+      color: var(--text);
+      background: #fbfdff;
+      transition: .2s;
+    }
+
+    .field input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(23,105,170,.10);
+      background: white;
+    }
+
+    #loginBtn {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+      margin-top: 5px;
+    }
+
+    #loginBtn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(23,105,170,.22);
+    }
+
+    #loginBtn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .login-security {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .login-error {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      background: #fff1f2;
+      border: 1px solid #ffc7cd;
+      color: #a61b29;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+    #dashboardScreen {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 18px rgba(25,74,109,.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-inner {
+      max-width: 1300px;
+      margin: auto;
+      padding: 17px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 13px;
+      background: var(--blue-light);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .brand h2 {
+      font-family: "Poppins", sans-serif;
+      font-size: 20px;
+      color: var(--blue-dark);
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 11px;
+      display: block;
+      margin-top: 1px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .admin-email {
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .logout-btn {
+      border: 0;
+      background: #fff0f1;
+      color: var(--danger);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: #ffe0e3;
+    }
+
+    .page {
+      max-width: 1300px;
+      margin: auto;
+      padding: 32px 24px 50px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-family: "Poppins", sans-serif;
+      font-size: 28px;
+      color: var(--blue-dark);
+    }
+
+    .welcome p {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 17px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 21px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 15px;
+      background: var(--blue-light);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Poppins", sans-serif;
+      font-size: 24px;
+      color: var(--blue-dark);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* =========================
+       PANEL
+    ========================= */
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .panel-header {
+      padding: 23px 25px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .panel-header h2 {
+      font-family: "Poppins", sans-serif;
+      font-size: 20px;
+      color: var(--blue-dark);
+    }
+
+    .panel-header p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .refresh-btn,
+    .export-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--blue-dark);
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .refresh-btn:hover,
+    .export-btn:hover {
+      background: var(--blue-light);
+      border-color: #b7d5e9;
+    }
+
+    .export-btn {
+      background: #e8f7ee;
+      border-color: #b9e4c5;
+      color: var(--success);
+    }
+
+    .export-btn:hover {
+      background: #d4f0e0;
+    }
+
+    .filters {
+      padding: 17px 25px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8da2b2;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding-left: 40px;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--blue);
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      padding: 9px 13px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .filter-btn.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: white;
+    }
+
+    /* =========================
+       USER CARDS
+    ========================= */
+    #usersContainer {
+      padding: 23px 25px;
+    }
+
+    .user-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 19px;
+      margin-bottom: 14px;
+      background: #fff;
+      transition: .2s;
+    }
+
+    .user-card:hover {
+      border-color: #b9d4e5;
+      box-shadow: 0 8px 22px rgba(20,70,100,.06);
+    }
+
+    .user-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .user-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 14px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      position: relative;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    .provider-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      border: 2px solid white;
+      background: white;
+    }
+
+    .provider-google {
+      color: #db4437;
+      background: white;
+    }
+
+    .provider-email {
+      color: var(--blue);
+      background: white;
+    }
+
+    .user-name {
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .user-email {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+      word-break: break-word;
+    }
+
+    .user-meta {
+      color: #98a8b5;
+      font-size: 11px;
+      margin-top: 3px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .user-meta i {
+      margin-right: 3px;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .badge-active {
+      background: #e8f7ee;
+      color: var(--success);
+    }
+
+    .badge-expired {
+      background: #fff0f1;
+      color: var(--danger);
+    }
+
+    .badge-none {
+      background: #fff4dc;
+      color: #a86b00;
+    }
+
+    .badge-verified {
+      background: #e8f7ee;
+      color: var(--success);
+    }
+
+    .badge-unverified {
+      background: #fff4dc;
+      color: #a86b00;
+    }
+
+    .badge-google {
+      background: #fce8e6;
+      color: #c5221f;
+    }
+
+    /* subscription list */
+    .sub-list {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sub-item {
+      background: #f7fafc;
+      border: 1px solid #edf3f7;
+      border-radius: 12px;
+      padding: 12px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+
+    .sub-item .sub-subject {
+      font-weight: 700;
+      color: var(--blue-dark);
+    }
+
+    .sub-item .sub-dates {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .sub-item .sub-status {
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .sub-active {
+      color: var(--success);
+    }
+
+    .sub-inactive {
+      color: var(--danger);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 65px 20px;
+      color: var(--muted);
+    }
+
+    .empty i {
+      font-size: 42px;
+      margin-bottom: 15px;
+      color: #bfd2df;
+    }
+
+    .empty h3 {
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: var(--muted);
+    }
+
+    .loading i {
+      color: var(--blue);
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .error-box {
+      margin: 20px 25px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #fff1f2;
+      border: 1px solid #ffc7cd;
+      color: #a61b29;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+    #toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      max-width: 360px;
+      background: #183247;
+      color: white;
+      padding: 13px 17px;
+      border-radius: 11px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+      font-size: 13px;
+      transform: translateY(100px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      z-index: 2000;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    #toast.success {
+      border-left: 4px solid #25a45b;
+    }
+
+    #toast.error {
+      border-left: 4px solid var(--danger);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+    @media (max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .topbar-inner {
+        padding: 14px 16px;
+      }
+
+      .admin-email {
+        display: none;
+      }
+
+      .page {
+        padding: 25px 15px 40px;
+      }
+
+      #usersContainer {
+        padding: 18px 15px;
+      }
+
+      .panel-header,
+      .filters {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .login-body {
+        padding: 24px 20px;
+      }
+
+      .login-top {
+        padding: 30px 20px;
+      }
+
+      .welcome h1 {
+        font-size: 23px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .user-head {
+        flex-direction: column;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filter-buttons {
+        width: 100%;
+      }
+
+      .filter-btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     LOGIN SCREEN
+============================================================ -->
+<section id="loginScreen">
+  <div class="login-card">
+    <div class="login-top">
+      <div class="login-logo">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <h1>SoilSpark</h1>
+      <p>Administrator · Users & Subscriptions</p>
+    </div>
+
+    <div class="login-body">
+      <div id="loginError" class="login-error"></div>
+
+      <div class="field">
+        <label for="adminEmail">Administrator Email</label>
+        <div class="field-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="adminEmail" placeholder="Enter admin email" autocomplete="username">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="adminPassword">Password</label>
+        <div class="field-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password">
+        </div>
+      </div>
+
+      <button id="loginBtn">
+        <i class="fas fa-right-to-bracket"></i> Login as Administrator
+      </button>
+
+      <div class="login-security">
+        <i class="fas fa-shield-halved"></i>
+        Authentication + administrator UID verification required
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DASHBOARD
+============================================================ -->
+<section id="dashboardScreen">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fas fa-seedling"></i>
+        </div>
+        <div>
+          <h2>SoilSpark</h2>
+          <small>Users &amp; Subscriptions Dashboard</small>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div id="adminEmailDisplay" class="admin-email">Administrator</div>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="welcome">
+      <h1>User Management</h1>
+      <p>View registered users (email &amp; Google), their login details, and active subscription plans.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
+        <div>
+          <strong id="totalUsers">0</strong>
+          <span>Total Users</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon"><i class="fas fa-envelope-circle-check"></i></div>
+        <div>
+          <strong id="verifiedUsers">0</strong>
+          <span>Verified Emails</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon"><i class="fas fa-crown"></i></div>
+        <div>
+          <strong id="activeSubs">0</strong>
+          <span>Active Subscriptions</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+        <div>
+          <strong id="expiredSubs">0</strong>
+          <span>Expired Subscriptions</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS PANEL -->
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2><i class="fas fa-user-gear"></i> Registered Users</h2>
+          <p>Data from <strong>users</strong> and <strong>subscriptions</strong> collections.</p>
+        </div>
+        <div class="header-buttons">
+          <button class="export-btn" id="exportBtn">
+            <i class="fas fa-file-excel"></i> Export to Excel
+          </button>
+          <button class="refresh-btn" id="refreshBtn">
+            <i class="fas fa-rotate"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="filters">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search by name, email or phone...">
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="subscribed">Subscribed</button>
+          <button class="filter-btn" data-filter="unsubscribed">Unsubscribed</button>
+          <button class="filter-btn" data-filter="verified">Verified</button>
+          <button class="filter-btn" data-filter="unverified">Unverified</button>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div id="usersContainer">
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading users...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</section>
+
+
+<!-- ============================================================
+     TOAST
+============================================================ -->
+<div id="toast"></div>
+
+
+<!-- ============================================================
+     FIREBASE + SHEETJS (for Excel export)
+============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut
+  }
+  from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    getDoc,
+    doc,
+    query,
+    orderBy
+  }
+  from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+  /* ============================================================
+     FIREBASE CONFIG
+  ============================================================ */
+  const firebaseConfig = {
+    apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+    authDomain: "soilspark.firebaseapp.com",
+    projectId: "soilspark",
+    storageBucket: "soilspark.firebasestorage.app",
+    messagingSenderId: "22641848933",
+    appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+    measurementId: "G-1M406BN9JK"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  /* ============================================================
+     STATE
+  ============================================================ */
+  let allUsers = [];
+  let allSubs = [];
+  let currentFilter = "all";
+
+  const $ = id => document.getElementById(id);
+
+  /* ============================================================
+     TOAST
+  ============================================================ */
+  function toast(message, type = "success") {
+    const el = $("toast");
+    el.textContent = message;
+    el.className = "";
+    el.classList.add(type);
+    requestAnimationFrame(() => el.classList.add("show"));
+    setTimeout(() => el.classList.remove("show"), 3500);
+  }
+
+  function showLoginError(message) {
+    const el = $("loginError");
+    el.textContent = message;
+    el.style.display = "block";
+  }
+
+  function clearLoginError() {
+    $("loginError").style.display = "none";
+  }
+
+  /* ============================================================
+     ADMIN VERIFICATION
+  ============================================================ */
+  async function verifyAdministrator(user) {
+    if (!user) throw new Error("You are not authenticated.");
+
+    const adminSnap = await getDoc(doc(db, "admins", user.uid));
+    if (!adminSnap.exists()) {
+      throw new Error("Access denied. This account is not registered as an administrator.");
+    }
+
+    const adminData = adminSnap.data();
+    if (adminData.role && String(adminData.role).toLowerCase() !== "admin") {
+      throw new Error("Access denied. Administrator role required.");
+    }
+    if (adminData.active === false) {
+      throw new Error("This administrator account is inactive.");
+    }
+
+    return adminData;
+  }
+
+  /* ============================================================
+     AUTH STATE
+  ============================================================ */
+  onAuthStateChanged(auth, async user => {
+    if (!user) {
+      showLogin();
+      return;
+    }
+
+    try {
+      await verifyAdministrator(user);
+      $("adminEmailDisplay").textContent = user.email || "Administrator";
+      showDashboard();
+      await loadDashboard();
+    } catch (error) {
+      console.error("Admin verification:", error);
+      await signOut(auth);
+      showLogin();
+      showLoginError(error.message);
+    }
+  });
+
+  function showLogin() {
+    $("loginScreen").style.display = "flex";
+    $("dashboardScreen").style.display = "none";
+  }
+
+  function showDashboard() {
+    $("loginScreen").style.display = "none";
+    $("dashboardScreen").style.display = "block";
+  }
+
+  /* ============================================================
+     LOGIN / LOGOUT
+  ============================================================ */
+  async function loginAdmin() {
+    clearLoginError();
+    const email = $("adminEmail").value.trim();
+    const password = $("adminPassword").value;
+
+    if (!email || !password) {
+      showLoginError("Please enter both administrator email and password.");
+      return;
+    }
+
+    const button = $("loginBtn");
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+
+    try {
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+      await verifyAdministrator(credential.user);
+      toast("Administrator authentication successful.");
+    } catch (error) {
+      console.error("Login:", error);
+      let message = "Unable to sign in.";
+      if (error.code === "auth/invalid-credential") message = "Incorrect email or password.";
+      else if (error.code === "auth/invalid-email") message = "Please enter a valid email address.";
+      else if (error.code === "auth/too-many-requests") message = "Too many attempts. Please try again later.";
+      else if (error.message && (error.message.includes("Access denied") || error.message.includes("Administrator"))) message = error.message;
+
+      try { await signOut(auth); } catch (_) {}
+      showLogin();
+      showLoginError(message);
+    } finally {
+      button.disabled = false;
+      button.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login as Administrator';
+    }
+  }
+
+  $("loginBtn").addEventListener("click", loginAdmin);
+  $("adminPassword").addEventListener("keydown", e => { if (e.key === "Enter") loginAdmin(); });
+  $("adminEmail").addEventListener("keydown", e => { if (e.key === "Enter") loginAdmin(); });
+
+  $("logoutBtn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      allUsers = [];
+      allSubs = [];
+      showLogin();
+      toast("Logged out successfully.");
+    } catch (error) {
+      toast("Unable to logout: " + error.message, "error");
+    }
+  });
+
+  /* ============================================================
+     LOAD DASHBOARD DATA
+  ============================================================ */
+  async function loadDashboard() {
+    const container = $("usersContainer");
+    container.innerHTML = `
+      <div class="loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading users and subscriptions...</p>
+      </div>
+    `;
+
+    try {
+      const user = auth.currentUser;
+      await verifyAdministrator(user);
+
+      /* ---------- Fetch Users (ALL, including Google) ---------- */
+      // No orderBy to avoid missing docs without createdAt (Google sign-ups might lack it)
+      const userSnap = await getDocs(collection(db, "users"));
+      allUsers = userSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      /* ---------- Fetch Subscriptions (all) ---------- */
+      const subSnap = await getDocs(collection(db, "subscriptions"));
+      allSubs = subSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      updateStats();
+      renderUsers();
+
+    } catch (error) {
+      console.error("Dashboard load error:", error);
+      container.innerHTML = `
+        <div class="error-box">
+          <strong><i class="fas fa-triangle-exclamation"></i> Unable to load user data</strong>
+          <br><br>${escapeHtml(error.message)}
+          <br><br>Make sure your admin account can read <strong>users</strong> and <strong>subscriptions</strong> collections.
+        </div>
+      `;
+    }
+  }
+
+  /* ============================================================
+     STATS
+  ============================================================ */
+  function updateStats() {
+    const now = Date.now();
+
+    const total = allUsers.length;
+    const verified = allUsers.filter(u => u.emailVerified === true).length;
+
+    const activeSubs = allSubs.filter(s => {
+      const expiry = s.expiryDate ? new Date(s.expiryDate).getTime() : 0;
+      return s.status === "active" && expiry > now;
+    }).length;
+
+    const expiredSubs = allSubs.filter(s => {
+      const expiry = s.expiryDate ? new Date(s.expiryDate).getTime() : 0;
+      return expiry <= now || s.status === "expired";
+    }).length;
+
+    $("totalUsers").textContent = total;
+    $("verifiedUsers").textContent = verified;
+    $("activeSubs").textContent = activeSubs;
+    $("expiredSubs").textContent = expiredSubs;
+  }
+
+  /* ============================================================
+     RENDER USERS
+  ============================================================ */
+  function renderUsers() {
+    const container = $("usersContainer");
+    const search = $("searchInput").value.trim().toLowerCase();
+    const now = Date.now();
+
+    let users = [...allUsers];
+
+    // Filter by subscription status
+    if (currentFilter === "subscribed") {
+      users = users.filter(u => {
+        const subs = allSubs.filter(s => s.userId === u.id);
+        return subs.some(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+      });
+    } else if (currentFilter === "unsubscribed") {
+      users = users.filter(u => {
+        const subs = allSubs.filter(s => s.userId === u.id);
+        return !subs.some(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+      });
+    } else if (currentFilter === "verified") {
+      users = users.filter(u => u.emailVerified === true);
+    } else if (currentFilter === "unverified") {
+      users = users.filter(u => u.emailVerified !== true);
+    }
+
+    // Search filter
+    if (search) {
+      users = users.filter(u => {
+        const haystack = `${u.name || u.displayName || ""} ${u.email || ""} ${u.phone || ""}`.toLowerCase();
+        return haystack.includes(search);
+      });
+    }
+
+    if (!users.length) {
+      container.innerHTML = `
+        <div class="empty">
+          <i class="far fa-user"></i>
+          <h3>No users found</h3>
+          <p>No registered users match the current filter.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = users.map(createUserCard).join("");
+  }
+
+  /* ============================================================
+     DETECT PROVIDER
+  ============================================================ */
+  function getProvider(user) {
+    // Check providerData if available (from Firestore doc)
+    if (user.providerData && Array.isArray(user.providerData)) {
+      const hasGoogle = user.providerData.some(p => p.providerId === "google.com");
+      const hasPassword = user.providerData.some(p => p.providerId === "password");
+      if (hasGoogle && hasPassword) return "both";
+      if (hasGoogle) return "google";
+      if (hasPassword) return "email";
+    }
+    // Fallback: check if signInProvider field exists
+    if (user.signInProvider) {
+      if (user.signInProvider.includes("google")) return "google";
+    }
+    // Check if createdAt is missing → likely Google sign-up (created via dashboard)
+    if (!user.createdAt && !user.phone) return "google";
+    return "email";
+  }
+
+  /* ============================================================
+     USER CARD
+  ============================================================ */
+  function createUserCard(user) {
+    const now = Date.now();
+    const name = String(user.name || user.displayName || "SoilSpark Student").trim();
+    const email = String(user.email || "No email");
+    const phone = String(user.phone || "No phone");
+    const createdAt = formatDate(user.createdAt);
+    const initial = escapeHtml(name.charAt(0).toUpperCase());
+
+    const isVerified = user.emailVerified === true;
+    const role = user.role || "student";
+
+    // Detect provider
+    const provider = getProvider(user);
+    let providerIcon = "";
+    let providerClass = "";
+    let providerTitle = "";
+    let providerBadge = "";
+
+    if (provider === "google") {
+      providerIcon = "fab fa-google";
+      providerClass = "provider-google";
+      providerTitle = "Signed up with Google";
+      providerBadge = `<span class="badge badge-google"><i class="fab fa-google"></i> Google</span>`;
+    } else if (provider === "both") {
+      providerIcon = "fas fa-link";
+      providerClass = "provider-email";
+      providerTitle = "Linked Email & Google";
+      providerBadge = `<span class="badge badge-google"><i class="fab fa-google"></i> Google</span> <span class="badge badge-verified"><i class="fas fa-envelope"></i> Email</span>`;
+    } else {
+      providerIcon = "fas fa-envelope";
+      providerClass = "provider-email";
+      providerTitle = "Signed up with Email";
+      providerBadge = "";
+    }
+
+    // Subscriptions for this user
+    const userSubs = allSubs
+      .filter(s => s.userId === user.id)
+      .sort((a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0));
+
+    const hasActive = userSubs.some(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+
+    const subHtml = userSubs.length
+      ? userSubs.map(s => {
+          const expiry = s.expiryDate ? new Date(s.expiryDate) : null;
+          const isActive = s.status === "active" && expiry && expiry.getTime() > now;
+          const statusClass = isActive ? "sub-active" : "sub-inactive";
+          const statusText = isActive ? "Active" : "Expired";
+          const subject = s.subjectId || s.planName || "Unknown";
+          const plan = s.planName || s.planId || "—";
+          const start = s.startDate ? formatDate(s.startDate) : "—";
+          const end = expiry ? formatDate(s.expiryDate) : "—";
+          return `
+            <div class="sub-item">
+              <div>
+                <span class="sub-subject">${escapeHtml(subject)}</span>
+                <span class="sub-dates"> · ${escapeHtml(plan)}</span>
+                <div class="sub-dates">${escapeHtml(start)} → ${escapeHtml(end)}</div>
+              </div>
+              <span class="sub-status ${statusClass}">${statusText}</span>
+            </div>
+          `;
+        }).join("")
+      : `<div class="sub-item" style="justify-content:center;color:var(--muted);font-size:12px;">No subscriptions</div>`;
+
+    return `
+      <article class="user-card">
+        <div class="user-head">
+          <div class="user-info">
+            <div class="avatar" title="${escapeHtml(providerTitle)}">
+              ${initial}
+              <span class="provider-badge ${providerClass}">
+                <i class="${providerIcon}"></i>
+              </span>
+            </div>
+            <div>
+              <div class="user-name">
+                ${escapeHtml(name)}
+                ${providerBadge}
+              </div>
+              <div class="user-email">${escapeHtml(email)}</div>
+              <div class="user-meta">
+                <span><i class="fas fa-phone"></i>${escapeHtml(phone)}</span>
+                <span><i class="far fa-calendar"></i>Joined ${escapeHtml(createdAt)}</span>
+                <span><i class="fas fa-tag"></i>${escapeHtml(role)}</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="badge ${isVerified ? "badge-verified" : "badge-unverified"}">
+              <i class="fas ${isVerified ? "fa-check-circle" : "fa-clock"}"></i>
+              ${isVerified ? "Verified" : "Unverified"}
+            </span>
+            <span class="badge ${hasActive ? "badge-active" : "badge-none"}">
+              <i class="fas ${hasActive ? "fa-crown" : "fa-minus-circle"}"></i>
+              ${hasActive ? "Subscribed" : "No active plan"}
+            </span>
+          </div>
+        </div>
+        <div class="sub-list">
+          ${subHtml}
+        </div>
+      </article>
+    `;
+  }
+
+  /* ============================================================
+     EXPORT TO EXCEL
+  ============================================================ */
+  function exportToExcel() {
+    const now = Date.now();
+
+    // Build rows from currently filtered users
+    const search = $("searchInput").value.trim().toLowerCase();
+    let users = [...allUsers];
+
+    // Apply same filters as renderUsers
+    if (currentFilter === "subscribed") {
+      users = users.filter(u => {
+        const subs = allSubs.filter(s => s.userId === u.id);
+        return subs.some(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+      });
+    } else if (currentFilter === "unsubscribed") {
+      users = users.filter(u => {
+        const subs = allSubs.filter(s => s.userId === u.id);
+        return !subs.some(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+      });
+    } else if (currentFilter === "verified") {
+      users = users.filter(u => u.emailVerified === true);
+    } else if (currentFilter === "unverified") {
+      users = users.filter(u => u.emailVerified !== true);
+    }
+
+    if (search) {
+      users = users.filter(u => {
+        const haystack = `${u.name || u.displayName || ""} ${u.email || ""} ${u.phone || ""}`.toLowerCase();
+        return haystack.includes(search);
+      });
+    }
+
+    if (!users.length) {
+      toast("No users to export.", "error");
+      return;
+    }
+
+    // Build worksheet rows
+    const rows = users.map(u => {
+      const provider = getProvider(u);
+      const userSubs = allSubs
+        .filter(s => s.userId === u.id)
+        .sort((a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0));
+
+      const activeSub = userSubs.find(s => s.status === "active" && new Date(s.expiryDate).getTime() > now);
+      const latestSub = userSubs[0] || null;
+
+      return {
+        "Name": u.name || u.displayName || "—",
+        "Email": u.email || "—",
+        "Phone": u.phone || "—",
+        "Role": u.role || "student",
+        "Provider": provider === "google" ? "Google" : provider === "both" ? "Email + Google" : "Email",
+        "Email Verified": u.emailVerified === true ? "Yes" : "No",
+        "Joined": formatDate(u.createdAt),
+        "Active Subscription": activeSub ? "Yes" : "No",
+        "Subscription Subject": activeSub ? (activeSub.subjectId || activeSub.planName || "—") : "—",
+        "Subscription Plan": activeSub ? (activeSub.planName || activeSub.planId || "—") : "—",
+        "Subscription Start": activeSub ? formatDate(activeSub.startDate) : "—",
+        "Subscription Expiry": activeSub ? formatDate(activeSub.expiryDate) : "—",
+        "Latest Subscription Status": latestSub ? (latestSub.status || "—") : "—",
+        "UID": u.id
+      };
+    });
+
+    // Create workbook
+    const ws = XLSX.utils.json_to_sheet(rows);
+
+    // Auto column widths
+    const colWidths = Object.keys(rows[0]).map(key => ({
+      wch: Math.max(key.length, ...rows.map(r => String(r[key] || "").length)) + 2
+    }));
+    ws["!cols"] = colWidths;
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Users");
+
+    // Filename with date
+    const dateStr = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `soilspark_users_${dateStr}.xlsx`);
+
+    toast(`Exported ${rows.length} user(s) to Excel.`);
+  }
+
+  $("exportBtn").addEventListener("click", exportToExcel);
+
+  /* ============================================================
+     SEARCH / FILTER / REFRESH
+  ============================================================ */
+  $("searchInput").addEventListener("input", renderUsers);
+
+  document.querySelectorAll(".filter-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+      currentFilter = button.dataset.filter;
+      renderUsers();
+    });
+  });
+
+  $("refreshBtn").addEventListener("click", async () => {
+    const button = $("refreshBtn");
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+    try {
+      await loadDashboard();
+      toast("User data refreshed.");
+    } finally {
+      button.disabled = false;
+      button.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+    }
+  });
+
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+  function formatDate(timestamp) {
+    if (!timestamp) return "—";
+    let date = null;
+    try {
+      if (typeof timestamp.toDate === "function") date = timestamp.toDate();
+      else if (timestamp.seconds !== undefined) date = new Date(timestamp.seconds * 1000);
+      else if (timestamp instanceof Date) date = timestamp;
+      else date = new Date(timestamp);
+    } catch (_) {
+      return "—";
+    }
+    if (!date || Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+</script>
+
+</body>
+</html>
