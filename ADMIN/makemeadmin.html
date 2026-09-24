@@ -159,15 +159,25 @@
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
-    authDomain: "soilspark.firebaseapp.com",
-    projectId: "soilspark",
-    storageBucket: "soilspark.firebasestorage.app",
-    messagingSenderId: "22641848933",
-    appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
-    measurementId: "G-1M406BN9JK"
-  };
+  // const firebaseConfig = {
+  //   apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+  //   authDomain: "soilspark.firebaseapp.com",
+  //   projectId: "soilspark",
+  //   storageBucket: "soilspark.firebasestorage.app",
+  //   messagingSenderId: "22641848933",
+  //   appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+  //   measurementId: "G-1M406BN9JK"
+  // };
+
+//   const firebaseConfig = {
+//   apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+//   authDomain: "soilspark-02.firebaseapp.com",
+//   projectId: "soilspark-02",
+//   storageBucket: "soilspark-02.firebasestorage.app",
+//   messagingSenderId: "1076135404685",
+//   appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+//   measurementId: "G-3HGQCNDR9H"
+// };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
