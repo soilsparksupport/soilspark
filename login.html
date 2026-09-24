@@ -1013,7 +1013,7 @@ const firebaseConfig = {
     if (user) {
       if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
       if (user.emailVerified) {
-        window.location.href = 'BOOK/BOOK.html';
+        window.location.href = 'dashboard.html';
       } else {
         if (!panels.verify.classList.contains('hidden')) return;
         showPanel('verify');
@@ -1071,7 +1071,7 @@ const firebaseConfig = {
     signInWithPopup(auth, provider).then((result) => {
       const user = result.user;
       if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
-      window.location.href = 'BOOK/BOOK.html';
+      window.location.href = 'dashboard.html';
     }).catch((err) => {
       if (window.AndroidInterface) window.AndroidInterface.onAuthFailure(err.message);
       showMessage('Google login failed: ' + err.message, 'loginMessage');
@@ -1100,7 +1100,7 @@ const firebaseConfig = {
     user.reload().then(() => {
       if (user.emailVerified) {
         if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
-        window.location.href = 'BOOK/BOOK.html';
+        window.location.href = 'dashboard.html';
       } else showMessage('Email not verified yet', 'verificationMessage', 'info');
     }).catch((err) => showMessage('Reload error: ' + err.message, 'verificationMessage'));
   });
