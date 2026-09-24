@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin · SoilSpark Question Bank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--blue:#8ecae6;--blue-dark:#4f8fae;--blue-soft:#eaf6fb;--bg:#fffdf9;--white:#fff;--text:#4a3b2a;--text-dark:#3d3025;--muted:#8a7b6b;--border:#eadfce;--border-blue:#c8e3ef;--brown:#b8956a;--brown-light:#f3eadf;--yellow:#f4c542;--yellow-soft:#fff7d9;--success:#7a9e5b;--success-soft:#f1f8eb;--danger:#c96b5c;--danger-soft:#fff1ef;--shadow:0 12px 35px rgba(110,85,55,.10)}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:radial-gradient(circle at top right,rgba(142,202,230,.16),transparent 32%),radial-gradient(circle at bottom left,rgba(244,197,66,.07),transparent 28%),var(--bg);color:var(--text);min-height:100vh}button,input,textarea,select{font:inherit}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(430px,100%);background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.login-top{background:linear-gradient(135deg,#4f8fae,#8ecae6);color:#fff;text-align:center;padding:35px}.login-logo{width:68px;height:68px;border-radius:20px;background:rgba(255,255,255,.18);display:grid;place-items:center;margin:auto auto 15px;font-size:28px}.login-top h1{font:800 28px Poppins}.login-top p{font-size:12px;opacity:.9;margin-top:4px}.login-body{padding:27px}.field{margin-bottom:17px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field input{width:100%;height:48px;border:1px solid var(--border);border-radius:11px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue-dark);box-shadow:0 0 0 4px rgba(142,202,230,.16)}.login-btn{width:100%;height:50px;border:0;border-radius:11px;background:var(--blue-dark);color:#fff;font-weight:800;cursor:pointer}.error{display:none;background:var(--danger-soft);border:1px solid #f0c9c3;color:#a14a3e;padding:11px;border-radius:10px;font-size:12px;margin-bottom:15px}
+#app{display:none}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);box-shadow:0 4px 18px rgba(110,85,55,.06);backdrop-filter:blur(10px)}.topbar-inner{max-width:1320px;margin:auto;padding:15px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}.brand{display:flex;align-items:center;gap:12px}.brand-icon{width:45px;height:45px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);border:1px solid var(--border-blue);display:grid;place-items:center}.brand h2{font:800 20px Poppins;color:var(--blue-dark)}.brand small{font-size:11px;color:var(--muted)}.top-actions{display:flex;gap:9px;align-items:center}.email{background:var(--blue-soft);color:var(--blue-dark);padding:9px 12px;border-radius:9px;font-size:11px;font-weight:800;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.logout{border:1px solid #f0d1cb;background:var(--danger-soft);color:var(--danger);padding:10px 13px;border-radius:9px;font-weight:800;cursor:pointer}
+.page{max-width:1320px;margin:auto;padding:28px 22px 50px}.heading{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:20px}.heading h1{font:800 28px Poppins;color:var(--text-dark)}.heading p{color:var(--muted);font-size:13px;margin-top:4px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.primary{background:var(--blue-dark);color:#fff}.secondary{background:var(--brown-light);color:var(--text)}.danger{background:var(--danger-soft);color:var(--danger)}.green{background:var(--success-soft);color:#587441}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:17px}.stat strong{display:block;font:800 24px Poppins;color:var(--text-dark)}.stat span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:18px}.panel{background:#fff;border:1px solid var(--border);border-radius:19px;box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;align-items:center}.panel-head h3{font:700 16px Poppins;color:var(--text-dark)}.panel-body{padding:15px}.section-card{border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}.section-head{padding:12px 13px;background:#fffefa;display:flex;justify-content:space-between;gap:8px;align-items:center}.section-head strong{font-size:13px}.section-tools{display:flex;gap:5px}.topic-list{padding:8px}.topic-item{border:1px solid var(--border);border-radius:11px;padding:11px;margin-bottom:7px;cursor:pointer;background:#fff}.topic-item.active{border-color:var(--blue-dark);background:var(--blue-soft)}.topic-item h4{font-size:12px;color:var(--text-dark)}.topic-item p{font-size:10px;color:var(--muted);margin-top:3px}.topic-actions{display:flex;gap:5px;margin-top:7px}.mini{padding:6px 8px;border:0;border-radius:7px;font-size:10px;font-weight:800;cursor:pointer}.edit{background:var(--blue-soft);color:var(--blue-dark)}.del{background:var(--danger-soft);color:var(--danger)}.list{display:flex;flex-direction:column;gap:10px}.question-item{border:1px solid var(--border);border-radius:14px;padding:14px}.q-row{display:flex;justify-content:space-between;gap:12px}.q-number{font-size:10px;color:var(--blue-dark);font-weight:900}.q-item-text{font-size:13px;font-weight:700;line-height:1.5;margin-top:5px}.q-meta{font-size:10px;color:var(--muted);margin-top:7px}.q-actions{display:flex;gap:6px;align-items:flex-start}.empty{padding:40px 20px;text-align:center;color:var(--muted)}.empty i{font-size:28px;color:#b9cfdd;margin-bottom:10px}.hint{font-size:11px;color:var(--muted);line-height:1.55;background:#fffaf0;border:1px solid #eee0bf;padding:11px;border-radius:10px;margin-top:10px}
+.modal{position:fixed;inset:0;background:rgba(50,39,28,.48);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal-card{background:#fff;border-radius:20px;width:min(760px,100%);max-height:92vh;overflow:auto;box-shadow:0 25px 70px rgba(0,0,0,.2)}.modal-head{padding:19px 21px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font:700 18px Poppins;color:var(--text-dark)}.close{border:0;background:var(--brown-light);width:34px;height:34px;border-radius:9px;cursor:pointer}.modal-body{padding:21px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.form-field label{display:block;font-size:11px;font-weight:800;margin-bottom:6px}.form-field input,.form-field textarea,.form-field select{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 11px;outline:none;background:#fbfdff}.form-field textarea{min-height:95px;resize:vertical}.modal-foot{padding:15px 21px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px}.check{display:flex!important;align-items:center;gap:8px}.check input{width:auto}.toast{position:fixed;right:20px;bottom:20px;background:#3d3025;color:#fff;padding:12px 16px;border-radius:10px;opacity:0;transform:translateY(20px);pointer-events:none;transition:.25s;z-index:200}.toast.show{opacity:1;transform:translateY(0)}
+.csv-box{border:2px dashed var(--border-blue);border-radius:15px;padding:16px;background:#fbfeff}.csv-box h4{font:700 14px Poppins;margin-bottom:6px}.csv-box p{font-size:11px;color:var(--muted);line-height:1.55}.csv-box code{font-family:monospace;font-size:10px;word-break:break-all}.progressbar{height:8px;background:#edf2f4;border-radius:99px;overflow:hidden;margin-top:12px}.progressbar span{display:block;height:100%;width:0;background:var(--blue-dark);transition:.2s}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.topbar-inner,.heading{align-items:stretch;flex-direction:column}.email{display:none}.page{padding:22px 15px}.stats{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar .btn{flex:1}}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login"><div class="login-card">
+<div class="login-top"><div class="login-logo"><i class="fa-solid fa-book-open"></i></div><h1>SoilSpark</h1><p>Question Bank · Administrator Access</p></div>
+<div class="login-body"><div id="loginError" class="error"></div><div class="field"><label>Administrator Email</label><input id="email" type="email" autocomplete="username"></div><div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password"></div><button id="loginBtn" class="login-btn"><i class="fa-solid fa-right-to-bracket"></i> Login as Administrator</button></div>
+</div></section>
+<section id="app">
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h2>SoilSpark</h2><small>Book Management</small></div></div><div class="top-actions"><div id="adminEmail" class="email"></div><button id="logout" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</button></div></div></header>
+<main class="page">
+<div class="heading"><div><h1>Books </h1><p>Build the book as Sections → Topics → Questions. Students see only active content.</p></div><div class="toolbar"><button id="addSection" class="btn secondary"><i class="fa-solid fa-folder-plus"></i> New Section</button><button id="addTopic" class="btn primary"><i class="fa-solid fa-plus"></i> New Topic</button><button id="bulkBtn" class="btn green"><i class="fa-solid fa-file-csv"></i> Bulk CSV</button><button id="refresh" class="btn secondary"><i class="fa-solid fa-rotate"></i></button></div></div>
+<div class="stats"><div class="stat"><strong id="sectionCount">0</strong><span>Sections</span></div><div class="stat"><strong id="topicCount">0</strong><span>Topics</span></div><div class="stat"><strong id="questionCount">0</strong><span>Questions</span></div><div class="stat"><strong id="activeCount">0</strong><span>Active Questions</span></div></div>
+<div class="grid">
+<section class="panel"><div class="panel-head"><h3>Book Structure</h3></div><div class="panel-body"><div id="structure"></div><div class="hint"><b>Recommended:</b> keep sections broad (e.g. Agronomy, Genetics) and topics focused (e.g. Cropping Systems). Question counts are stored on topic documents so students do not need to download the question bank just to display the book.</div></div></section>
+<section class="panel"><div class="panel-head"><div><h3 id="questionHeading">Select a topic</h3><small id="questionSub" style="color:var(--muted);font-size:10px"></small></div><button id="addQuestion" class="btn primary" disabled><i class="fa-solid fa-plus"></i> New Question</button></div><div class="panel-body"><div id="questionList" class="list"><div class="empty"><i class="fa-regular fa-folder-open"></i><p>Select a topic to manage its questions.</p></div></div></div></section>
+</div>
+</main></section>
+
+<div id="sectionModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="sectionModalTitle">New Section</h3><button class="close" data-close="sectionModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Section Name</label><input id="sectionName" maxlength="100"></div><div class="form-field full"><label>Description</label><textarea id="sectionDesc" maxlength="300"></textarea></div><div class="form-field"><label>Display Order</label><input id="sectionOrder" type="number" min="0" value="0"></div><div class="form-field"><label class="check"><input id="sectionActive" type="checkbox" checked> Active for students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="sectionModal">Cancel</button><button id="saveSection" class="btn primary">Save Section</button></div></div></div>
+
+<div id="topicModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="topicModalTitle">New Topic</h3><button class="close" data-close="topicModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Section</label><select id="topicSection"></select></div><div class="form-field full"><label>Topic Name</label><input id="topicName" maxlength="100"></div><div class="form-field full"><label>Description</label><textarea id="topicDesc" maxlength="300"></textarea></div><div class="form-field"><label>Display Order</label><input id="topicOrder" type="number" min="0" value="0"></div><div class="form-field"><label class="check"><input id="topicActive" type="checkbox" checked> Active for students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="topicModal">Cancel</button><button id="saveTopic" class="btn primary">Save Topic</button></div></div></div>
+
+<div id="questionModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="questionModalTitle">New Question</h3><button class="close" data-close="questionModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Question</label><textarea id="qText" maxlength="2000"></textarea></div><div class="form-field"><label>Option A</label><input id="opt0"></div><div class="form-field"><label>Option B</label><input id="opt1"></div><div class="form-field"><label>Option C</label><input id="opt2"></div><div class="form-field"><label>Option D</label><input id="opt3"></div><div class="form-field"><label>Correct Answer</label><select id="correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div><div class="form-field"><label>Display Order</label><input id="qOrder" type="number" min="0" value="0"></div><div class="form-field full"><label>Explanation (optional)</label><textarea id="explanation" maxlength="3000"></textarea></div><div class="form-field full"><label class="check"><input id="qActive" type="checkbox" checked> Active — visible to students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="questionModal">Cancel</button><button id="saveQuestion" class="btn primary">Save Question</button></div></div></div>
+
+<div id="bulkModal" class="modal"><div class="modal-card"><div class="modal-head"><h3>Bulk Upload Questions</h3><button class="close" data-close="bulkModal">×</button></div><div class="modal-body">
+<div class="csv-box"><h4>CSV format</h4><p>Required columns: <code>section,topic,question,optionA,optionB,optionC,optionD,correctAnswer</code><br>Optional: <code>explanation,order,active</code>. <b>correctAnswer</b> accepts A/B/C/D or 1/2/3/4. The section and topic must already exist; names are matched case-insensitively. If a topic is missing, the row is skipped rather than creating unexpected structure.</p><p style="margin-top:8px"><b>Example:</b> <code>Agronomy,Cropping Systems,Which is a ...?,Option 1,Option 2,Option 3,Option 4,B,Explanation,1,true</code></p><button id="downloadTemplate" class="btn secondary" style="margin-top:11px"><i class="fa-solid fa-download"></i> Download CSV Template</button></div>
+<div class="form-field" style="margin-top:16px"><label>Select CSV file</label><input id="csvFile" type="file" accept=".csv,text/csv"></div><div id="bulkStatus" class="hint" style="display:none"></div><div class="progressbar"><span id="bulkProgress"></span></div>
+</div><div class="modal-foot"><button class="btn secondary" data-close="bulkModal">Close</button><button id="uploadCsv" class="btn primary"><i class="fa-solid fa-cloud-arrow-up"></i> Upload Questions</button></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+import {getFirestore,collection,getDocs,getDoc,doc,addDoc,setDoc,updateDoc,deleteDoc,query,where,writeBatch,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+  authDomain: "soilspark-02.firebaseapp.com",
+  projectId: "soilspark-02",
+  storageBucket: "soilspark-02.firebasestorage.app",
+  messagingSenderId: "1076135404685",
+  appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+  measurementId: "G-3HGQCNDR9H"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+let sections=[],topics=[],questions=[],selectedTopic=null,editingSectionId=null,editingTopicId=null,editingQuestionId=null;
+
+function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2800)}
+function openModal(id){$(id).style.display="flex"} function closeModal(id){$(id).style.display="none"}
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
+
+async function verifyAdmin(user){
+ if(!user)throw new Error("Not authenticated.");
+ const s=await getDoc(doc(db,"admins",user.uid)); if(!s.exists())throw new Error("Access denied.");
+ const d=s.data(); if(d.role&&String(d.role).toLowerCase()!=="admin")throw new Error("Administrator role required."); if(d.active===false)throw new Error("Administrator account is inactive."); return d;
+}
+onAuthStateChanged(auth,async user=>{
+ if(!user){$("loginScreen").style.display="grid";$("app").style.display="none";return}
+ try{await verifyAdmin(user);$("adminEmail").textContent=user.email||"Administrator";$("loginScreen").style.display="none";$("app").style.display="block";await loadAll()}
+ catch(e){await signOut(auth);$("loginError").textContent=e.message;$("loginError").style.display="block"}
+});
+$("loginBtn").onclick=login;$("password").onkeydown=e=>{if(e.key==="Enter")login()};
+async function login(){
+ $("loginError").style.display="none";const email=$("email").value.trim(),pass=$("password").value;if(!email||!pass){$("loginError").textContent="Enter email and password.";$("loginError").style.display="block";return}
+ $("loginBtn").disabled=true;try{const c=await signInWithEmailAndPassword(auth,email,pass);await verifyAdmin(c.user)}catch(e){try{await signOut(auth)}catch(_){}$("loginError").textContent=e.code==="auth/invalid-credential"?"Incorrect email or password.":e.message;$("loginError").style.display="block"}finally{$("loginBtn").disabled=false}
+}
+$("logout").onclick=()=>signOut(auth);$("refresh").onclick=loadAll;$("addSection").onclick=()=>openSectionModal();$("addTopic").onclick=()=>openTopicModal();$("addQuestion").onclick=()=>{if(!selectedTopic)return;editingQuestionId=null;resetQuestionForm();$("questionModalTitle").textContent="New Question";openModal("questionModal")};$("saveSection").onclick=saveSection;$("saveTopic").onclick=saveTopic;$("saveQuestion").onclick=saveQuestion;$("bulkBtn").onclick=()=>{resetBulk();openModal("bulkModal")};$("uploadCsv").onclick=bulkUpload;$("downloadTemplate").onclick=downloadTemplate;
+
+async function loadAll(){
+ $("structure").innerHTML='<div class="empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading question bank...</p></div>';
+ try{
+  const [ss,ts,qs]=await Promise.all([getDocs(collection(db,"sections")),getDocs(collection(db,"topics")),getDocs(collection(db,"questions"))]);
+  sections=ss.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+  topics=ts.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+  questions=qs.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+  await repairCounts();
+  renderStructure();updateStats();
+  if(selectedTopic){selectedTopic=topics.find(t=>t.id===selectedTopic.id)||null;if(selectedTopic)renderQuestions();else clearQuestions()}
+ }catch(e){console.error(e);$("structure").innerHTML='<div class="empty"><p>Unable to load. Check Firestore rules.</p></div>'}
+}
+function orderName(a,b){return (a.order??9999)-(b.order??9999)||(a.name||"").localeCompare(b.name||"")}
+async function repairCounts(){
+ const counts={};questions.forEach(q=>{if(q.topicId)counts[q.topicId]=(counts[q.topicId]||0)+1});
+ const changed=topics.filter(t=>Number(t.questionCount??-1)!==counts[t.id]);
+ if(!changed.length)return;
+ // Only the admin dashboard performs this repair; students never download all questions for counts.
+ for(let i=0;i<changed.length;i+=450){const batch=writeBatch(db);changed.slice(i,i+450).forEach(t=>batch.update(doc(db,"topics",t.id),{questionCount:counts[t.id]||0,updatedAt:serverTimestamp()}));await batch.commit()}
+ changed.forEach(t=>t.questionCount=counts[t.id]||0);
+}
+function renderStructure(){
+ const el=$("structure");
+ if(!sections.length){
+  const legacy=topics.filter(t=>!t.sectionId); if(!legacy.length){el.innerHTML='<div class="empty"><i class="fa-solid fa-folder-plus"></i><p>Create your first section.</p></div>';return}
+  el.innerHTML='<div class="section-card"><div class="section-head"><strong>Uncategorized / Existing Topics</strong></div><div class="topic-list">'+legacyTopicsHtml(legacy)+'</div></div>';bindTopicEvents();return;
+ }
+ el.innerHTML=sections.map(s=>{
+  const ts=topics.filter(t=>t.sectionId===s.id);
+  return `<div class="section-card"><div class="section-head"><div><strong>${esc(s.name||"Untitled Section")}</strong><div style="font-size:10px;color:var(--muted);margin-top:2px">${s.active===false?"Inactive":"Active"} · ${ts.length} topic${ts.length===1?"":"s"}</div></div><div class="section-tools"><button class="mini edit" data-sectedit="${esc(s.id)}">Edit</button><button class="mini del" data-sectdelete="${esc(s.id)}">Delete</button></div></div><div class="topic-list">${ts.length?legacyTopicsHtml(ts):'<div class="empty" style="padding:20px"><p>No topics in this section.</p></div>'}</div></div>`
+ }).join("");
+ bindTopicEvents();
+ $("structure").querySelectorAll("[data-sectedit]").forEach(b=>b.onclick=()=>editSection(b.dataset.sectedit));
+ $("structure").querySelectorAll("[data-sectdelete]").forEach(b=>b.onclick=()=>deleteSection(b.dataset.sectdelete));
+}
+function legacyTopicsHtml(ts){return ts.map(t=>`<div class="topic-item ${selectedTopic?.id===t.id?"active":""}" data-topic="${esc(t.id)}"><h4>${esc(t.name||"Untitled Topic")}</h4><p>${t.active===false?"Inactive":"Active"} · ${Number(t.questionCount||0)} questions</p><div class="topic-actions"><button class="mini edit" data-edit="${esc(t.id)}">Edit</button><button class="mini del" data-delete="${esc(t.id)}">Delete</button></div></div>`).join("")}
+function bindTopicEvents(){
+ $("structure").querySelectorAll("[data-topic]").forEach(x=>x.onclick=e=>{if(e.target.closest("button"))return;selectTopic(x.dataset.topic)});
+ $("structure").querySelectorAll("[data-edit]").forEach(b=>b.onclick=e=>{e.stopPropagation();editTopic(b.dataset.edit)});
+ $("structure").querySelectorAll("[data-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deleteTopic(b.dataset.delete)});
+}
+function selectTopic(id){selectedTopic=topics.find(t=>t.id===id)||null;$("addQuestion").disabled=!selectedTopic;$("questionHeading").textContent=selectedTopic?.name||"Select a topic";$("questionSub").textContent=selectedTopic?`${sectionName(selectedTopic.sectionId)} · ${selectedTopic.questionCount||0} questions`:"";renderStructure();renderQuestions()}
+function clearQuestions(){$("addQuestion").disabled=true;$("questionHeading").textContent="Select a topic";$("questionSub").textContent="";$("questionList").innerHTML='<div class="empty"><i class="fa-regular fa-folder-open"></i><p>Select a topic to manage its questions.</p></div>'}
+function renderQuestions(){
+ const list=questions.filter(q=>q.topicId===selectedTopic?.id).sort(orderName);
+ $("questionList").innerHTML=list.length?list.map((q,i)=>`<article class="question-item"><div class="q-row"><div><div class="q-number">QUESTION ${i+1} · ${q.active===false?"INACTIVE":"ACTIVE"}</div><div class="q-item-text">${esc(q.text||"")}</div><div class="q-meta">Correct: ${["A","B","C","D"][Number(q.correctIndex)]||"A"} ${q.explanation?"· Explanation added":""}</div></div><div class="q-actions"><button class="mini edit" data-qedit="${esc(q.id)}">Edit</button><button class="mini del" data-qdelete="${esc(q.id)}">Delete</button></div></div></article>`).join(""):'<div class="empty"><i class="fa-regular fa-file-lines"></i><p>No questions in this topic yet.</p></div>';
+ $("questionList").querySelectorAll("[data-qedit]").forEach(b=>b.onclick=()=>editQuestion(b.dataset.qedit));$("questionList").querySelectorAll("[data-qdelete]").forEach(b=>b.onclick=()=>deleteQuestion(b.dataset.qdelete));
+}
+function updateStats(){$("sectionCount").textContent=sections.length;$("topicCount").textContent=topics.length;$("questionCount").textContent=questions.length;$("activeCount").textContent=questions.filter(q=>q.active!==false).length}
+function sectionName(id){return sections.find(s=>s.id===id)?.name||"Existing / Uncategorized"}
+
+function openSectionModal(id=null){
+ editingSectionId=id;$("sectionModalTitle").textContent=id?"Edit Section":"New Section";const s=id?sections.find(x=>x.id===id):null;$("sectionName").value=s?.name||"";$("sectionDesc").value=s?.description||"";$("sectionOrder").value=s?.order??0;$("sectionActive").checked=s?.active!==false;openModal("sectionModal")
+}
+async function saveSection(){
+ const name=$("sectionName").value.trim();if(!name){alert("Section name is required.");return}
+ const data={name,description:$("sectionDesc").value.trim(),order:Number($("sectionOrder").value)||0,active:$("sectionActive").checked,updatedAt:serverTimestamp()};
+ try{if(editingSectionId)await updateDoc(doc(db,"sections",editingSectionId),data);else await addDoc(collection(db,"sections"),{...data,createdAt:serverTimestamp()});closeModal("sectionModal");toast("Section saved.");await loadAll()}catch(e){alert("Unable to save section: "+e.message)}
+}
+async function deleteSection(id){
+ const s=sections.find(x=>x.id===id),ts=topics.filter(t=>t.sectionId===id);if(!confirm(`Delete "${s?.name||"this section"}" and its ${ts.length} topic(s)? Questions inside those topics will also be deleted.`))return;
+ try{const qs=questions.filter(q=>ts.some(t=>t.id===q.topicId));for(let i=0;i<qs.length;i+=450){const b=writeBatch(db);qs.slice(i,i+450).forEach(q=>b.delete(doc(db,"questions",q.id)));await b.commit()}for(let i=0;i<ts.length;i+=450){const b=writeBatch(db);ts.slice(i,i+450).forEach(t=>b.delete(doc(db,"topics",t.id)));await b.commit()}await deleteDoc(doc(db,"sections",id));selectedTopic=null;toast("Section deleted.");await loadAll()}catch(e){alert("Delete failed: "+e.message)}
+}
+
+function openTopicModal(id=null){
+ editingTopicId=id;$("topicModalTitle").textContent=id?"Edit Topic":"New Topic";$("topicSection").innerHTML=sections.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join("");
+ const t=id?topics.find(x=>x.id===id):null;if(!t&&sections.length)$("topicSection").value=sections[0].id;
+ $("topicSection").value=t?.sectionId||$("topicSection").value;$("topicName").value=t?.name||"";$("topicDesc").value=t?.description||"";$("topicOrder").value=t?.order??0;$("topicActive").checked=t?.active!==false;openModal("topicModal")
+}
+async function saveTopic(){
+ const name=$("topicName").value.trim(),sectionId=$("topicSection").value;if(!name||!sectionId){alert("Create/select a section first.");return}
+ const old=editingTopicId?topics.find(t=>t.id===editingTopicId):null;const data={sectionId,name,description:$("topicDesc").value.trim(),order:Number($("topicOrder").value)||0,active:$("topicActive").checked,questionCount:Number(old?.questionCount||0),updatedAt:serverTimestamp()};
+ try{if(editingTopicId)await updateDoc(doc(db,"topics",editingTopicId),data);else await addDoc(collection(db,"topics"),{...data,createdAt:serverTimestamp()});closeModal("topicModal");toast("Topic saved.");await loadAll()}catch(e){alert("Unable to save topic: "+e.message)}
+}
+async function deleteTopic(id){
+ const t=topics.find(x=>x.id===id),qs=questions.filter(q=>q.topicId===id);if(!confirm(`Delete "${t?.name||"this topic"}" and its ${qs.length} question(s)?`))return;
+ try{for(let i=0;i<qs.length;i+=450){const b=writeBatch(db);qs.slice(i,i+450).forEach(q=>b.delete(doc(db,"questions",q.id)));await b.commit()}await deleteDoc(doc(db,"topics",id));if(selectedTopic?.id===id)selectedTopic=null;toast("Topic deleted.");await loadAll()}catch(e){alert("Delete failed: "+e.message)}
+}
+function resetQuestionForm(){$("qText").value="";["0","1","2","3"].forEach(i=>$("opt"+i).value="");$("correct").value="0";$("qOrder").value=0;$("explanation").value="";$("qActive").checked=true}
+function editQuestion(id){const q=questions.find(x=>x.id===id);if(!q)return;editingQuestionId=id;$("questionModalTitle").textContent="Edit Question";$("qText").value=q.text||"";const o=Array.isArray(q.options)?q.options:[q.option_a,q.option_b,q.option_c,q.option_d];o.forEach((v,i)=>$("opt"+i).value=v||"");$("correct").value=Number(q.correctIndex)||0;$("qOrder").value=q.order??0;$("explanation").value=q.explanation||"";$("qActive").checked=q.active!==false;openModal("questionModal")}
+async function saveQuestion(){
+ if(!selectedTopic){alert("Select a topic first.");return}const opts=[0,1,2,3].map(i=>$("opt"+i).value.trim()),text=$("qText").value.trim();if(!text||opts.some(x=>!x)){alert("Question and all four options are required.");return}
+ const data={sectionId:selectedTopic.sectionId||null,topicId:selectedTopic.id,text,options:opts,correctIndex:Number($("correct").value),explanation:$("explanation").value.trim(),order:Number($("qOrder").value)||0,active:$("qActive").checked,updatedAt:serverTimestamp()};
+ try{
+  if(editingQuestionId)await updateDoc(doc(db,"questions",editingQuestionId),data);else{await addDoc(collection(db,"questions"),{...data,createdAt:serverTimestamp()});await updateDoc(doc(db,"topics",selectedTopic.id),{questionCount:Number(selectedTopic.questionCount||0)+1,updatedAt:serverTimestamp()})}
+  closeModal("questionModal");toast("Question saved.");await loadAll()
+ }catch(e){alert("Unable to save question: "+e.message)}
+}
+async function deleteQuestion(id){
+ const q=questions.find(x=>x.id===id);if(!q||!confirm("Delete this question permanently?"))return;
+ try{await deleteDoc(doc(db,"questions",id));if(q.topicId){const t=topics.find(x=>x.id===q.topicId);await updateDoc(doc(db,"topics",q.topicId),{questionCount:Math.max(0,Number(t?.questionCount||0)-1),updatedAt:serverTimestamp()})}toast("Question deleted.");await loadAll()}catch(e){alert("Delete failed: "+e.message)}
+}
+
+function resetBulk(){$("csvFile").value="";$("bulkStatus").style.display="none";$("bulkStatus").textContent="";$("bulkProgress").style.width="0%"}
+function parseCSV(text){
+ const rows=[];let row=[],cell="",quote=false;
+ for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'){if(quote&&n==='"'){cell+='"';i++}else quote=!quote}else if(c===','&&!quote){row.push(cell);cell=""}else if((c==='\n'||c==='\r')&&!quote){if(c==='\r'&&n==='\n')i++;row.push(cell);if(row.some(x=>x.trim()!==""))rows.push(row);row=[];cell=""}else cell+=c}
+ if(cell!==""||row.length){row.push(cell);if(row.some(x=>x.trim()!==""))rows.push(row)}return rows
+}
+async function bulkUpload(){
+ const file=$("csvFile").files[0];if(!file){alert("Select a CSV file.");return}
+ const rows=parseCSV(await file.text());if(rows.length<2){alert("CSV has no data rows.");return}
+ const headers=rows[0].map(x=>x.trim().toLowerCase());const required=["section","topic","question","optiona","optionb","optionc","optiond","correctanswer"];const missing=required.filter(x=>!headers.includes(x));if(missing.length){alert("Missing columns: "+missing.join(", "));return}
+ const idx=Object.fromEntries(headers.map((h,i)=>[h,i]));const secMap=new Map(sections.map(s=>[String(s.name||"").trim().toLowerCase(),s]));const topicMap=new Map(topics.map(t=>[String(t.name||"").trim().toLowerCase()+"||"+String(t.sectionId||""),t]));
+ let valid=[],errors=[];
+ rows.slice(1).forEach((r,ri)=>{
+  const get=k=>(r[idx[k]]??"").trim(), sec=secMap.get(get("section").toLowerCase());const t=sec?topicMap.get(get("topic").toLowerCase()+"||"+sec.id):null;let ca=get("correctanswer").toUpperCase();if(/^[1-4]$/.test(ca))ca=String.fromCharCode(64+Number(ca));const ci=["A","B","C","D"].indexOf(ca);
+  if(!sec||!t||!get("question")||["optiona","optionb","optionc","optiond"].some(k=>!get(k))||ci<0){errors.push(`Row ${ri+2}: invalid section/topic/question/options/correctAnswer`);return}
+  valid.push({sectionId:sec.id,topicId:t.id,text:get("question"),options:[get("optiona"),get("optionb"),get("optionc"),get("optiond")],correctIndex:ci,explanation:get("explanation"),order:Number(get("order"))||0,active:get("active")===""||!/^(false|0|no)$/i.test(get("active"))})
+ });
+ if(!valid.length){$("bulkStatus").style.display="block";$("bulkStatus").textContent=errors.slice(0,8).join(" · ");return}
+ $("uploadCsv").disabled=true;let done=0;try{
+  for(let i=0;i<valid.length;i+=450){const batch=writeBatch(db);valid.slice(i,i+450).forEach(q=>batch.set(doc(collection(db,"questions")),{...q,createdAt:serverTimestamp(),updatedAt:serverTimestamp()}));await batch.commit();done=Math.min(i+450,valid.length);$("bulkProgress").style.width=Math.round(done/valid.length*100)+"%";$("bulkStatus").style.display="block";$("bulkStatus").textContent=`Uploaded ${done} of ${valid.length} valid questions...`}
+  const adds={};valid.forEach(q=>adds[q.topicId]=(adds[q.topicId]||0)+1);for(const [tid,n] of Object.entries(adds))await updateDoc(doc(db,"topics",tid),{questionCount:Number(topics.find(t=>t.id===tid)?.questionCount||0)+n,updatedAt:serverTimestamp()});
+  $("bulkStatus").textContent=`Done. ${valid.length} questions uploaded.${errors.length?` ${errors.length} rows skipped.`:""}`;toast("Bulk upload complete.");await loadAll()
+ }catch(e){alert("Bulk upload failed: "+e.message)}finally{$("uploadCsv").disabled=false}
+}
+function downloadTemplate(){
+ const csv="section,topic,question,optionA,optionB,optionC,optionD,correctAnswer,explanation,order,active\nAgronomy,Cropping Systems,Sample question?,Option A,Option B,Option C,Option D,B,Sample explanation,1,true\n";const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="soilspark_questions_template.csv";a.click();URL.revokeObjectURL(a.href)
+}
+function editSection(id){openSectionModal(id)}function editTopic(id){openTopicModal(id)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+</script>
+</body></html>

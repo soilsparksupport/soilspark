@@ -937,13 +937,13 @@
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
-  authDomain: "soilspark.firebaseapp.com",
-  projectId: "soilspark",
-  storageBucket: "soilspark.firebasestorage.app",
-  messagingSenderId: "22641848933",
-  appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
-  measurementId: "G-1M406BN9JK"
+  apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+  authDomain: "soilspark-02.firebaseapp.com",
+  projectId: "soilspark-02",
+  storageBucket: "soilspark-02.firebasestorage.app",
+  messagingSenderId: "1076135404685",
+  appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+  measurementId: "G-3HGQCNDR9H"
 };
 
   const app = initializeApp(firebaseConfig);
@@ -1013,7 +1013,7 @@ const firebaseConfig = {
     if (user) {
       if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
       if (user.emailVerified) {
-        window.location.href = 'BOOK/BOOK.html';
+        window.location.href = 'TESTSERIES/TESTSERIES.html';
       } else {
         if (!panels.verify.classList.contains('hidden')) return;
         showPanel('verify');
@@ -1071,7 +1071,7 @@ const firebaseConfig = {
     signInWithPopup(auth, provider).then((result) => {
       const user = result.user;
       if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
-      window.location.href = 'BOOK/BOOK.html';
+      window.location.href = 'TESTSERIES/TESTSERIES.html';
     }).catch((err) => {
       if (window.AndroidInterface) window.AndroidInterface.onAuthFailure(err.message);
       showMessage('Google login failed: ' + err.message, 'loginMessage');
@@ -1100,7 +1100,7 @@ const firebaseConfig = {
     user.reload().then(() => {
       if (user.emailVerified) {
         if (window.AndroidInterface) window.AndroidInterface.onAuthSuccess(user.uid, user.email);
-        window.location.href = 'BOOK/BOOK.html';
+        window.location.href = 'dashboard.html';
       } else showMessage('Email not verified yet', 'verificationMessage', 'info');
     }).catch((err) => showMessage('Reload error: ' + err.message, 'verificationMessage'));
   });
