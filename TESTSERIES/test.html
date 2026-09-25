@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -401,32 +402,25 @@ button,input{font:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+
 import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithCustomToken
-} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+  auth,
+  watchAuth
+} from "https://soilsparks.in/js/auth.js";
 
-// ===============================
-// PRIMARY PROJECT = soilspark
-// Authentication happens here
-// ===============================
-const primaryFirebaseConfig = {
-  // COPY THESE VALUES FROM YOUR soilspark PROJECT
-  apiKey: "YOUR_SOILSPARK_API_KEY",
-  authDomain: "soilspark.firebaseapp.com",
-  projectId: "soilspark",
-  storageBucket: "soilspark.firebasestorage.app",
-  messagingSenderId: "YOUR_SOILSPARK_MESSAGING_ID",
-  appId: "YOUR_SOILSPARK_APP_ID"
-};
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-// ===============================
-// SECONDARY PROJECT = soilspark-02
-// Firestore + secondary Auth
-// ===============================
-const secondaryFirebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
   authDomain: "soilspark-02.firebaseapp.com",
   projectId: "soilspark-02",
@@ -435,56 +429,11 @@ const secondaryFirebaseConfig = {
   appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
   measurementId: "G-3HGQCNDR9H"
 };
-
-// Primary = login
-const primaryApp = initializeApp(primaryFirebaseConfig);
-
-// Secondary = Firestore
-const secondaryApp = initializeApp(
-  secondaryFirebaseConfig,
-  "soilspark02"
-);
-
-const auth = getAuth(primaryApp);
-const secondaryAuth = getAuth(secondaryApp);
-const db = getFirestore(secondaryApp);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const $ = id => document.getElementById(id);
-
-// ===============================
-// SIGN INTO SECONDARY PROJECT
-// ===============================
-async function signIntoSecondaryProject(primaryUser) {
-  if (!primaryUser) {
-    throw new Error("No primary Firebase user.");
-  }
-
-  // Get login token from soilspark
-  const idToken = await primaryUser.getIdToken(true);
-
-  // Ask your server to create a custom token
-  // for the soilspark-02 Firebase project
-  const response = await fetch("/api/secondary-auth.js", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${idToken}`
-    }
-  });
-
-  const data = await response.json();
-
-  if (!response.ok || !data.success || !data.token) {
-    throw new Error(
-      data.message || "Could not authenticate with Test Series database."
-    );
-  }
-
-  // Automatically sign into soilspark-02
-  await signInWithCustomToken(secondaryAuth, data.token);
-
-  console.log("Secondary Firebase authentication successful.");
-}
+let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== PLANS (dynamic) ===== */
 let PLANS = [];
@@ -687,66 +636,23 @@ async function startPurchase(planId){
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
 localStorage.removeItem("soilspark_jrf_book_v2");
 
-onAuthStateChanged(auth, async u => {
-  user = u || null;
-
-  if (!u) {
-    $("userEmail").textContent = "Not signed in";
-
-    $("authActionBtn").href =
-      "https://soilsparks.in/login.html";
-
-    $("authActionBtn").innerHTML =
-      '<i class="fa-solid fa-right-to-bracket"></i> Login';
-
-    $("book").innerHTML =
-      '<div class="empty">' +
-      '<i class="fa-solid fa-lock"></i>' +
-      '<h3>Sign in required</h3>' +
-      '<p>Please sign in before opening the book.</p>' +
-      '</div>';
-
-    return;
-  }
-
-  try {
-    // ------------------------------------
-    // USER IS LOGGED INTO soilspark
-    // ------------------------------------
-    $("userEmail").textContent = u.email || "Student";
-
-    $("authActionBtn").href =
-      "https://soilsparks.in/dashboard.html";
-
-    $("authActionBtn").innerHTML =
-      '<i class="fa-solid fa-gauge-high"></i> Dashboard';
-
-    // ------------------------------------
-    // SILENTLY LOGIN TO soilspark-02
-    // ------------------------------------
-    await signIntoSecondaryProject(u);
-
-    // ------------------------------------
-    // NOW existing Firestore code works
-    // ------------------------------------
-    loadLocalHistory();
-
-    await loadSubscriptions();
-    await loadPlans();
-    await loadBook();
-
-  } catch (e) {
-    console.error("Authentication error:", e);
-
-    $("book").innerHTML =
-      '<div class="empty">' +
-      '<i class="fa-solid fa-triangle-exclamation"></i>' +
-      '<h3>Authentication error</h3>' +
-      '<p>Please refresh the page and try again.</p>' +
-      '</div>';
-  }
+watchAuth(async u=>{
+ user=u||null;
+ if(!u){
+   $("userEmail").textContent="Not signed in";
+   $("authActionBtn").href="https://soilsparks.in/login1.html";
+   $("authActionBtn").innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';
+   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the book.</p></div>';
+   return;
+ }
+ $("userEmail").textContent=u.email||"Student";
+ $("authActionBtn").href="https://soilsparks.in/dashboard.html";
+ $("authActionBtn").innerHTML='<i class="fa-solid fa-gauge-high"></i> Dashboard';
+ loadLocalHistory();
+ await loadSubscriptions();
+ await loadPlans();
+ await loadBook();
 });
-
 // Removed the logout button event listener since the button was removed.
 $("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
 $("topicSearch").addEventListener("input",renderBook);$("purchaseClose").onclick=closePurchase;$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
