@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -599,13 +600,10 @@ async function startPurchase(planId){
       theme:{color:"#111827"},
       handler:async response=>{
         try{
-          const idToken = await auth.currentUser.getIdToken();
           const vr=await fetch("/api/verify-payment.js",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
+            method:"POST",headers:{"Content-Type":"application/json"},
             body:JSON.stringify({
               ...response,
-              idToken,
               planId: plan.id,
               planDays: plan.days,
               planName: plan.name,
