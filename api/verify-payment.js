@@ -53,7 +53,9 @@ export default async function handler(req, res) {
 
       couponCode,
       userName,
-      userPhone
+      userPhone,
+
+      idToken
     } = req.body || {};
 
     /* =========================================
@@ -89,16 +91,12 @@ export default async function handler(req, res) {
        2. VERIFY FIREBASE USER
     ========================================= */
 
-    const authHeader = req.headers.authorization || "";
-
-    if (!authHeader.startsWith("Bearer ")) {
+    if (!idToken) {
       return res.status(401).json({
         success: false,
         message: "Firebase authentication token missing"
       });
     }
-
-    const idToken = authHeader.substring(7);
 
     const adminApp = getAdminApp();
     const adminAuth = getAuth(adminApp);
