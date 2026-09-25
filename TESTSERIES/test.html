@@ -429,8 +429,8 @@ const firebaseConfig = {
   appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
   measurementId: "G-3HGQCNDR9H"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const testSeriesApp = initializeApp(firebaseConfig, "testSeries");
+const db = getFirestore(testSeriesApp);
 
 const $ = id => document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
