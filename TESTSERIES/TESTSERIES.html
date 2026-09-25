@@ -402,8 +402,23 @@ button,input{font:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+import {
+  auth,
+  watchAuth
+} from "/js/auth.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
@@ -414,7 +429,10 @@ const firebaseConfig = {
   appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
   measurementId: "G-3HGQCNDR9H"
 };
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+const testSeriesApp = initializeApp(firebaseConfig, "testSeries");
+const db = getFirestore(testSeriesApp);
+
+const $ = id => document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== PLANS (dynamic) ===== */
@@ -618,7 +636,7 @@ async function startPurchase(planId){
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
 localStorage.removeItem("soilspark_jrf_book_v2");
 
-onAuthStateChanged(auth,async u=>{
+watchAuth(async u=>{
  user=u||null;
  if(!u){
    $("userEmail").textContent="Not signed in";
