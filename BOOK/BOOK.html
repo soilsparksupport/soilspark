@@ -402,16 +402,11 @@ button,input{font:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-import {
-  auth,
-  watchAuth
-} from "/js/auth.js";
+import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomain:"soilspark.firebaseapp.com",projectId:"soilspark",storageBucket:"soilspark.firebasestorage.app",messagingSenderId:"22641848933",appId:"1:22641848933:web:4c08ce5046681dbb698c8c",measurementId:"G-1M406BN9JK"};
-const app=initializeApp(firebaseConfig,"book");
-const db=getFirestore(app);
-const $=id=>document.getElementById(id);
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== PLANS (dynamic) ===== */
@@ -615,7 +610,8 @@ async function startPurchase(planId){
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
 localStorage.removeItem("soilspark_jrf_book_v2");
 
-watchAuth(async u=>{ user=u||null;
+onAuthStateChanged(auth,async u=>{
+ user=u||null;
  if(!u){
    $("userEmail").textContent="Not signed in";
    $("authActionBtn").href="https://soilsparks.in/login.html";
