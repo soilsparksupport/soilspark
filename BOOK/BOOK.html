@@ -572,27 +572,32 @@ async function startPurchase(planId){
       order_id:orderData.order.id,
       prefill:{name:$("purchaseName").value||user.displayName||"",email:user.email||"",contact:$("purchasePhone").value||""},
       theme:{color:"#111827"},
-      handler:async response=>{
-        try{
-          const vr=await fetch("/api/verify-payment.js",{
-            method:"POST",headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({
-              ...response,
-              planId: plan.id,
-              planDays: plan.days,
-              planName: plan.name,
-              planAmount: plan.price,
-              discount,
-              finalAmount,
-              subjectId: purchaseSubjectId,
-              sectionName: purchaseSectionName,
-              couponCode: appliedCoupon?.id || null,
-              userName: $("purchaseName").value||user.displayName||"",
-              userPhone: $("purchasePhone").value||""
-            })
-          });
-          const vd = await safeJson(vr);
-          if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
+     handler: async response => {
+  try {
+    const idToken = await auth.currentUser.getIdToken();   // ✅ get token
+
+    const vr = await fetch("/api/verify-payment.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...response,
+        idToken,                    // ✅ send in body
+        planId: plan.id,
+        planDays: plan.days,
+        planName: plan.name,
+        planAmount: plan.price,
+        discount,
+        finalAmount,
+        subjectId: purchaseSubjectId,
+        sectionName: purchaseSectionName,
+        couponCode: appliedCoupon?.id || null,
+        userName: $("purchaseName").value || user.displayName || "",
+        userPhone: $("purchasePhone").value || ""
+      })
+    });
+    // ...rest unchanged
+  } catch (e) { console.error(e); alert(e.message || "Payment verification failed"); }
+}
           alert(`Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`);
           appliedCoupon=null;
           closePurchase();
