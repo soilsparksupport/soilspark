@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SoilSpark · Books</title>
+<title>SoilSpark · Question Book</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -365,19 +364,19 @@ button,input{font:inherit}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Books Section</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Test Series</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login1.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Books</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
-<div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
+<div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading Test Series...</p></div></div>
 </section>
 
-<section id="questionView"><div class="question-shell"><div class="question-head"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button><div><div id="topicTitle" class="topic-title">Topic</div><div id="progress" class="progress">Question 1</div></div></div><div class="question-area"><div id="qLabel" class="q-label">QUESTION 1</div><div id="qText" class="q-text">Loading question...</div><div id="options" class="options"></div><div id="explanation" class="explanation"></div><div class="actions"><button id="prevBtn" class="action secondary">Previous</button><button id="nextBtn" class="action primary">Next</button></div></div></div></section>
+<section id="questionView"><div class="question-shell"><div class="question-head"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Test Series</button><div><div id="topicTitle" class="topic-title">Topic</div><div id="progress" class="progress">Question 1</div></div></div><div class="question-area"><div id="qLabel" class="q-label">QUESTION 1</div><div id="qText" class="q-text">Loading question...</div><div id="options" class="options"></div><div id="explanation" class="explanation"></div><div class="actions"><button id="prevBtn" class="action secondary">Previous</button><button id="nextBtn" class="action primary">Next</button></div></div></div></section>
 
 <section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
-<section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Book</button></div><div id="historyList" class="history-list"></div></div></section>
+<section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Test Series</button></div><div id="historyList" class="history-list"></div></div></section>
 </main>
 
 <div id="purchaseOverlay" class="purchase-overlay">
@@ -402,11 +401,37 @@ button,input{font:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomain:"soilspark.firebaseapp.com",projectId:"soilspark",storageBucket:"soilspark.firebasestorage.app",messagingSenderId:"22641848933",appId:"1:22641848933:web:4c08ce5046681dbb698c8c",measurementId:"G-1M406BN9JK"};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+import {
+  auth,
+  watchAuth
+} from "/js/auth.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+  authDomain: "soilspark-02.firebaseapp.com",
+  projectId: "soilspark-02",
+  storageBucket: "soilspark-02.firebasestorage.app",
+  messagingSenderId: "1076135404685",
+  appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+  measurementId: "G-3HGQCNDR9H"
+};
+const testSeriesApp = initializeApp(firebaseConfig, "testSeries");
+const db = getFirestore(testSeriesApp);
+
+const $ = id => document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== PLANS (dynamic) ===== */
@@ -572,32 +597,30 @@ async function startPurchase(planId){
       order_id:orderData.order.id,
       prefill:{name:$("purchaseName").value||user.displayName||"",email:user.email||"",contact:$("purchasePhone").value||""},
       theme:{color:"#111827"},
-     handler: async response => {
-  try {
-    const idToken = await auth.currentUser.getIdToken();   // ✅ get token
-
-    const vr = await fetch("/api/verify-payment.js", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...response,
-        idToken,                    // ✅ send in body
-        planId: plan.id,
-        planDays: plan.days,
-        planName: plan.name,
-        planAmount: plan.price,
-        discount,
-        finalAmount,
-        subjectId: purchaseSubjectId,
-        sectionName: purchaseSectionName,
-        couponCode: appliedCoupon?.id || null,
-        userName: $("purchaseName").value || user.displayName || "",
-        userPhone: $("purchasePhone").value || ""
-      })
-    });
-    // ...rest unchanged
-  } catch (e) { console.error(e); alert(e.message || "Payment verification failed"); }
-}
+      handler:async response=>{
+        try{
+          const idToken = await auth.currentUser.getIdToken();
+          const vr=await fetch("/api/verify-payment.js",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              ...response,
+              idToken,
+              planId: plan.id,
+              planDays: plan.days,
+              planName: plan.name,
+              planAmount: plan.price,
+              discount,
+              finalAmount,
+              subjectId: purchaseSubjectId,
+              sectionName: purchaseSectionName,
+              couponCode: appliedCoupon?.id || null,
+              userName: $("purchaseName").value||user.displayName||"",
+              userPhone: $("purchasePhone").value||""
+            })
+          });
+          const vd = await safeJson(vr);
+          if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
           alert(`Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`);
           appliedCoupon=null;
           closePurchase();
@@ -615,13 +638,13 @@ async function startPurchase(planId){
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
 localStorage.removeItem("soilspark_jrf_book_v2");
 
-onAuthStateChanged(auth,async u=>{
+watchAuth(async u=>{
  user=u||null;
  if(!u){
    $("userEmail").textContent="Not signed in";
-   $("authActionBtn").href="https://soilsparks.in/login.html";
+   $("authActionBtn").href="https://soilsparks.in/login1.html";
    $("authActionBtn").innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';
-   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the books.</p></div>';
+   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the book.</p></div>';
    return;
  }
  $("userEmail").textContent=u.email||"Student";
