@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,7 +184,7 @@ button,input{font:inherit}
   background:green;
   color:#fff;padding:8px 10px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;
 }
-.open:hover{background:rgb(79, 230, 79)}
+.open:hover{background:rgb(55, 149, 55)}
 
 /* ===== LOADING / EMPTY ===== */
 .loading,.empty{
@@ -194,220 +195,130 @@ button,input{font:inherit}
 .empty i,.loading i{font-size:30px;color:var(--orange);margin-bottom:12px}
 .note{margin-top:10px;font-size:11px;color:var(--muted)}
 
-/* ============================================================
-   QUESTION INTERFACE – FLAT, CLEAN, RESPONSIVE
-   ============================================================ */
+/* ===== QUESTION / RESULT / HISTORY VIEWS ===== */
 #questionView,#resultView,#historyView{display:none}
-
-.question-shell{
-  background:#fff;
-  border:1px solid #e8e4dd;
-  border-radius:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,.04);
-  overflow:hidden;
-  max-width:960px;
-  margin:0 auto;
+.question-shell,.result-card,.history-shell{
+  background:#fff;border:1px solid var(--border);border-radius:22px;
+  box-shadow:var(--shadow);overflow:hidden;
 }
-
 .question-head{
-  padding:16px 24px;
-  border-bottom:1px solid #eee9e2;
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px 16px;
-  background:#faf8f5;
+  padding:17px 22px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;gap:15px;align-items:center;
+  background:linear-gradient(135deg,var(--sky-light),var(--peach-light));
 }
 .back{
-  border:1px solid #e0dbd2;
-  background:#fff;
-  color:#4a3b2a;
-  padding:9px 16px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  transition:background .15s,border-color .15s;
-  flex-shrink:0;
+  border:1px solid var(--border);background:#fff;color:var(--blue-dark);
+  padding:9px 13px;border-radius:10px;font-weight:800;cursor:pointer;
 }
-.back:hover{background:#f4efe8;border-color:#d8d0c4}
-.topic-title{
-  font:700 17px Poppins,sans-serif;
-  color:#3d3025;
-  line-height:1.3;
-  max-width:60%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.progress{
-  font-size:12px;
-  font-weight:600;
-  color:#7a6d5e;
-  background:#fff;
-  padding:6px 14px;
-  border-radius:40px;
-  border:1px solid #e8e4dd;
-  white-space:nowrap;
-}
-
-.question-area{
-  padding:32px 36px 36px;
-  max-width:820px;
-  margin:0 auto;
-  width:100%;
-}
-
+.back:hover{background:var(--orange-light);border-color:var(--orange-soft)}
+.topic-title{font:700 18px Poppins;color:var(--text-dark)}
+.progress{font-size:12px;color:var(--muted);font-weight:700}
+.question-area{padding:28px;max-width:900px;margin:auto}
 .q-label{
-  font-size:11px;
-  font-weight:700;
-  color:#b08968;
-  margin-bottom:12px;
-  text-transform:uppercase;
-  letter-spacing:.8px;
+  font-size:12px;font-weight:800;color:var(--orange);
+  margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px;
 }
 .q-text{
-  font:600 21px/1.55 Poppins,sans-serif;
-  color:#2f2820;
-  background:#faf8f5;
-  border:1px solid #ece7df;
-  border-radius:14px;
-  padding:22px 24px;
-  margin-bottom:28px;
-  word-break:break-word;
-  box-shadow:none;
+  font:700 21px/1.5 Poppins;color:var(--text-dark);
+  background:linear-gradient(135deg,var(--mint-light),var(--lime-light));
+  border:1px solid var(--green-soft);border-radius:18px;
+  padding:21px;margin-bottom:22px;
 }
 
+/* ===== OPTIONS ===== */
 .options{display:flex;flex-direction:column;gap:12px}
 .option{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  border:1.5px solid #e4ded5;
-  border-radius:14px;
-  padding:15px 18px;
-  cursor:pointer;
-  transition:border-color .15s,background .15s;
-  background:#fff;
-  -webkit-tap-highlight-color:transparent;
-  word-break:break-word;
+  display:flex;gap:14px;align-items:flex-start;
+  border:1.5px solid var(--border);border-radius:15px;
+  padding:15px 17px;cursor:pointer;transition:.2s;background:#fff;
 }
-.option:hover{border-color:#c9b8a2;background:#faf8f5}
-.option.selected{border-color:#7a9e5b;background:#f0f5ea;box-shadow:none}
+.option:hover{border-color:var(--orange);background:var(--orange-light)}
+.option.selected{
+  border-color:var(--green);background:var(--green-light);
+  box-shadow:0 4px 14px rgba(127,176,105,.15);
+}
 .letter{
-  width:34px;height:34px;min-width:34px;border-radius:9px;
-  background:#f4efe8;
-  display:grid;place-items:center;
-  font-weight:700;color:#8a7b6b;font-size:14px;
-  transition:background .15s,color .15s;
+  width:30px;height:30px;min-width:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
+  display:grid;place-items:center;font-weight:800;color:var(--orange);
 }
-.option.selected .letter{background:#7a9e5b;color:#fff}
-.option-text{
-  font-size:15px;line-height:1.55;padding-top:5px;
-  color:#3d3025;font-weight:500;
+.option.selected .letter{
+  background:linear-gradient(135deg,var(--green),var(--green-soft));
+  color:#fff;
 }
+.option-text{font-size:14px;line-height:1.5;padding-top:4px}
 
+/* ===== ACTIONS ===== */
+.actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}
+.action{border:0;border-radius:11px;padding:11px 17px;font-weight:800;cursor:pointer}
+.secondary{background:linear-gradient(135deg,var(--peach-light),var(--orange-light));color:var(--text)}
+.secondary:hover{background:linear-gradient(135deg,var(--orange-soft),var(--peach))}
+.primary{background:linear-gradient(135deg,var(--green),var(--green-soft));color:#fff}
+.primary:hover{background:rgb(58, 150, 58)}
+.disabled{opacity:.45;cursor:not-allowed}
+
+/* ===== EXPLANATION ===== */
 .explanation{
-  display:none;margin-top:22px;
-  border:1px solid #d9e6cc;
-  background:#f4f9ee;
-  border-radius:12px;
-  padding:16px 18px;
-  color:#3f5a2e;
-  font-size:14px;
-  line-height:1.6;
-  box-shadow:none;
+  display:none;margin-top:20px;
+  border:1px solid var(--green-soft);
+  background:linear-gradient(135deg,var(--mint-light),var(--green-light));
+  border-radius:14px;padding:15px;color:#4e683e;font-size:13px;line-height:1.6;
 }
 .explanation.show{display:block}
 
-.actions{
-  display:flex;justify-content:space-between;gap:14px;
-  margin-top:32px;flex-wrap:wrap;
-}
-.action{
-  border:1px solid transparent;
-  border-radius:11px;
-  padding:13px 22px;
-  font-weight:600;
-  font-size:14px;
-  cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:background .15s,border-color .15s,color .15s;
-  min-width:130px;flex:1 1 auto;box-shadow:none;
-  -webkit-tap-highlight-color:transparent;
-}
-.action:active{transform:scale(.98)}
-.secondary{background:#fff;color:#4a3b2a;border-color:#ddd6cb}
-.secondary:hover{background:#f4efe8;border-color:#c9b8a2}
-.primary{background:#7a9e5b;color:#fff;border-color:#7a9e5b}
-.primary:hover{background:#6a8b4d;border-color:#6a8b4d}
-.disabled{opacity:.4;pointer-events:none;cursor:not-allowed}
-
 /* ===== RESULT CARD ===== */
-.result-card{
-  background:#fff;border:1px solid #e8e4dd;border-radius:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,.04);
-  padding:28px;max-width:720px;margin:0 auto;
-}
+.result-card{padding:28px}
 .result-hero{text-align:center;padding:12px 0 25px}
-.result-icon{font-size:42px;color:#7a9e5b;margin-bottom:10px}
+.result-icon{font-size:42px;color:var(--green);margin-bottom:10px}
 .result-hero h2{font:800 25px Poppins;color:var(--text-dark)}
-.score{font:800 42px Poppins;color:#b08968;margin:7px 0}
+.score{font:800 42px Poppins;color:var(--orange);margin:7px 0}
 .result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .result-stat{
-  border:1px solid #e8e4dd;border-radius:14px;padding:14px;text-align:center;
-  background:#faf8f5;
+  border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;
+  background:linear-gradient(135deg,var(--sky-light),var(--white));
 }
-.result-stat strong{display:block;font:800 20px Poppins;color:#4f8fae}
+.result-stat strong{display:block;font:800 20px Poppins;color:var(--blue-dark)}
 .result-stat span{font-size:10px;color:var(--muted)}
 .result-actions{display:flex;gap:9px;justify-content:center;margin-top:22px;flex-wrap:wrap}
 
 /* ===== DASHBOARD ===== */
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
 .dash-card{
-  background:#faf8f5;
-  border:1px solid #e8e4dd;border-radius:15px;padding:15px;
+  background:linear-gradient(135deg,var(--white),var(--sky-light));
+  border:1px solid var(--border);border-radius:15px;padding:15px;
 }
 .dash-card strong{display:block;font:800 22px Poppins;color:var(--text-dark)}
 .dash-card span{font-size:10px;color:var(--muted)}
 
 /* ===== HISTORY ===== */
-.history-shell{
-  background:#fff;border:1px solid #e8e4dd;border-radius:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,.04);overflow:hidden;
-}
 .history-head{
-  padding:18px 20px;border-bottom:1px solid #eee9e2;
+  padding:18px 20px;border-bottom:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;gap:10px;
-  background:#faf8f5;
+  background:linear-gradient(135deg,var(--lavender-light),var(--pink-light));
 }
 .history-head h3{font:700 18px Poppins}
 .history-list{padding:15px;display:flex;flex-direction:column;gap:9px}
 .history-row{
-  border:1px solid #e8e4dd;border-radius:13px;padding:13px;
+  border:1px solid var(--border);border-radius:13px;padding:13px;
   display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
-  background:#faf8f5;
+  background:linear-gradient(135deg,var(--white),var(--mint-light));
 }
 .history-row strong{font-size:13px}
 .history-row small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
 .history-score{text-align:right}
-.history-score b{font:800 18px Poppins;color:#b08968}
+.history-score b{font:800 18px Poppins;color:var(--orange)}
 .history-score span{display:block;font-size:10px;color:var(--muted)}
 
 /* ===== REVIEW ===== */
-.review{margin-top:15px;border-top:1px solid #e8e4dd;padding-top:15px}
-.review-item{border:1px solid #e8e4dd;border-radius:12px;padding:12px;margin-bottom:8px}
-.review-item.correct{border-left:4px solid #7a9e5b;background:#f4f9ee}
-.review-item.wrong{border-left:4px solid #c96b5c;background:#fff1ef}
+.review{margin-top:15px;border-top:1px solid var(--border);padding-top:15px}
+.review-item{border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px}
+.review-item.correct{border-left:4px solid var(--green);background:var(--green-light)}
+.review-item.wrong{border-left:4px solid var(--danger);background:var(--danger-soft)}
 .review-item h4{font-size:12px;line-height:1.5}
 .review-item p{font-size:11px;margin-top:6px;color:var(--muted)}
 .tag{display:inline-block;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:800;margin-top:7px}
-.tag.correct{background:#c8e6c0;color:#587441}
-.tag.wrong{background:#ffe8e5;color:#a14a3e}
+.tag.correct{background:var(--green-soft);color:#587441}
+.tag.wrong{background:var(--danger-soft);color:#a14a3e}
 .top-actions-mobile{display:flex;gap:8px}
 
 /* ===== RESPONSIVE ===== */
@@ -417,24 +328,13 @@ button,input{font:inherit}
   .hero{align-items:stretch;flex-direction:column}
   .search{width:100%}
 }
-@media(max-width:700px){
-  .question-area{padding:24px 20px 28px}
-  .q-text{font-size:18px;padding:18px 20px;margin-bottom:22px}
-  .option{padding:13px 14px;gap:12px}
-  .letter{width:30px;height:30px;min-width:30px;font-size:13px;border-radius:8px}
-  .option-text{font-size:14px;padding-top:4px}
-  .action{padding:12px 18px;font-size:13px;min-width:110px}
-  .question-head{padding:14px 18px}
-  .topic-title{font-size:15px;max-width:100%;white-space:normal;word-break:break-word}
-  .progress{font-size:11px;padding:5px 12px}
-  .back{padding:8px 14px;font-size:12px}
-  .actions{gap:10px;margin-top:26px}
-}
 @media(max-width:600px){
   .topbar-inner{padding:12px 15px}
   .user-email{display:none}
   .page{padding:22px 15px 35px}
   .topic-grid{grid-template-columns:1fr}
+  .question-area{padding:20px 15px}
+  .q-text{font-size:18px}
   .question-head{align-items:flex-start;flex-direction:column}
   .actions{flex-wrap:wrap}
   .action{flex:1;min-width:120px}
@@ -442,21 +342,9 @@ button,input{font:inherit}
   .history-row{grid-template-columns:1fr}
   .history-score{text-align:left}
 }
-@media(max-width:480px){
-  .question-area{padding:18px 14px 22px}
-  .q-text{font-size:16px;padding:16px;margin-bottom:18px;border-radius:12px}
-  .option{padding:12px 12px;border-radius:12px}
-  .letter{width:28px;height:28px;min-width:28px;font-size:12px;border-radius:7px}
-  .option-text{font-size:13px}
-  .action{padding:11px 14px;font-size:13px;min-width:90px;border-radius:10px}
-  .actions{gap:8px}
-  .question-head{padding:12px 14px;gap:8px}
-  .back{padding:7px 12px;font-size:11px}
-  .topic-title{font-size:14px}
-  .progress{font-size:11px;padding:4px 10px}
-}
+</style>
 
-/* ===== PURCHASE MODAL ===== */
+<style id="sectionPurchaseStyles">
 .section-lock{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:#fff8e6;border:1px solid #f2d58b;color:#725400;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px}
 .section-lock button,.buy-section{border:0;border-radius:9px;padding:8px 12px;background:#111827;color:#fff;font-weight:700;cursor:pointer}
 .section-paid{color:#16803c;background:#edf9f1;border-color:#b9e4c5}
@@ -477,116 +365,25 @@ button,input{font:inherit}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <div class="brand-icon"><i class="fa-solid fa-book-open"></i></div>
-      <div><h1>SoilSpark</h1><small>Books Section</small></div>
-    </div>
-    <div class="user-actions">
-      <div id="userEmail" class="user-email">Checking account...</div>
-      <a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-    </div>
-  </div>
-</header>
-
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Books Section</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
-  <!-- ===== BOOK VIEW ===== -->
-  <section id="bookView">
-    <div class="hero">
-      <div>
-        <h2>Books</h2>
-        <p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p>
-      </div>
-      <div class="top-actions-mobile">
-        <button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button>
-        <button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button>
-      </div>
-    </div>
-    <div class="search-wrap" style="margin-bottom:15px">
-      <i class="fa-solid fa-search"></i>
-      <input id="topicSearch" class="search" placeholder="Search sections and topics...">
-    </div>
-    <div id="book" class="book">
-      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div>
-    </div>
-  </section>
+<section id="bookView">
+<div class="hero"><div><h2>Books</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
+<div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
+</section>
 
-  <!-- ===== QUESTION VIEW ===== -->
-  <section id="questionView">
-    <div class="question-shell">
-      <div class="question-head">
-        <button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-          <div id="topicTitle" class="topic-title">Topic</div>
-          <div id="progress" class="progress">Question 1</div>
-        </div>
-      </div>
-      <div class="question-area">
-        <div id="qLabel" class="q-label">QUESTION 1</div>
-        <div id="qText" class="q-text">Loading question...</div>
-        <div id="options" class="options"></div>
-        <div id="explanation" class="explanation"></div>
-        <div class="actions">
-          <button id="prevBtn" class="action secondary"><i class="fa-solid fa-arrow-left"></i> Previous</button>
-          <button id="nextBtn" class="action primary">Next <i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="questionView"><div class="question-shell"><div class="question-head"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button><div><div id="topicTitle" class="topic-title">Topic</div><div id="progress" class="progress">Question 1</div></div></div><div class="question-area"><div id="qLabel" class="q-label">QUESTION 1</div><div id="qText" class="q-text">Loading question...</div><div id="options" class="options"></div><div id="explanation" class="explanation"></div><div class="actions"><button id="prevBtn" class="action secondary">Previous</button><button id="nextBtn" class="action primary">Next</button></div></div></div></section>
 
-  <!-- ===== RESULT VIEW ===== -->
-  <section id="resultView">
-    <div class="result-card">
-      <div class="result-hero">
-        <div class="result-icon"><i class="fa-solid fa-circle-check"></i></div>
-        <h2 id="resultTitle">Test Completed</h2>
-        <div id="score" class="score">0/0</div>
-        <p id="resultPercent" style="color:var(--muted)">0%</p>
-      </div>
-      <div class="result-grid">
-        <div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div>
-        <div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div>
-        <div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div>
-        <div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div>
-      </div>
-      <div class="result-actions">
-        <button id="retryBtn" class="action primary">Retry Test</button>
-        <button id="resultHistoryBtn" class="action secondary">View History</button>
-        <button id="resultBookBtn" class="action secondary">Back to Book</button>
-      </div>
-    </div>
-  </section>
+<section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
-  <!-- ===== HISTORY VIEW ===== -->
-  <section id="historyView">
-    <div class="dashboard">
-      <div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div>
-      <div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div>
-      <div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div>
-      <div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div>
-    </div>
-    <div class="history-shell">
-      <div class="history-head">
-        <div>
-          <h3>Test History</h3>
-          <small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small>
-        </div>
-        <button id="historyBack" class="action secondary">Book</button>
-      </div>
-      <div id="historyList" class="history-list"></div>
-    </div>
-  </section>
+<section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Book</button></div><div id="historyList" class="history-list"></div></div></section>
 </main>
 
-<!-- ===== PURCHASE MODAL ===== -->
 <div id="purchaseOverlay" class="purchase-overlay">
   <div class="purchase-modal">
     <div class="purchase-head">
-      <div>
-        <h2 id="purchaseTitle" style="margin:0">Buy Section</h2>
-        <p id="purchaseSubtitle" style="margin:5px 0 0;color:#667085;font-size:13px">Choose an access period.</p>
-      </div>
+      <div><h2 id="purchaseTitle" style="margin:0">Buy Section</h2><p id="purchaseSubtitle" style="margin:5px 0 0;color:#667085;font-size:13px">Choose an access period.</p></div>
       <button id="purchaseClose" class="purchase-close" type="button">×</button>
     </div>
     <div class="purchase-user">
@@ -602,7 +399,6 @@ button,input{font:inherit}
     <p class="purchase-note">Payment is processed securely by Razorpay. Your section access starts after successful payment verification.</p>
   </div>
 </div>
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
@@ -1050,5 +846,4 @@ function toggleReview(i){
 }
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 </script>
-</body>
-</html>
+</body></html>
