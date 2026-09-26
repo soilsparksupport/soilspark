@@ -588,7 +588,10 @@ async function startPurchase(planId){
               sectionName: purchaseSectionName,
               couponCode: appliedCoupon?.id || null,
               userName: $("purchaseName").value||user.displayName||"",
-              userPhone: $("purchasePhone").value||""
+              userPhone: $("purchasePhone").value||"",
+              userId: user.uid,
+              firebaseProjectId: "soilspark",
+              firebaseIdToken: await user.getIdToken()
             })
           });
           const vd = await safeJson(vr);
