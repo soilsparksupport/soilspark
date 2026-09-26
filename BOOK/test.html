@@ -595,12 +595,99 @@ async function startPurchase(planId){
             })
           });
           const vd = await safeJson(vr);
-          if(!vr.ok||!vd.success)throw new Error(vd.message||"Payment verification failed.");
-          alert(`Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`);
-          appliedCoupon=null;
-          closePurchase();
-          await loadSubscriptions();
-          renderBook();
+
+if(!vr.ok || !vd.success) {
+  throw new Error(
+    vd.message || "Payment verification failed."
+  );
+}
+
+/* ===============================
+   SAVE SUBSCRIPTION TO FIRESTORE
+   =============================== */
+
+const startDate = new Date();
+
+const expiryDate = new Date(
+  startDate.getTime() +
+  Number(plan.days) * 24 * 60 * 60 * 1000
+);
+
+const subscriptionData = {
+  userId: user.uid,
+
+  subjectId: purchaseSubjectId,
+
+  sectionName: purchaseSectionName,
+
+  planId: plan.id,
+
+  planName: plan.name,
+
+  planDays: Number(plan.days),
+
+  planAmount: Number(plan.price),
+
+  discount: Number(discount || 0),
+
+  finalAmount: Number(finalAmount),
+
+  couponCode: appliedCoupon?.id || null,
+
+  userName:
+    $("purchaseName").value ||
+    user.displayName ||
+    "",
+
+  userPhone:
+    $("purchasePhone").value ||
+    "",
+
+  razorpayPaymentId:
+    response.razorpay_payment_id,
+
+  razorpayOrderId:
+    response.razorpay_order_id,
+
+  status: "active",
+
+  startDate: startDate.toISOString(),
+
+  expiryDate: expiryDate.toISOString(),
+
+  createdAt: serverTimestamp()
+};
+
+console.log(
+  "Writing subscription to Firestore:",
+  subscriptionData
+);
+
+const subscriptionRef = await addDoc(
+  collection(db, "subscriptions"),
+  subscriptionData
+);
+
+console.log(
+  "Subscription successfully created:",
+  subscriptionRef.id
+);
+
+/* ===============================
+   FINISH PURCHASE
+   =============================== */
+
+alert(
+  `Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`
+);
+
+appliedCoupon = null;
+
+closePurchase();
+
+await loadSubscriptions();
+
+renderBook();
         }catch(e){console.error(e);alert(e.message||"Payment verification failed.")}
       },
       modal:{ondismiss:()=>{}}
