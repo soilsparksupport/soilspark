@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoilSparks · Mentors</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefcf5;
+      color: #3e2e1f;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .logo-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: #fefcf5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0.9s;
+      pointer-events: none;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 3.4rem;
+      letter-spacing: -1px;
+      color: #4a3724;
+      filter: blur(1.2px);
+      transition: filter 1s cubic-bezier(0.2, 0.8, 0.3, 1);
+      position: relative;
+      text-shadow: 0 0 30px rgba(139, 94, 60, 0.1);
+    }
+
+    .loader-logo span {
+      color: #b87c4b;
+    }
+
+    .loader-logo.reveal {
+      filter: blur(0px);
+    }
+
+    .loader-line {
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #f7d44a, #b87c4b, #f7d44a, transparent);
+      margin-top: 24px;
+      border-radius: 4px;
+      animation: loaderPulse 1.4s infinite ease-in-out;
+      opacity: 0.7;
+    }
+
+    @keyframes loaderPulse {
+      0% { transform: scaleX(0.7); opacity: 0.3; }
+      50% { transform: scaleX(1); opacity: 1; }
+      100% { transform: scaleX(0.7); opacity: 0.3; }
+    }
+
+    .loader-sub {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: #8b5e3c;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      opacity: 0;
+      animation: fadeInSub 1.2s 0.3s forwards;
+    }
+
+    @keyframes fadeInSub {
+      to { opacity: 1; }
+    }
+
+    .bg-atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-atmosphere::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(247, 212, 74, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .bg-atmosphere::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(166, 200, 232, 0.18) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0 12px;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 6px 16px rgba(139, 94, 60, 0.12);
+      background-color: #ffffff;
+      border: 2px solid #f7d44a;
+    }
+
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #4a3724;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      color: #b87c4b;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-weight: 500;
+      color: #4a3724;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #5d4a37;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #f5c542;
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: #2d1f13;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(74, 55, 36, 0.06);
+    }
+
+    .btn-login {
+      background-color: #ffffff;
+      color: #4a3724;
+      border: 2px solid #e3d3b5;
+    }
+
+    .btn-login:hover {
+      background-color: #fff8e7;
+      border-color: #f5c542;
+      transform: translateY(-1px);
+    }
+
+    .btn-dashboard {
+      background-color: #8b5e3c;
+      color: white;
+      border: 2px solid #6b4a2e;
+    }
+
+    .btn-dashboard:hover {
+      background-color: #6b4a2e;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(139, 94, 60, 0.25);
+    }
+
+    .menu-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      background-color: #f7d44a;
+      border: 2px solid #b87c4b;
+      border-radius: 16px;
+      color: #4a3724;
+      font-size: 1.7rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 14px rgba(139, 94, 60, 0.12);
+      margin-left: 10px;
+    }
+
+    .menu-toggle:hover {
+      background-color: #f5c542;
+      transform: scale(1.02);
+      border-color: #8b5e3c;
+    }
+
+    .top-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background: linear-gradient(135deg, #fefcf5 0%, #fff4e0 100%);
+      z-index: 1000;
+      overflow: hidden;
+      transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 12px 28px rgba(74, 55, 36, 0.15);
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      border-bottom: 4px solid #f7d44a;
+    }
+
+    .top-menu.open {
+      height: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding-bottom: 30px;
+    }
+
+    .top-menu-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 28px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+    }
+
+    .top-menu.open .top-menu-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .top-menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-menu-header h3 {
+      font-size: 1.5rem;
+      color: #4a3724;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top-menu-header h3 i {
+      color: #b87c4b;
+      font-size: 1.8rem;
+    }
+
+    .close-menu-btn {
+      background: #f7d44a;
+      border: 2px solid #b87c4b;
+      font-size: 1.5rem;
+      color: #4a3724;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .close-menu-btn:hover {
+      background: #f5c542;
+      transform: scale(1.05);
+    }
+
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .menu-list a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: #4a3724;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border-radius: 14px;
+      transition: background 0.2s, color 0.2s;
+      border-left: 4px solid transparent;
+    }
+
+    .menu-list a i {
+      width: 24px;
+      font-size: 1.2rem;
+      color: #b87c4b;
+      text-align: center;
+    }
+
+    .menu-list a:hover {
+      background: #fef3d9;
+      border-left-color: #f7d44a;
+      color: #2d1f13;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: #e3d3b5;
+      margin: 8px 0 16px;
+    }
+
+    .menu-secondary-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      justify-content: center;
+      padding-top: 8px;
+      font-size: 0.9rem;
+    }
+
+    .menu-secondary-links a {
+      text-decoration: none;
+      color: #6b4a2e;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border-radius: 30px;
+      transition: all 0.2s;
+    }
+
+    .menu-secondary-links a i {
+      color: #b87c4b;
+    }
+
+    .menu-secondary-links a:hover {
+      background: #f7d44a30;
+      color: #2d1f13;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: #2d1f13;
+      margin-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #f7d44a;
+      margin: 14px auto 0;
+      border-radius: 4px;
+      opacity: 0.9;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: #5d4a37;
+      max-width: 620px;
+      margin: 12px auto 48px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .mentors-section {
+      padding: 20px 0 60px;
+    }
+
+    .mentor-main-card {
+      background: #ffffff;
+      border: 3px solid #c1d9f0;
+      border-radius: 32px;
+      padding: 36px 32px;
+      margin-bottom: 48px;
+      box-shadow: 0 20px 35px -12px rgba(74, 55, 36, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      transition: border-color 0.3s ease;
+    }
+
+    .mentor-main-card:hover {
+      border-color: #7fb2d9;
+    }
+
+    .mentor-main-avatar {
+      flex: 0 0 180px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #f7d44a;
+      box-shadow: 0 12px 28px rgba(139, 94, 60, 0.15);
+      background-color: #fefcf5;
+    }
+
+    .mentor-main-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mentor-main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mentor-main-content h2 {
+      font-size: 2rem;
+      color: #2d1f13;
+      margin-bottom: 6px;
+    }
+
+    .mentor-main-rank {
+      display: inline-block;
+      background: #fef3d9;
+      border: 2px solid #f7d44a;
+      border-radius: 40px;
+      padding: 6px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #8b5e3c;
+      margin-bottom: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .mentor-main-content p {
+      color: #5d4a37;
+      font-size: 1.02rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .mentor-sub-card {
+      background: #ffffff;
+      border: 2px solid #a6c8e8;
+      border-radius: 24px;
+      padding: 28px 30px;
+      margin-bottom: 48px;
+      box-shadow: 0 12px 24px -8px rgba(74, 55, 36, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      transition: border-color 0.25s ease;
+    }
+
+    .mentor-sub-card:hover {
+      border-color: #7fb2d9;
+    }
+
+    .mentor-sub-avatar {
+      flex: 0 0 120px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #f7d44a;
+      background-color: #fefcf5;
+      box-shadow: 0 8px 18px rgba(139, 94, 60, 0.1);
+    }
+
+    .mentor-sub-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mentor-sub-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .mentor-sub-content h3 {
+      font-size: 1.5rem;
+      color: #2d1f13;
+      margin-bottom: 4px;
+    }
+
+    .mentor-sub-rank {
+      display: inline-block;
+      background: #eaf2fb;
+      border: 2px solid #b9d1ec;
+      border-radius: 40px;
+      padding: 4px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2c5fa8;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .mentor-sub-content p {
+      color: #5d4a37;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 0;
+    }
+
+    .mentor-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+
+    .mentor-card {
+      background: #ffffff;
+      border: 2px solid #e4ebf4;
+      border-radius: 24px;
+      padding: 28px 16px 22px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(139, 94, 60, 0.04);
+    }
+
+    .mentor-card:hover {
+      transform: translateY(-6px);
+      border-color: #f7d44a;
+      box-shadow: 0 18px 32px -10px rgba(139, 94, 60, 0.15);
+    }
+
+    .mentor-card-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 16px;
+      border: 3px solid #f7d44a;
+      background-color: #fefcf5;
+      transition: border-color 0.3s ease;
+    }
+
+    .mentor-card:hover .mentor-card-avatar {
+      border-color: #b87c4b;
+    }
+
+    .mentor-card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mentor-card h4 {
+      font-size: 1.05rem;
+      color: #2d1f13;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .mentor-card-rank {
+      display: inline-block;
+      background: #fef3d9;
+      border: 1.5px solid #f7d44a;
+      border-radius: 30px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #8b5e3c;
+      letter-spacing: 0.3px;
+    }
+
+    .cta-section {
+      background-color: #ffffff;
+      border-radius: 36px;
+      padding: 48px 40px;
+      margin: 30px 0 50px;
+      box-shadow: 0 25px 35px -18px rgba(74, 55, 36, 0.14);
+      border: 3px solid #c1d9f0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section h2 {
+      font-size: 1.9rem;
+      color: #4a3724;
+      margin-bottom: 12px;
+    }
+
+    .cta-section p {
+      color: #5d4a37;
+      margin-bottom: 30px;
+      font-size: 1.05rem;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .cta-socials {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .cta-social-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #fefcf5;
+      padding: 14px 28px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #2d1f13;
+      font-weight: 600;
+      border: 2px solid #f7d44a;
+      transition: all 0.2s ease;
+      font-size: 1.05rem;
+    }
+
+    .cta-social-btn i {
+      font-size: 1.6rem;
+      color: #b87c4b;
+    }
+
+    .cta-social-btn:hover {
+      background-color: #fef3d9;
+      border-color: #b87c4b;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(139, 94, 60, 0.1);
+    }
+
+    .footer {
+      padding: 40px 0 24px;
+      color: #6b4a2e;
+      font-size: 0.9rem;
+      border-top: 2px solid #f7d44a;
+      margin-top: 20px;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto 30px;
+      text-align: left;
+    }
+
+    .footer-col h5 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #4a3724;
+      margin-bottom: 14px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: #6b4a2e;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #2d1f13;
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #e3d3b5;
+      font-size: 0.85rem;
+      color: #8b5e3c;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1000px) {
+      .mentor-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .nav-links {
+        justify-content: center;
+        gap: 16px;
+      }
+      .nav-buttons {
+        justify-content: center;
+      }
+      .logo {
+        justify-content: center;
+      }
+      .menu-toggle {
+        margin-left: 0;
+      }
+      .mentor-main-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 24px;
+        gap: 24px;
+      }
+      .mentor-main-avatar {
+        flex: 0 0 150px;
+        width: 150px;
+        height: 150px;
+      }
+      .mentor-sub-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px 20px;
+        gap: 18px;
+      }
+      .mentor-sub-avatar {
+        flex: 0 0 110px;
+        width: 110px;
+        height: 110px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding: 0 18px;
+      }
+      .section-title {
+        font-size: 1.7rem;
+      }
+      .section-sub {
+        font-size: 0.95rem;
+        margin-bottom: 32px;
+      }
+      .mentor-main-avatar {
+        flex: 0 0 130px;
+        width: 130px;
+        height: 130px;
+      }
+      .mentor-main-content h2 {
+        font-size: 1.6rem;
+      }
+      .mentor-main-content p {
+        font-size: 0.95rem;
+      }
+      .mentor-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      .mentor-card {
+        padding: 22px 12px 18px;
+      }
+      .mentor-card-avatar {
+        width: 90px;
+        height: 90px;
+      }
+      .mentor-card h4 {
+        font-size: 0.95rem;
+      }
+      .mentor-card-rank {
+        font-size: 0.72rem;
+        padding: 3px 10px;
+      }
+      .cta-section {
+        padding: 32px 20px;
+        margin: 20px 0 36px;
+      }
+      .cta-section h2 {
+        font-size: 1.6rem;
+      }
+      .cta-socials {
+        gap: 12px;
+        flex-direction: column;
+        align-items: center;
+      }
+      .cta-social-btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+      .footer-columns {
+        text-align: center;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .top-menu-content {
+        padding: 24px 18px 28px;
+      }
+      .top-menu-header h3 {
+        font-size: 1.3rem;
+      }
+      .menu-list a {
+        padding: 12px 14px;
+        font-size: 0.98rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 14px;
+      }
+      .btn {
+        padding: 9px 16px;
+        font-size: 0.85rem;
+      }
+      .logo-text {
+        font-size: 1.5rem;
+      }
+      .loader-logo {
+        font-size: 2.4rem;
+      }
+      .mentor-main-avatar {
+        flex: 0 0 110px;
+        width: 110px;
+        height: 110px;
+      }
+      .mentor-main-content h2 {
+        font-size: 1.35rem;
+      }
+      .mentor-sub-content h3 {
+        font-size: 1.25rem;
+      }
+      .mentor-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .mentor-card {
+        padding: 18px 8px 14px;
+        border-radius: 18px;
+      }
+      .mentor-card-avatar {
+        width: 78px;
+        height: 78px;
+      }
+      .mentor-card h4 {
+        font-size: 0.88rem;
+      }
+      .mentor-card-rank {
+        font-size: 0.68rem;
+        padding: 2px 8px;
+      }
+      .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .top-menu.open {
+        max-height: 95vh;
+      }
+      .menu-list a {
+        padding: 11px 12px;
+        font-size: 0.92rem;
+      }
+      .menu-list a i {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-logo" id="loaderLogo">Soil<span>Sparks</span></div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Loading Your Mentors..</div>
+</div>
+
+<div class="bg-atmosphere"></div>
+
+<div class="top-menu" id="topMenu">
+  <div class="top-menu-content">
+    <div class="top-menu-header">
+      <h3><i class="fas fa-seedling"></i> SoilSparks</h3>
+      <button class="close-menu-btn" id="closeMenuBtn" aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="menu-list">
+      <a href="#"><i class="fas fa-home"></i> Home</a>
+      <a href="JRF/JRF.html"><i class="fas fa-star"></i> JRF</a>
+      <a href="#"><i class="fas fa-file-alt"></i> SRF</a>
+      <a href="#"><i class="fas fa-pen-fancy"></i> ASRB NET</a>
+      <a href="#"><i class="fas fa-user-tie"></i> ARO</a>
+      <a href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="#"><i class="fas fa-users"></i> Community</a>
+      <a href="#"><i class="fas fa-cog"></i> Resources</a>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-secondary-links">
+      <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <a href="#"><i class="fas fa-question-circle"></i> Help</a>
+      <a href="https://t.me/soilsparks" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+      <a href="https://wa.me/917849969232" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <nav class="navbar">
+    <a href="#" class="logo">
+      <img src="soilsparklogo.jpg" alt="SoilSpark logo" class="logo-img">
+      <div class="logo-text">Soil<span>Sparks</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#mentors">Mentors</a>
+      <a href="#">Test Series</a>
+      <a href="#">Resources</a>
+      <a href="#">Community</a>
+      <a href="#">About</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="login.html" class="btn btn-login"><i class="fas fa-user-graduate"></i> Login</a>
+      <a href="dashboard.html" class="btn btn-dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <section class="mentors-section reveal" id="mentors">
+    <h2 class="section-title">Meet our mentors</h2>
+    <p class="section-sub">Guided by top rankers and subject experts who have walked the path you're on.</p>
+
+    <div class="mentor-main-card">
+      <div class="mentor-main-avatar">
+        <img src="mentors/1.png" alt="Lead mentor" loading="lazy">
+      </div>
+      <div class="mentor-main-content">
+        <h2>Dr. Kishan Sharma</h2>
+        <span class="mentor-main-rank"><i class="fas fa-trophy" style="margin-right: 6px;"></i> ICAR SRF Fellow AIR 8, 2023</span>
+        <p>Dr. Kishan Kumar Sharma is a distinguished Soil Science expert and mentor from Jodhpur, Rajasthan. He earned his Master’s from BHU (ICAR PG, AIR 9, 2020) and a Ph.D. from MPUAT as an ICAR-SRF fellow (AIR 8, 2023). Combining top-tier academics with a passion for teaching, he has guided over 2,500 aspirants toward clearing ICAR PG, JRF, and SRF exams.</p>
+      </div>
+    </div>
+
+    <div class="mentor-sub-card">
+      <div class="mentor-sub-avatar">
+        <img src="mentors/2.jpeg" alt="Senior mentor" loading="lazy">
+      </div>
+      <div class="mentor-sub-content">
+        <h3>Chetan Dhakad</h3>
+        <span class="mentor-sub-rank"><i class="fas fa-medal" style="margin-right: 6px;"></i> JRF 2025 AIR -5</span><br>
+        <span class="mentor-sub-rank"><i class="fas fa-medal" style="margin-right: 6px;"></i> SRF 2026  AIR -8</span>
+        <p>Mentor of Top AIR Rankers</p>
+      </div>
+    </div>
+
+    <div class="mentor-grid">
+      <div class="mentor-card">
+        <div class="mentor-card-avatar">
+          <img src="mentors/3.jpeg" alt="Mentor 3" loading="lazy">
+        </div>
+        <h4></h4>
+        <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i> JRF Rank - 04</span><br>
+                <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i> SRF Rank - 04</span>
+
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-card-avatar">
+          <img src="mentors/4.jpeg" alt="Mentor 4" loading="lazy">
+        </div>
+        <h4></h4>
+        <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i> JRF Rank - 03</span>
+                <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i> SRF Rank - 03</span>
+
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-card-avatar">
+          <img src="mentors/5.jpeg" alt="Mentor 5" loading="lazy">
+        </div>
+        <h4></h4>
+        <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i>JRF Rank - 01</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-card-avatar">
+          <img src="mentors/6.jpeg" alt="Mentor 6" loading="lazy">
+        </div>
+        <h4></h4>
+        <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i>JRF Rank - 02</span>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-card-avatar">
+          <img src="mentors/7.jpeg" alt="Mentor 7" loading="lazy">
+        </div>
+        <h4></h4>
+        <span class="mentor-card-rank"><i class="fas fa-award" style="margin-right: 4px;"></i> JRF Rank - 04</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section reveal">
+    <h2>Learn from the best</h2>
+    <p>Join our Telegram and WhatsApp communities for daily quizzes, notes, and direct interactions with mentors.</p>
+    <div class="cta-socials">
+      <a href="https://t.me/soilsparks" target="_blank" rel="noopener" class="cta-social-btn">
+        <i class="fab fa-telegram-plane"></i> Join Telegram
+      </a>
+      <a href="https://wa.me/917849969232" target="_blank" rel="noopener" class="cta-social-btn">
+        <i class="fab fa-whatsapp"></i> Connect on WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h5>SoilSparks</h5>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Learning</h5>
+        <a href="#">Test Series</a>
+        <a href="#">Notes</a>
+        <a href="#">Mentorship</a>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 SoilSparks · Learn, grow, and spark your potential.
+    </div>
+  </footer>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    const loaderLogo = document.getElementById('loaderLogo');
+
+    loaderLogo.style.filter = 'blur(1.2px)';
+
+    setTimeout(() => {
+      loaderLogo.classList.add('reveal');
+    }, 80);
+
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 1500);
+
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 2500);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    const menuToggle = document.getElementById('menuToggle');
+    const topMenu = document.getElementById('topMenu');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+    function openMenu() {
+      topMenu.classList.add('open');
+    }
+
+    function closeMenu() {
+      topMenu.classList.remove('open');
+    }
+
+    menuToggle.addEventListener('click', openMenu);
+    closeMenuBtn.addEventListener('click', closeMenu);
+
+    topMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        setTimeout(() => {
+          closeMenu();
+        }, 150);
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && topMenu.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
