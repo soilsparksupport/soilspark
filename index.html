@@ -1531,7 +1531,267 @@
         font-size: 2rem;
       }
     }
+/* ===== PRACTICE HUB ===== */
+.practice-hub {
+  padding: 30px 0 20px;
+}
 
+.practice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.practice-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 32px 24px 26px;
+  border-radius: 24px;
+  text-decoration: none;
+  background: #ffffff;
+  border: 2.5px solid var(--gold);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.28s ease,
+              border-color 0.28s ease;
+  isolation: isolate;
+}
+
+/* soft hover lift */
+.practice-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* decorative gradient blob */
+.practice-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  opacity: 0.10;
+  z-index: -1;
+  transition: transform 0.4s ease, opacity 0.3s ease;
+}
+
+.practice-card:hover::before {
+  transform: scale(1.25);
+  opacity: 0.18;
+}
+
+/* books accent */
+.practice-card--books {
+  border-color: #d4a373;
+}
+.practice-card--books::before {
+  background: radial-gradient(circle, #d4a373 0%, transparent 70%);
+}
+.practice-card--books .practice-icon {
+  color: #b87c4b;
+  background: linear-gradient(135deg, #fef3d9, #fce8c4);
+  border-color: #e3b78a;
+}
+.practice-card--books .practice-cta {
+  color: #b87c4b;
+}
+.practice-card--books .practice-badge {
+  color: #8b5e3c;
+  background: #fff4e0;
+  border-color: #e3b78a;
+}
+.practice-card--books:hover {
+  border-color: #b87c4b;
+}
+
+/* tests accent */
+.practice-card--tests {
+  border-color: #6fa8dc;
+}
+.practice-card--tests::before {
+  background: radial-gradient(circle, #6fa8dc 0%, transparent 70%);
+}
+.practice-card--tests .practice-icon {
+  color: #2c5fa8;
+  background: linear-gradient(135deg, #eaf2fb, #d4e6fa);
+  border-color: #a8c8e8;
+}
+.practice-card--tests .practice-cta {
+  color: #2c5fa8;
+}
+.practice-card--tests .practice-badge {
+  color: #1f4a7a;
+  background: #eaf2fb;
+  border-color: #a8c8e8;
+}
+.practice-card--tests:hover {
+  border-color: #2c5fa8;
+}
+
+/* icon circle */
+.practice-icon {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 3px solid transparent;
+  box-shadow: 0 6px 14px rgba(74, 55, 36, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.practice-card:hover .practice-icon {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* text block */
+.practice-info h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.practice-info p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 260px;
+  margin: 0 auto 10px;
+}
+
+/* call-to-action link */
+.practice-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  padding: 8px 18px;
+  border-radius: 40px;
+  background: rgba(0, 0, 0, 0.03);
+  transition: background 0.25s ease, gap 0.25s ease;
+}
+
+.practice-card:hover .practice-cta {
+  background: rgba(0, 0, 0, 0.06);
+  gap: 11px;
+}
+
+/* small badge */
+.practice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 30px;
+  border: 1.5px solid transparent;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  margin-top: 2px;
+  transition: transform 0.25s ease;
+}
+
+.practice-card:hover .practice-badge {
+  transform: translateY(-2px);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .practice-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 420px;
+  }
+
+  .practice-card {
+    flex-direction: row;
+    text-align: left;
+    padding: 20px 18px;
+    gap: 16px;
+    border-radius: 20px;
+  }
+
+  .practice-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .practice-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .practice-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .practice-info p {
+    font-size: 0.8rem;
+    margin: 0 0 8px;
+    max-width: 100%;
+  }
+
+  .practice-cta {
+    font-size: 0.82rem;
+    padding: 6px 14px;
+  }
+
+  .practice-badge {
+    display: none;
+  }
+
+  .practice-card::before {
+    width: 120px;
+    height: 120px;
+    top: -40px;
+    right: -40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .practice-card {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+
+  .practice-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+  }
+
+  .practice-info h3 {
+    font-size: 1rem;
+  }
+
+  .practice-info p {
+    font-size: 0.76rem;
+  }
+
+  .practice-cta {
+    font-size: 0.78rem;
+    padding: 5px 12px;
+  }
+}
     /* ===== UTILITY ===== */
     .sr-only {
       position: absolute;
@@ -1642,7 +1902,47 @@
       </div>
     </div>
   </section>
+<!-- ===== PRACTICE HUB ===== -->
+<section class="practice-hub reveal" id="practice">
+  <h2 class="section-title">Start practising now</h2>
+  <p class="section-sub">Jump straight into your study material — pick a path below.</p>
 
+  <div class="practice-grid">
+    <!-- BOOKS card -->
+    <a href="BOOK/BOOK.html" class="practice-card practice-card--books">
+      <div class="practice-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <div class="practice-info">
+        <h3>Books</h3>
+        <p>Comprehensive notes, reference material &amp; study guides.</p>
+        <span class="practice-cta">
+          Explore Books <i class="fas fa-arrow-right"></i>
+        </span>
+      </div>
+      <div class="practice-badge">
+        <i class="fas fa-graduation-cap"></i> Study Material
+      </div>
+    </a>
+
+    <!-- TEST SERIES card -->
+    <a href="TESTSERIES/TESTSERIES.html" class="practice-card practice-card--tests">
+      <div class="practice-icon">
+        <i class="fas fa-pen-to-square"></i>
+      </div>
+      <div class="practice-info">
+        <h3>Test Series</h3>
+        <p>Daily quizzes, mock tests &amp; performance tracking.</p>
+        <span class="practice-cta">
+          Start Tests <i class="fas fa-arrow-right"></i>
+        </span>
+      </div>
+      <div class="practice-badge">
+        <i class="fas fa-chart-line"></i> Practice &amp; Analyse
+      </div>
+    </a>
+  </div>
+</section>
   <!-- Announcements (Firebase ticker) -->
   <section class="announcements-section reveal" id="announcements">
     <h2 class="section-title">Latest Announcements</h2>
