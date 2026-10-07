@@ -1132,7 +1132,7 @@
       border-radius: 14px;
       padding: 12px 14px;
       font: inherit;
-      font-size: 0.92rem;
+      font-size: 16px;
       color: #162744;
       outline: none;
       margin-bottom: 12px;
@@ -1464,6 +1464,378 @@
     .reveal.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+
+    /* ===== MOBILE UI OPTIMIZATION ===== */
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 12px 0;
+        gap: 10px;
+        flex-wrap: nowrap;
+      }
+
+      .logo {
+        min-width: 0;
+        gap: 9px;
+      }
+
+      .logo-img {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+      }
+
+      .logo-text {
+        font-size: 1.35rem;
+        white-space: nowrap;
+      }
+
+      .nav-buttons {
+        margin-left: auto;
+        gap: 8px;
+      }
+
+      .nav-buttons .btn {
+        display: none;
+      }
+
+      .menu-toggle {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+      }
+
+      .hero {
+        padding: 28px 0 36px;
+      }
+
+      .hero h1 {
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .navbar {
+        min-height: 64px;
+      }
+
+      .announcement {
+        max-width: none;
+        width: calc(100% - 8px);
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.45;
+      }
+
+      .hero {
+        padding-top: 26px;
+        padding-bottom: 32px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.75rem, 8vw, 2.15rem);
+        line-height: 1.18;
+        margin-bottom: 16px;
+      }
+
+      .hero h1 .highlight {
+        padding: 0 6px;
+      }
+
+      .hero p {
+        max-width: 36rem;
+        line-height: 1.55;
+        margin-bottom: 22px;
+      }
+
+      .trust-indicators {
+        gap: 8px 14px;
+        margin-bottom: 24px;
+      }
+
+      .social-connect {
+        gap: 10px;
+      }
+
+      .social-label {
+        width: 100%;
+        margin-bottom: 2px;
+      }
+
+      .social-icon {
+        width: 44px;
+        height: 44px;
+      }
+
+      .section-sub {
+        max-width: 34rem;
+        padding: 0 4px;
+        line-height: 1.55;
+      }
+
+      /* Practice cards: prevent icon/text/button collisions */
+      .practice-card {
+        width: 100%;
+        align-items: flex-start;
+        padding: 20px 18px;
+        gap: 14px;
+      }
+
+      .practice-info {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .practice-info h3 {
+        line-height: 1.25;
+      }
+
+      .practice-info p {
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .practice-cta {
+        max-width: 100%;
+        white-space: normal;
+      }
+
+      /* Ticker: use a safer mobile composition */
+      .ticker-window {
+        height: 220px;
+        padding: 12px;
+      }
+
+      .ticker-item {
+        align-items: flex-start;
+        padding: 11px 12px;
+        gap: 10px;
+      }
+
+      .ticker-item .ticker-content {
+        min-width: 0;
+      }
+
+      .ticker-item .ticker-title,
+      .ticker-item .ticker-body {
+        overflow-wrap: anywhere;
+      }
+
+      .ticker-item .ticker-meta {
+        margin-left: auto;
+      }
+
+      /* Journey should never create an awkward squeezed row */
+      .journey-path {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 4px;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      .journey-step {
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        gap: 7px;
+      }
+
+      .journey-step .step-circle {
+        width: 46px;
+        height: 46px;
+        font-size: 1.1rem;
+      }
+
+      .journey-step span {
+        max-width: 100%;
+        font-size: 0.65rem;
+        letter-spacing: 0.15px;
+        text-align: center;
+        white-space: normal;
+      }
+
+      .journey-connector {
+        display: none;
+      }
+
+      /* Feedback */
+      .live-feedback {
+        padding-left: 16px;
+        padding-right: 16px;
+        margin-bottom: 44px;
+      }
+
+      .feedback-head {
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .feedback-head .section-title {
+        font-size: 1.5rem;
+      }
+
+      .feedback-count {
+        padding: 8px 14px;
+      }
+
+      .feedback-form-card {
+        padding: 20px 16px;
+        border-radius: 20px;
+      }
+
+      .feedback-card {
+        padding: 17px;
+        border-radius: 18px;
+      }
+
+      .feedback-card-top {
+        gap: 8px;
+      }
+
+      .feedback-stars {
+        font-size: 0.74rem;
+      }
+
+      /* Testimonials */
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .testimonial-card {
+        width: 100%;
+      }
+
+      /* CTA */
+      .cta-section {
+        padding: 28px 16px;
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .cta-section p {
+        font-size: 0.94rem;
+      }
+
+      .cta-social-btn {
+        max-width: none;
+      }
+
+      /* Menu should fit inside narrow screens and respect safe areas */
+      .top-menu {
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        padding-top: env(safe-area-inset-top);
+      }
+
+      .top-menu.open {
+        max-height: 100dvh;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      }
+
+      .top-menu-content {
+        width: 100%;
+        padding: 18px 16px 22px;
+      }
+
+      .top-menu-header {
+        margin-bottom: 12px;
+      }
+
+      .menu-list a {
+        min-height: 46px;
+        padding: 11px 12px;
+      }
+
+      .menu-secondary-links {
+        gap: 6px;
+      }
+
+      .menu-secondary-links a {
+        padding: 6px 8px;
+      }
+
+      /* Footer */
+      .footer-columns {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .container {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .logo-img {
+        width: 38px;
+        height: 38px;
+      }
+
+      .logo-text {
+        font-size: 1.18rem;
+      }
+
+      .menu-toggle {
+        width: 42px;
+        height: 42px;
+      }
+
+      .hero h1 {
+        font-size: 1.58rem;
+      }
+
+      .practice-card {
+        padding: 16px 14px;
+        gap: 11px;
+      }
+
+      .practice-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 1.35rem;
+      }
+
+      .practice-info h3 {
+        font-size: 1rem;
+      }
+
+      .practice-info p {
+        font-size: 0.78rem;
+      }
+
+      .journey-step .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
+      }
+
+      .journey-step span {
+        font-size: 0.6rem;
+      }
+
+      .feedback-form-card {
+        padding: 17px 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track,
+      .reveal,
+      .loader-logo,
+      .loader-line {
+        animation: none !important;
+        transition: none !important;
+      }
     }
 
     /* ===== RESPONSIVE ===== */
