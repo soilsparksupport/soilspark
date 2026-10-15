@@ -2111,6 +2111,290 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
+    
+/* ===== IMAGE-ENHANCED PRACTICE CARDS ===== */
+.practice-card {
+  align-items: stretch;
+  text-align: left;
+  gap: 16px;
+  min-width: 0;
+}
+
+.practice-card-image {
+  width: 100%;
+  height: 190px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff4e0, #eaf2fb);
+  border: 1px solid #f0e6d6;
+}
+
+.practice-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.35s ease;
+}
+
+.practice-card:hover .practice-card-image img {
+  transform: scale(1.04);
+}
+
+.practice-card .practice-icon {
+  width: 58px;
+  height: 58px;
+  font-size: 1.55rem;
+}
+
+.practice-card .practice-info {
+  width: 100%;
+  min-width: 0;
+}
+
+.practice-card .practice-info p {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.practice-card .practice-badge {
+  align-self: flex-start;
+}
+
+/* ===== DESKTOP HERO WITH TOP RANKERS ===== */
+.hero {
+  text-align: left;
+  padding: 48px 0 56px;
+}
+
+.hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
+  gap: 36px;
+  align-items: center;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 680px;
+  margin: 0;
+}
+
+.hero p {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.hero .trust-indicators {
+  justify-content: flex-start;
+}
+
+.hero .social-connect {
+  justify-content: flex-start;
+}
+
+/* Ranker poster card */
+.ranker-card {
+  width: 100%;
+  max-width: 440px;
+  justify-self: end;
+  padding: 14px;
+  border-radius: 24px;
+  background: #fff;
+  border: 2px solid var(--gold);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.ranker-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 4px 4px 0;
+}
+
+.ranker-card-heading h2 {
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.ranker-card-heading span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brown);
+  background: var(--gold-soft);
+  border-radius: 30px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+
+.ranker-poster {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center;
+  background: #fffaf0;
+  border-radius: 14px;
+}
+
+.ranker-caption {
+  margin: 12px 4px 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 900px) {
+  .hero {
+    text-align: center;
+    padding: 32px 0 40px;
+  }
+
+  .hero-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .hero-content {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .hero p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero .trust-indicators,
+  .hero .social-connect {
+    justify-content: center;
+  }
+
+  .ranker-card {
+    max-width: 400px;
+    justify-self: center;
+  }
+
+  .practice-card-image {
+    height: 175px;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 700px) {
+  .hero {
+    padding: 24px 0 32px;
+  }
+
+  .hero-layout {
+    gap: 24px;
+  }
+
+  .ranker-card {
+    max-width: 360px;
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .ranker-poster {
+    max-height: 430px;
+    aspect-ratio: 4 / 5;
+  }
+
+  .ranker-card-heading h2 {
+    font-size: 1rem;
+  }
+
+  .practice-grid {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .practice-card {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+    border-radius: 20px;
+    align-items: start;
+  }
+
+  .practice-card-image {
+    grid-column: 1 / -1;
+    height: clamp(140px, 42vw, 210px);
+    border-radius: 14px;
+  }
+
+  .practice-card .practice-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 1.4rem;
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+  }
+
+  .practice-card .practice-info {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .practice-card .practice-info h3 {
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+  }
+
+  .practice-card .practice-info p {
+    font-size: 0.82rem;
+  }
+
+  .practice-card .practice-cta {
+    font-size: 0.8rem;
+    padding: 7px 10px;
+  }
+
+  .practice-card .practice-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 1.65rem;
+  }
+
+  .ranker-card {
+    padding: 8px;
+  }
+
+  .practice-card {
+    grid-template-columns: 56px minmax(0, 1fr);
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .practice-card .practice-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .practice-card-image img {
+    transition: none;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -2186,11 +2470,24 @@
     <a href="#">Try now <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i></a>
   </div>
 
-  <!-- Hero section (centered) -->
-  <section class="hero reveal">
+
+<!-- HERO WITH TOP RANKERS POSTER -->
+<section class="hero reveal">
+  <div class="hero-layout">
+
+    <!-- LEFT: MAIN HERO CONTENT -->
     <div class="hero-content">
-      <h1>Nurture your <span class="highlight">knowledge</span> with SoilSparks</h1>
-      <p>A calmer way to prepare, practice and improve. Test series, crisp notes, and expert guidance — all in one place.</p>
+      <h1>
+        Nurture your
+        <span class="highlight">knowledge</span>
+        with SoilSparks
+      </h1>
+
+      <p>
+        A calmer way to prepare, practice and improve.
+        Test series, crisp notes, and expert guidance —
+        all in one place.
+      </p>
 
       <div class="trust-indicators">
         <span><i class="fas fa-circle-check"></i> Structured Learning</span>
@@ -2201,15 +2498,50 @@
 
       <div class="social-connect">
         <span class="social-label">Connect with us:</span>
-        <a href="https://t.me/soilsparks" target="_blank" rel="noopener" class="social-icon" aria-label="Telegram" title="Join us on Telegram">
+
+        <a href="https://t.me/soilsparks"
+           target="_blank" rel="noopener"
+           class="social-icon"
+           aria-label="Telegram">
           <i class="fab fa-telegram-plane"></i>
         </a>
-        <a href="https://wa.me/917849969232" target="_blank" rel="noopener" class="social-icon" aria-label="WhatsApp" title="Chat on WhatsApp">
+
+        <a href="https://wa.me/917849969232"
+           target="_blank" rel="noopener"
+           class="social-icon"
+           aria-label="WhatsApp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </div>
     </div>
-  </section>
+
+    <!-- RIGHT: TOP RANKERS POSTER -->
+    <aside class="ranker-card"
+           aria-label="SoilSparks top rankers">
+      <div class="ranker-card-heading">
+        <h2><i class="fas fa-trophy"
+               style="color:#b87c4b"></i>
+          Top Rankers
+        </h2>
+        <span>OUR ACHIEVERS</span>
+      </div>
+
+      <img
+        class="ranker-poster"
+        src="images/top-rankers.jpeg"
+        alt="SoilSparks test series top rankers poster"
+        loading="eager"
+        onerror="this.alt='Add your top rankers poster at images/top-rankers.jpeg'; this.style.minHeight='180px';"
+      >
+
+      <p class="ranker-caption">
+        Every effort counts. Keep learning, keep growing.
+      </p>
+    </aside>
+
+  </div>
+</section>
+
 
   <!-- ===== PRACTICE HUB ===== -->
   <section class="practice-hub reveal" id="practice">
@@ -2217,41 +2549,60 @@
     <p class="section-sub">Jump straight into your study material — pick a path below.</p>
 
     <div class="practice-grid">
-      <!-- BOOKS card -->
-      <a href="BOOK/BOOK.html" class="practice-card practice-card--books">
-        <div class="practice-icon">
-          <i class="fas fa-book-open"></i>
-        </div>
-        <div class="practice-info">
-          <h3>Books</h3>
-          <p>Book Wise,Chapter Wise Tests with explanations</p>
-          <span class="practice-cta">
-            Explore Books <i class="fas fa-arrow-right"></i>
-          </span>
-        </div>
-        <div class="practice-badge">
-          <i class="fas fa-graduation-cap"></i> Study Material
-        </div>
-      </a>
+     
+<!-- BOOKS CARD -->
+<a href="BOOK/BOOK.html" class="practice-card practice-card--books">
+  <div class="practice-card-image">
+    <img src="images/1.jpeg" alt="SoilSparks study books and learning material"
+         loading="lazy"
+         onerror="this.style.display='none'">
+  </div>
 
-      <!-- TEST SERIES card -->
-      <a href="TESTSERIES/TESTSERIES.html" class="practice-card practice-card--tests">
-        <div class="practice-icon">
-          <i class="fas fa-pen-to-square"></i>
-        </div>
-        <div class="practice-info">
-          <h3>Test Series</h3>
-          <p>Daily quizzes, mock tests &amp; performance tracking.</p>
-          <span class="practice-cta">
-            Start Tests <i class="fas fa-arrow-right"></i>
-          </span>
-        </div>
-        <div class="practice-badge">
-          <i class="fas fa-chart-line"></i> Practice &amp; Analyse
-        </div>
-      </a>
-    </div>
-  </section>
+  <div class="practice-icon">
+    <i class="fas fa-book-open"></i>
+  </div>
+
+  <div class="practice-info">
+    <h3>Books</h3>
+    <p>Book-wise and chapter-wise tests with explanations.</p>
+    <span class="practice-cta">
+      Explore Books <i class="fas fa-arrow-right"></i>
+    </span>
+  </div>
+
+  <div class="practice-badge">
+    <i class="fas fa-graduation-cap"></i> Study Material
+  </div>
+</a>
+
+<!-- TEST SERIES CARD -->
+<a href="TESTSERIES/TESTSERIES.html"
+   class="practice-card practice-card--tests">
+  <div class="practice-card-image">
+    <img src="images/2.jpeg" alt="SoilSparks test series and mock exams"
+         loading="lazy"
+         onerror="this.style.display='none'">
+  </div>
+
+  <div class="practice-icon">
+    <i class="fas fa-pen-to-square"></i>
+  </div>
+
+  <div class="practice-info">
+    <h3>Test Series</h3>
+    <p>Daily quizzes, mock tests and performance tracking.</p>
+    <span class="practice-cta">
+      Start Tests <i class="fas fa-arrow-right"></i>
+    </span>
+  </div>
+
+  <div class="practice-badge">
+    <i class="fas fa-chart-line"></i> Practice &amp; Analyse
+  </div>
+</a>
+
+    </div><!-- /.practice-grid -->
+  </section><!-- /#practice -->
 
   <!-- Announcements (Firebase ticker) -->
   <section class="announcements-section reveal" id="announcements">
@@ -2265,7 +2616,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section><br><br>
 
   <!-- Learning Journey -->
   <section class="journey-section reveal">
@@ -2340,7 +2691,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section><br><br>
 
   <!-- Testimonials -->
   <!-- <section class="testimonials reveal">
