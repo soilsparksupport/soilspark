@@ -1,646 +1,622 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <title>SoilSpark · Admin Dashboard</title>
-  <!-- Google Font & simple icons via Font Awesome (CDN) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18151546873"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18151546873');
+  </script>
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
+  <meta charset="UTF-8" />
+  <title>Create & Manage Admins | SoilSpark</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
-    /* RESET & GLOBAL */
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f6f9fc;
-      color: #1e293b;
-      line-height: 1.5;
-      padding: 1.5rem 1rem;
+      margin: 0;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      padding: 20px;
     }
 
-    /* MAIN CONTAINER (responsive max-width) */
-    .dashboard {
-      max-width: 1280px;
+    /* main container holds both create card and admin list */
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ----- create admin card (original design) ----- */
+    .admin-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
       margin: 0 auto;
-      width: 100%;
     }
 
-    /* HEADER / BRAND */
-    .brand-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 2rem;
-    }
-
-    .brand-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      justify-content: space-between;
-      width: 100%;
-      gap: 1rem;
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .brand-title h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #0b3b2c;
-    }
-
-    .brand-title .badge {
-      background: #d1fae5;
-      color: #065f46;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-    }
-
-    .admin-tag {
-      font-size: 0.9rem;
-      background: #e9eef3;
-      color: #1e3a5f;
-      padding: 0.3rem 1rem;
-      border-radius: 2rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
-    }
-
-    .admin-tag i {
-      font-size: 0.8rem;
-      color: #2b6f4e;
-    }
-
-    /* subtitle */
-    .subhead {
-      margin-top: 0.25rem;
-      font-size: 0.95rem;
-      color: #4b5e6b;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      flex-wrap: wrap;
-    }
-
-    .subhead i {
-      color: #2b6f4e;
-      font-size: 0.8rem;
-    }
-
-    /* STATS CARDS (from original dashboard: feedback summary) */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 0.8rem;
-      margin: 1.8rem 0 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 1rem;
-      padding: 1rem 0.8rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-      transition: all 0.15s ease;
+    .admin-card h2 {
+      margin: 0 0 10px;
       text-align: center;
-    }
-
-    .stat-card .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
       font-weight: 600;
-      color: #62748c;
-      margin-bottom: 0.4rem;
+      color: #1f2937;
     }
 
-    .stat-card .value {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #0b3b2c;
-      line-height: 1.2;
+    .admin-card p {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 25px;
     }
 
-    .stat-card .value small {
-      font-size: 0.9rem;
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
       font-weight: 500;
-      color: #5c6f87;
-      margin-left: 0.2rem;
+      color: #374151;
+      margin-bottom: 6px;
     }
 
-    /* SECTION TITLE */
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin: 1.8rem 0 1rem;
-    }
-
-    .section-title h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: #0b3b2c;
-      letter-spacing: -0.01em;
-    }
-
-    .section-title i {
-      color: #2b6f4e;
-      font-size: 1.1rem;
-    }
-
-    /* ADMIN LINKS GRID */
-    .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 0.9rem;
-      margin: 1rem 0 0.5rem;
-    }
-
-    .admin-link-card {
-      background: white;
-      border-radius: 1rem;
-      padding: 1.2rem 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      border: 1px solid #e2e8f0;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      transition: all 0.2s ease;
-      border-left: 4px solid #2b6f4e;
-      word-break: break-word;
-    }
-
-    .admin-link-card:hover,
-    .admin-link-card:focus-visible {
-      background: #f0f7f2;
-      border-color: #2b6f4e;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 20px -12px rgba(0, 80, 50, 0.2);
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
       outline: none;
+      transition: border 0.2s;
     }
 
-    .admin-link-card .link-icon {
-      font-size: 1.5rem;
-      color: #2b6f4e;
-      width: 2rem;
-      text-align: center;
-      flex-shrink: 0;
+    input:focus {
+      border-color: #2563eb;
     }
 
-    .admin-link-card .link-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .admin-link-card .link-content .link-title {
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 15px;
       font-weight: 600;
-      font-size: 1rem;
-      color: #0b3b2c;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .admin-link-card .link-content .link-title i {
-      font-size: 0.75rem;
-      color: #62748c;
-      opacity: 0.7;
+    button:hover {
+      background: #1e40af;
     }
 
-    /* Highlighted current page (Review-Admin) */
-    .admin-link-card.active-link {
-      background: #e6f3ec;
-      border-left: 4px solid #1f8b5c;
-      border-color: #b8d9c6;
-      box-shadow: 0 4px 12px rgba(33, 115, 70, 0.1);
-      cursor: default;
+    button:active {
+      transform: scale(0.98);
     }
 
-    .admin-link-card.active-link:hover {
-      transform: none;
-      background: #e6f3ec;
-      box-shadow: 0 4px 12px rgba(33, 115, 70, 0.1);
-      border-left-color: #1f8b5c;
+    .footer-note {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
     }
 
-    .admin-link-card.active-link .link-title i {
-      color: #1f8b5c;
-      opacity: 1;
-    }
-
-    /* ---------- NEW: ADMIN MANAGEMENT PANEL ---------- */
-    .admin-panel {
-      background: white;
-      border-radius: 1.2rem;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    /* ----- current admins panel ----- */
+    .admins-panel {
+      background: #ffffff;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
       overflow: hidden;
-      margin: 1.5rem 0 1.2rem;
     }
 
-    .admin-panel-header {
+    .admins-panel-header {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 1.4rem;
-      background: #f9fcfe;
-      border-bottom: 1px solid #dee9f2;
+      padding: 18px 24px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
     }
 
-    .admin-panel-header h3 {
+    .admins-panel-header h3 {
+      margin: 0;
       font-size: 1.1rem;
       font-weight: 600;
-      color: #0b3b2c;
+      color: #0f2027;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 8px;
     }
 
-    .admin-panel-header h3 i {
-      color: #2b6f4e;
+    .admins-panel-header h3 i {
+      color: #2563eb;
     }
 
-    .admin-panel-header .admin-count {
-      font-size: 0.8rem;
-      background: #e3f0e9;
-      color: #0b3b2c;
-      padding: 0.25rem 0.9rem;
+    .admin-count-badge {
+      background: #e0e7ff;
+      color: #1e40af;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-weight: 500;
     }
 
-    .admin-table {
+    .admins-table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
     }
 
-    .admin-table th {
+    th {
       text-align: left;
-      padding: 0.8rem 1.4rem;
-      background: #f2f7fb;
+      padding: 12px 24px;
+      background: #f1f5f9;
       font-weight: 600;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.4px;
-      color: #44637a;
-      border-bottom: 1px solid #d4e2ef;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
     }
 
-    .admin-table td {
-      padding: 0.9rem 1.4rem;
-      border-bottom: 1px solid #edf3f9;
-      color: #1f3a4e;
+    td {
+      padding: 14px 24px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
       vertical-align: middle;
     }
 
-    .admin-table tr:last-child td {
+    tr:last-child td {
       border-bottom: none;
     }
 
-    .admin-table tr:hover td {
-      background-color: #fafdff;
+    tr:hover td {
+      background-color: #f8fafc;
     }
 
-    .admin-badge {
+    .admin-email-cell {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #1e293b;
+    }
+
+    .admin-uid-cell {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+
+    .role-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-      background: #e3f2e9;
-      color: #1b6e4a;
+      gap: 4px;
+      background: #dbeafe;
+      color: #1e40af;
       font-size: 0.7rem;
       font-weight: 600;
-      padding: 0.2rem 0.75rem;
+      padding: 3px 10px;
       border-radius: 999px;
-      white-space: nowrap;
+      text-transform: capitalize;
     }
 
-    .admin-badge.super {
-      background: #e8eef9;
-      color: #1e4a7a;
+    .created-date {
+      font-size: 0.75rem;
+      color: #64748b;
     }
 
-    .admin-actions {
-      display: flex;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-
-    .admin-action-btn {
+    .action-btn {
       background: transparent;
       border: none;
-      font-size: 0.9rem;
-      color: #5c6f87;
+      font-size: 0.85rem;
+      color: #64748b;
       cursor: pointer;
-      padding: 0.3rem 0.5rem;
-      border-radius: 0.5rem;
+      padding: 4px 8px;
+      border-radius: 6px;
       transition: all 0.15s;
       display: inline-flex;
       align-items: center;
-      gap: 0.2rem;
+      gap: 4px;
     }
 
-    .admin-action-btn i {
-      font-size: 0.85rem;
+    .action-btn:hover {
+      background: #f1f5f9;
+      color: #0f2027;
     }
 
-    .admin-action-btn:hover {
-      background: #eef4f9;
-      color: #0b3b2c;
-    }
-
-    .admin-action-btn.remove:hover {
-      background: #fde8e8;
+    .action-btn.delete:hover {
+      background: #fee2e2;
       color: #b91c1c;
     }
 
-    .admin-table .role-tag {
-      font-size: 0.7rem;
-      background: #e9eef3;
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      color: #1e3a5f;
-      display: inline-block;
-      font-weight: 500;
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #94a3b8;
+      font-size: 0.9rem;
     }
 
-    /* small footer note */
-    .footer-note {
-      margin-top: 2.5rem;
-      font-size: 0.75rem;
-      color: #8195a8;
-      border-top: 1px solid #dbe4ed;
-      padding-top: 1.2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.8rem;
+    .empty-state i {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: block;
+      color: #cbd5e1;
     }
 
-    .footer-note i {
-      margin-right: 0.25rem;
+    .loading-state {
+      text-align: center;
+      padding: 30px;
+      color: #94a3b8;
     }
 
-    /* small tweaks for larger screens */
-    @media (min-width: 640px) {
-      body {
-        padding: 2rem 1.5rem;
-      }
-
-      .brand-title h1 {
-        font-size: 2.2rem;
-      }
-
-      .stats-grid {
-        gap: 1rem;
-      }
-
-      .stat-card .value {
-        font-size: 2.1rem;
-      }
-
-      .links-grid {
-        gap: 1.2rem;
-      }
+    .loading-state i {
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
     }
 
-    @media (min-width: 1024px) {
-      .links-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .brand-header {
-        align-items: center;
-      }
-
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* for very small devices */
-    @media (max-width: 380px) {
-      .admin-link-card {
-        padding: 1rem 0.8rem;
-        gap: 0.6rem;
+    /* responsive adjustments */
+    @media (max-width: 600px) {
+      .admins-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
       }
-
-      .admin-link-card .link-icon {
-        font-size: 1.2rem;
-        width: 1.6rem;
+      th, td {
+        padding: 10px 14px;
       }
-
-      .brand-title h1 {
-        font-size: 1.6rem;
-      }
-
-      .stat-card .value {
-        font-size: 1.5rem;
-      }
-
-      .admin-table th,
-      .admin-table td {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.8rem;
-      }
-
-      .admin-panel-header {
-        padding: 0.8rem 1rem;
-      }
-    }
-
-    /* reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .admin-link-card {
-        transition: none;
-      }
-      .admin-action-btn {
-        transition: none;
+      .admin-card {
+        padding: 24px 20px;
       }
     }
   </style>
+
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-K5XJZHT26S"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-K5XJZHT26S', {
+      page_title: document.title,
+      page_location: window.location.href
+    });
+  </script>
 </head>
+
 <body>
-  <div class="dashboard">
-    <!-- header / brand section -->
-    <div class="brand-bar">
-      <div class="brand-header">
-        <div class="brand-title">
-          <h1>SoilSpark</h1>
-          <span class="badge">ADMIN</span>
-        </div>
-        <div class="admin-tag">
-          <i class="fas fa-shield-alt"></i> Administrator
+
+  <div class="container">
+
+    <!-- CREATE ADMIN CARD -->
+    <div class="admin-card">
+      <h2>Create Admin Account</h2>
+      <p>Authorized access only</p>
+
+      <div class="form-group">
+        <label for="email">Admin Email</label>
+        <input type="email" id="email" placeholder="admin@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Admin Password</label>
+        <input type="password" id="password" placeholder="••••••••" />
+      </div>
+
+      <button id="createAdmin">Create Admin</button>
+
+      <div class="footer-note">
+        SoilSpark Admin Panel • Secure Access
+      </div>
+    </div>
+
+    <!-- CURRENT ADMINS PANEL -->
+    <div class="admins-panel">
+      <div class="admins-panel-header">
+        <h3><i class="fas fa-users-cog"></i> Current Admins</h3>
+        <span class="admin-count-badge" id="adminCount">Loading...</span>
+      </div>
+      <div class="admins-table-wrapper" id="adminsTableWrapper">
+        <div class="loading-state">
+          <i class="fas fa-spinner"></i> Loading admin accounts...
         </div>
       </div>
-      <div class="subhead">
-        <i class="fas fa-seedling"></i> Administrator Dashboard · Feedback & management
-      </div>
     </div>
 
-    <!-- admin links section -->
-    <div class="section-title">
-      <i class="fas fa-link"></i>
-      <h2>Admin tools</h2>
-    </div>
-
-    <div class="links-grid">
-         <a href="https://soilspark.vercel.app/ADMIN/QA.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-book"></i></div>
-        <div class="link-content">
-          <div class="link-title">Books Management <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-      <a href="https://soilspark.vercel.app/ADMIN/TestSeries.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-book"></i></div>
-        <div class="link-content">
-          <div class="link-title">Test Series Management <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-       <a href="https://soilspark.vercel.app/ADMIN/Review-Admin.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-chart-pie"></i></div>
-        <div class="link-content">
-          <div class="link-title">Student Feedback Management<i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-      <a href="https://soilspark.vercel.app/ADMIN/AnnouncementsAdmin.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-chart-pie"></i></div>
-        <div class="link-content">
-          <div class="link-title">Announcements Manager<i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-      <a href="https://soilspark.vercel.app/ADMIN/pricing.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-dollar"></i></div>
-        <div class="link-content">
-          <div class="link-title">Books Price Manager <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-      <a href="https://soilspark.vercel.app/ADMIN/pricingtestseries.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-dollar"></i></div>
-        <div class="link-content">
-          <div class="link-title">Test Series Pricing <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-     <a href="https://soilspark.vercel.app/ADMIN/Login&Subscriptions.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-user"></i></div>
-        <div class="link-content">
-          <div class="link-title">Login & Subscriptions <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-
-      <a href="https://soilspark.vercel.app/ADMIN/AdminGenerator.html" class="admin-link-card">
-        <div class="link-icon"><i class="fas fa-user"></i></div>
-        <div class="link-content">
-          <div class="link-title">Manage Admins <i class="fas fa-arrow-right"></i></div>
-        </div>
-      </a>
-    </div>
-
-    <!-- ========== NEW SECTION: CURRENT ADMINS & MANAGEMENT ========== -->
-    <div class="section-title" style="margin-top: 2.2rem;">
-      <i class="fas fa-users-cog"></i>
-      <h2>Current admins</h2>
-    </div>
-
-    <div class="admin-panel">
-      <div class="admin-panel-header">
-        <h3><i class="fas fa-user-shield"></i> Administrator accounts</h3>
-        <span class="admin-count"><i class="fas fa-user"></i> 3 active</span>
-      </div>
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Admin</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><i class="fas fa-user-circle" style="color:#2b6f4e; margin-right:6px;"></i> Sarah Chen</td>
-            <td>sarah.c@soilspark.com</td>
-            <td><span class="admin-badge"><i class="fas fa-crown"></i> Super admin</span></td>
-            <td>
-              <div class="admin-actions">
-                <button class="admin-action-btn" title="Edit permissions"><i class="fas fa-edit"></i> Edit</button>
-                <button class="admin-action-btn remove" title="Remove admin"><i class="fas fa-user-minus"></i> Remove</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><i class="fas fa-user-circle" style="color:#2b6f4e; margin-right:6px;"></i> Michael Osei</td>
-            <td>m.osei@soilspark.com</td>
-            <td><span class="admin-badge super"><i class="fas fa-pen"></i> Content admin</span></td>
-            <td>
-              <div class="admin-actions">
-                <button class="admin-action-btn" title="Edit permissions"><i class="fas fa-edit"></i> Edit</button>
-                <button class="admin-action-btn remove" title="Remove admin"><i class="fas fa-user-minus"></i> Remove</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><i class="fas fa-user-circle" style="color:#2b6f4e; margin-right:6px;"></i> Priya Nair</td>
-            <td>priya.n@soilspark.com</td>
-            <td><span class="admin-badge"><i class="fas fa-chart-line"></i> Feedback admin</span></td>
-            <td>
-              <div class="admin-actions">
-                <button class="admin-action-btn" title="Edit permissions"><i class="fas fa-edit"></i> Edit</button>
-                <button class="admin-action-btn remove" title="Remove admin"><i class="fas fa-user-minus"></i> Remove</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- small hint: manage reviews stored in feedback collection (from original text) -->
-    <div style="margin-top: 1.5rem; font-size: 0.85rem; color: #4d6277; background: #eef4f9; padding: 0.8rem 1.2rem; border-radius: 0.8rem; display: flex; align-items: center; gap: 0.5rem; border-left: 4px solid #2b6f4e;">
-      <i class="fas fa-database" style="color: #2b6f4e;"></i>
-      <span>Manage reviews stored in the <strong>feedback</strong> collection.</span>
-    </div>
-
-    <!-- footer -->
-    <div class="footer-note">
-      <span><i class="fas fa-leaf"></i> SoilSpark Admin · v1.0</span>
-      <span><i class="fas fa-mobile-alt"></i> Optimised for mobile & desktop</span>
-    </div>
   </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp,
+      collection,
+      getDocs,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    // Firebase configuration (uncomment the one you use)
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
+    //   authDomain: "soilspark.firebaseapp.com",
+    //   projectId: "soilspark",
+    //   storageBucket: "soilspark.firebasestorage.app",
+    //   messagingSenderId: "22641848933",
+    //   appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
+    //   measurementId: "G-1M406BN9JK"
+    // };
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+      authDomain: "soilspark-02.firebaseapp.com",
+      projectId: "soilspark-02",
+      storageBucket: "soilspark-02.firebasestorage.app",
+      messagingSenderId: "1076135404685",
+      appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+      measurementId: "G-3HGQCNDR9H"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    /* ---------- CREATE ADMIN ---------- */
+    document.getElementById("createAdmin").onclick = async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("Email and password are required");
+        return;
+      }
+
+      try {
+        // 1️⃣ Create auth user
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = cred.user.uid;
+
+        // 2️⃣ Create admin document USING UID
+        await setDoc(doc(db, "admins", uid), {
+          uid: uid,
+          email: email,
+          role: "admin",
+          createdAt: serverTimestamp()
+        });
+
+        alert("✅ Admin created successfully using UID!");
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+
+        // Refresh the admins list
+        loadAdmins();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    /* ---------- LOAD & DISPLAY ADMINS ---------- */
+    const adminsTableWrapper = document.getElementById("adminsTableWrapper");
+    const adminCountEl = document.getElementById("adminCount");
+
+    async function loadAdmins() {
+      adminsTableWrapper.innerHTML = `
+        <div class="loading-state">
+          <i class="fas fa-spinner"></i> Loading admin accounts...
+        </div>
+      `;
+
+      try {
+        const querySnapshot = await getDocs(collection(db, "admins"));
+        const admins = [];
+
+        querySnapshot.forEach((docSnap) => {
+          admins.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        // sort by createdAt descending (newest first) if available
+        admins.sort((a, b) => {
+          const aTime = a.createdAt?.toMillis?.() || 0;
+          const bTime = b.createdAt?.toMillis?.() || 0;
+          return bTime - aTime;
+        });
+
+        adminCountEl.textContent = `${admins.length} admin${admins.length !== 1 ? 's' : ''}`;
+
+        if (admins.length === 0) {
+          adminsTableWrapper.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-user-slash"></i>
+              No admin accounts found. Create one above.
+            </div>
+          `;
+          return;
+        }
+
+        // build table
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>UID</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        admins.forEach((admin) => {
+          const createdDate = admin.createdAt?.toDate
+            ? admin.createdAt.toDate().toLocaleString()
+            : "—";
+
+          const role = admin.role || "admin";
+          const roleIcon = role === "superadmin" ? "fa-crown" : "fa-user-shield";
+
+          html += `
+            <tr>
+              <td class="admin-email-cell">${escapeHtml(admin.email || "—")}</td>
+              <td class="admin-uid-cell">${escapeHtml(admin.uid || admin.id)}</td>
+              <td><span class="role-badge"><i class="fas ${roleIcon}"></i> ${escapeHtml(role)}</span></td>
+              <td class="created-date">${createdDate}</td>
+              <td>
+                <button class="action-btn delete" data-id="${admin.id}" data-email="${escapeHtml(admin.email || '')}" title="Delete admin">
+                  <i class="fas fa-trash-alt"></i> Delete
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        adminsTableWrapper.innerHTML = html;
+
+        // Attach delete handlers
+        adminsTableWrapper.querySelectorAll(".action-btn.delete").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            const id = btn.getAttribute("data-id");
+            const email = btn.getAttribute("data-email");
+            await deleteAdmin(id, email);
+          });
+        });
+
+      } catch (err) {
+        console.error("Error loading admins:", err);
+        adminsTableWrapper.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle" style="color:#f59e0b;"></i>
+            Failed to load admins: ${escapeHtml(err.message)}
+          </div>
+        `;
+        adminCountEl.textContent = "Error";
+      }
+    }
+
+    /* ---------- DELETE ADMIN ---------- */
+    async function deleteAdmin(adminDocId, email) {
+      const confirmed = confirm(
+        `Are you sure you want to remove admin "${email}"?\n\n` +
+        `Note: This removes the admin record from Firestore. ` +
+        `The Firebase Authentication user will remain unless deleted separately.`
+      );
+      if (!confirmed) return;
+
+      try {
+        await deleteDoc(doc(db, "admins", adminDocId));
+        alert(`✅ Admin record "${email}" removed.`);
+        loadAdmins();
+      } catch (err) {
+        alert("Error deleting admin: " + err.message);
+      }
+    }
+
+    /* ---------- UTILITY: escape HTML ---------- */
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    /* ---------- INITIAL LOAD ---------- */
+    loadAdmins();
+
+  </script>
+
 </body>
+
+<script>
+  (function () {
+    // Disable right click
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    });
+
+    // Disable common copy shortcuts
+    document.addEventListener('keydown', function (e) {
+      const key = e.key.toLowerCase();
+
+      // Ctrl+C, Ctrl+X, Ctrl+S, Ctrl+U, Ctrl+A, Ctrl+P
+      if (e.ctrlKey && ['c', 'x', 's', 'u', 'a', 'p'].includes(key)) {
+        e.preventDefault();
+      }
+
+      // Ctrl+Shift+I, Ctrl+Shift+J
+      if (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(key)) {
+        e.preventDefault();
+      }
+
+      // F12
+      if (e.key === 'F12') {
+        e.preventDefault();
+      }
+    });
+
+    // Disable text selection
+    document.addEventListener('selectstart', function (e) {
+      e.preventDefault();
+    });
+
+    // Disable copy/cut events
+    document.addEventListener('copy', function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('cut', function (e) {
+      e.preventDefault();
+    });
+  })();
+</script>
+
+<style>
+  body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+</style>
+
 </html>
