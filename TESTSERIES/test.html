@@ -460,6 +460,51 @@ button,input{font:inherit}
 }
 @keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
 
+/* ===== LEADERBOARD ===== */
+.leaderboard-shell{
+  background:#fff;border:1px solid var(--border);border-radius:22px;
+  box-shadow:var(--shadow);overflow:hidden;margin-top:18px;
+}
+.leaderboard-head{
+  padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--yellow-soft),var(--orange-light));
+}
+.leaderboard-head h3{font:700 18px Poppins;display:flex;align-items:center;gap:8px}
+.leaderboard-head h3 i{color:var(--yellow)}
+.leaderboard-list{padding:15px;display:flex;flex-direction:column;gap:9px}
+.leader-row{
+  border:1px solid var(--border);border-radius:13px;padding:13px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  background:linear-gradient(135deg,var(--white),var(--sky-light));
+  transition:.2s;
+}
+.leader-row:hover{border-color:var(--orange);box-shadow:0 4px 15px rgba(244,162,97,.12)}
+.leader-rank{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  font-weight:800;font-size:14px;color:#fff;
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+}
+.leader-rank.gold{background:linear-gradient(135deg,#f4c542,#e6a800)}
+.leader-rank.silver{background:linear-gradient(135deg,#b0b0b0,#8a8a8a)}
+.leader-rank.bronze{background:linear-gradient(135deg,#cd7f32,#a05a1e)}
+.leader-info strong{font-size:13px;display:block}
+.leader-info small{font-size:10px;color:var(--muted);display:block;margin-top:3px}
+.leader-score{text-align:right}
+.leader-score b{font:800 18px Poppins;color:var(--orange)}
+.leader-score span{display:block;font-size:10px;color:var(--muted)}
+.leaderboard-tabs{
+  display:flex;gap:8px;padding:0 15px 15px;flex-wrap:wrap;
+}
+.leaderboard-tab{
+  border:1px solid var(--border);border-radius:20px;padding:7px 16px;
+  font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
+  transition:.2s;
+}
+.leaderboard-tab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.leaderboard-tab:hover{border-color:var(--orange);color:var(--orange)}
+.leaderboard-tab.active:hover{color:#fff}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:1000px){
   .topic-grid{grid-template-columns:repeat(2,1fr)}
@@ -492,6 +537,7 @@ button,input{font:inherit}
   .left-action-group{width:100%;justify-content:space-between}
   .nta-btn{flex:1;text-align:center;font-size:0.7rem;padding:8px 6px}
   .timer-display{font-size:0.9rem;padding:6px 12px}
+  .leader-row{grid-template-columns:auto 1fr auto}
 }
 </style>
 
@@ -520,7 +566,7 @@ button,input{font:inherit}
 <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Test Series</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login1.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button><button id="leaderboardBtn" class="action secondary"><i class="fa-solid fa-trophy"></i> Leaderboard</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
 <div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading Test Series...</p></div></div>
 </section>
@@ -569,9 +615,23 @@ button,input{font:inherit}
   </div>
 </section>
 
-<section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
+<section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultLeaderboardBtn" class="action secondary">View Leaderboard</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
 <section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Test Series</button></div><div id="historyList" class="history-list"></div></div></section>
+
+<!-- LEADERBOARD VIEW -->
+<section id="leaderboardView" style="display:none">
+  <div class="leaderboard-shell">
+    <div class="leaderboard-head">
+      <h3><i class="fa-solid fa-trophy"></i> Leaderboard</h3>
+      <button id="leaderboardBack" class="action secondary"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    </div>
+    <div class="leaderboard-tabs" id="leaderboardTabs"></div>
+    <div id="leaderboardList" class="leaderboard-list">
+      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>
+    </div>
+  </div>
+</section>
 </main>
 
 <div id="purchaseOverlay" class="purchase-overlay">
@@ -611,7 +671,7 @@ button,input{font:inherit}
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
 import {auth,watchAuth} from "/js/auth.js";
-import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp,orderBy,limit} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
@@ -634,6 +694,11 @@ let timerInterval=null;
 let timeRemaining=0;
 let timerActive=false;
 let warning5Shown=false;
+
+/* ===== LEADERBOARD ===== */
+let leaderboardData=[];
+let leaderboardFilter='all';
+let leaderboardTopics=[];
 
 /* ===== PLANS ===== */
 let PLANS = [];
@@ -893,6 +958,11 @@ $("topicSearch").addEventListener("input",renderBook);
 $("purchaseClose").onclick=closePurchase;
 $("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
 
+/* ===== LEADERBOARD BUTTONS ===== */
+$("leaderboardBtn").onclick=showLeaderboard;
+$("leaderboardBack").onclick=showBook;
+$("resultLeaderboardBtn").onclick=showLeaderboard;
+
 async function loadBook(){
  const cached=readCache();
  if(cached){sections=cached.sections||[];topics=cached.topics||[];renderBook();return}
@@ -1149,6 +1219,7 @@ async function openTopic(id,retry=false){
   $("bookView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("questionView").style.display="block";
   $("questionBodyArea").textContent="Loading questions...";
 
@@ -1225,6 +1296,8 @@ async function finishTest(){
   saveLocalHistory();
   renderResult();
   syncAttempt(currentResult);
+  // Add to leaderboard
+  await addToLeaderboard(currentResult);
 }
 
 function renderResult(){
@@ -1249,6 +1322,152 @@ async function syncAttempt(r){
   }catch(e){console.warn("Attempt sync failed; local history remains available.",e)}
 }
 
+/* ===== LEADERBOARD FUNCTIONS ===== */
+async function addToLeaderboard(result){
+  if(!user) return;
+  try{
+    const entry = {
+      userId: user.uid,
+      displayName: user.displayName || user.email?.split('@')[0] || "Anonymous",
+      email: user.email || "",
+      topicId: result.topicId,
+      topicName: result.topicName,
+      sectionId: result.sectionId,
+      total: result.total,
+      correct: result.correct,
+      wrong: result.wrong,
+      unanswered: result.unanswered,
+      percent: result.percent,
+      completedAt: serverTimestamp()
+    };
+    await addDoc(collection(db, "leaderboard"), entry);
+    console.log("Leaderboard entry added");
+  }catch(e){
+    console.warn("Could not add to leaderboard:", e);
+  }
+}
+
+async function loadLeaderboardData(){
+  try{
+    // Get all leaderboard entries, ordered by percent desc, then completedAt desc
+    const snap = await getDocs(query(
+      collection(db, "leaderboard"),
+      orderBy("percent", "desc"),
+      orderBy("completedAt", "desc"),
+      limit(200)
+    ));
+    leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    
+    // Extract unique topics for filter tabs
+    const topicMap = new Map();
+    leaderboardData.forEach(e => {
+      if(!topicMap.has(e.topicId)) {
+        topicMap.set(e.topicId, e.topicName || "Unknown Topic");
+      }
+    });
+    leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+  }catch(e){
+    console.warn("Could not load leaderboard:", e);
+    // Fallback: query without orderBy if index not ready
+    try{
+      const snap = await getDocs(query(collection(db, "leaderboard"), limit(200)));
+      leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}))
+        .sort((a,b) => (b.percent || 0) - (a.percent || 0));
+      const topicMap = new Map();
+      leaderboardData.forEach(e => {
+        if(!topicMap.has(e.topicId)) topicMap.set(e.topicId, e.topicName || "Unknown Topic");
+      });
+      leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+    }catch(e2){
+      leaderboardData = [];
+      leaderboardTopics = [];
+    }
+  }
+}
+
+function renderLeaderboard(){
+  const tabsContainer = $("leaderboardTabs");
+  const listContainer = $("leaderboardList");
+  
+  // Filter data
+  let filtered = leaderboardData;
+  if(leaderboardFilter !== 'all') {
+    filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
+  }
+  
+  // Deduplicate: best score per user per topic (or overall best per user)
+  const bestPerUser = new Map();
+  filtered.forEach(e => {
+    const key = leaderboardFilter === 'all' ? e.userId : `${e.userId}_${e.topicId}`;
+    if(!bestPerUser.has(key) || (e.percent > bestPerUser.get(key).percent) || 
+       (e.percent === bestPerUser.get(key).percent && e.correct > bestPerUser.get(key).correct)) {
+      bestPerUser.set(key, e);
+    }
+  });
+  
+  let entries = Array.from(bestPerUser.values());
+  // Sort by percent desc, then correct desc, then completedAt asc
+  entries.sort((a,b) => {
+    if(b.percent !== a.percent) return b.percent - a.percent;
+    if(b.correct !== a.correct) return b.correct - a.correct;
+    return (a.completedAt?.seconds || 0) - (b.completedAt?.seconds || 0);
+  });
+  
+  // Render tabs
+  let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Topics</button>`;
+  leaderboardTopics.forEach(t => {
+    tabsHtml += `<button class="leaderboard-tab ${leaderboardFilter === t.id ? 'active' : ''}" data-filter="${esc(t.id)}">${esc(t.name)}</button>`;
+  });
+  tabsContainer.innerHTML = tabsHtml;
+  tabsContainer.querySelectorAll("[data-filter]").forEach(btn => {
+    btn.onclick = () => {
+      leaderboardFilter = btn.dataset.filter;
+      renderLeaderboard();
+    };
+  });
+  
+  // Render entries
+  if(entries.length === 0) {
+    listContainer.innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet. Be the first to complete a test!</p></div>';
+    return;
+  }
+  
+  listContainer.innerHTML = entries.map((e, idx) => {
+    const rank = idx + 1;
+    let rankClass = "";
+    if(rank === 1) rankClass = "gold";
+    else if(rank === 2) rankClass = "silver";
+    else if(rank === 3) rankClass = "bronze";
+    
+    const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
+    const dateStr = e.completedAt ? new Date(e.completedAt.seconds * 1000).toLocaleDateString() : "";
+    
+    return `<div class="leader-row">
+      <div class="leader-rank ${rankClass}">${rank <= 3 ? medal : rank}</div>
+      <div class="leader-info">
+        <strong>${esc(e.displayName || "Anonymous")}</strong>
+        <small>${esc(e.topicName || "Test")} · ${dateStr}</small>
+      </div>
+      <div class="leader-score">
+        <b>${e.percent || 0}%</b>
+        <span>${e.correct}/${e.total} correct</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function showLeaderboard(){
+  $("bookView").style.display="none";
+  $("questionView").style.display="none";
+  $("resultView").style.display="none";
+  $("historyView").style.display="none";
+  $("leaderboardView").style.display="block";
+  
+  $("leaderboardList").innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>';
+  await loadLeaderboardData();
+  renderLeaderboard();
+}
+
 function loadLocalHistory(){try{history=JSON.parse(localStorage.getItem(HISTORY_KEY_PREFIX+user.uid)||"[]")}catch(_){history=[]}}
 function saveLocalHistory(){try{localStorage.setItem(HISTORY_KEY_PREFIX+user.uid,JSON.stringify(history))}catch(_){}}
 
@@ -1256,6 +1475,7 @@ function showBook(){
   $("questionView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("bookView").style.display="block";
 }
 
@@ -1263,6 +1483,7 @@ function showHistory(){
   $("bookView").style.display="none";
   $("questionView").style.display="none";
   $("resultView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("historyView").style.display="block";
   const attempts=history.length,answered=history.reduce((n,x)=>n+(x.total-x.unanswered),0),
         correct=history.reduce((n,x)=>n+x.correct,0),wrong=history.reduce((n,x)=>n+x.wrong,0);
