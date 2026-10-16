@@ -561,61 +561,7 @@ button,input{font:inherit}
 .purchase-user input{padding:10px;border:1px solid #dbe2ea;border-radius:9px}
 @media(max-width:560px){.purchase-user{grid-template-columns:1fr}}
 
-  /* ===== ACTION BUTTONS (used by hero, result, history views) ===== */
-.action{
-  border:0;
-  border-radius:11px;
-  padding:11px 17px;
-  font-weight:800;
-  font-size:13px;
-  cursor:pointer;
-  transition:.2s;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-family:inherit;
-}
 
-.action.secondary{
-  background:linear-gradient(135deg,var(--peach-light),var(--orange-light));
-  color:var(--text);
-  border:1px solid var(--orange-soft);
-}
-.action.secondary:hover{
-  background:linear-gradient(135deg,var(--orange-soft),var(--peach));
-  border-color:var(--orange);
-}
-
-.action.primary{
-  background:rgb(58,150,58);
-  color:#fff;
-  border:1px solid rgb(48,130,48);
-}
-.action.primary:hover{
-  background:rgb(48,130,48);
-}
-
-.action.disabled,
-.action:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  pointer-events:none;
-}
-
-/* Mobile tweak: hero action buttons stack nicely */
-@media(max-width:600px){
-  .top-actions-mobile{
-    display:flex;
-    gap:8px;
-    width:100%;
-  }
-  .top-actions-mobile .action{
-    flex:1;
-    justify-content:center;
-    font-size:12px;
-    padding:10px 12px;
-  }
-}
 </style>
 </head>
 <body>
