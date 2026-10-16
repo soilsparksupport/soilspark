@@ -35,40 +35,52 @@
       padding: 20px;
     }
 
-    /* main container holds both create card and admin list */
-    .container {
+    /* =========================================================
+       LOGIN SCREEN (email/password wall)
+    ========================================================= */
+    #loginScreen {
       width: 100%;
-      max-width: 960px;
       display: flex;
-      flex-direction: column;
-      gap: 24px;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* ----- create admin card (original design) ----- */
-    .admin-card {
+    .login-card {
       background: #ffffff;
       width: 100%;
       max-width: 420px;
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-      margin: 0 auto;
     }
 
-    .admin-card h2 {
+    .login-card h2 {
       margin: 0 0 10px;
       text-align: center;
       font-weight: 600;
       color: #1f2937;
     }
 
-    .admin-card p {
+    .login-card p {
       text-align: center;
       font-size: 14px;
       color: #6b7280;
       margin-bottom: 25px;
     }
 
+    .login-error {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #fff1f2;
+      border: 1px solid #ffc7cd;
+      color: #a61b29;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* shared form styles */
     .form-group {
       margin-bottom: 18px;
     }
@@ -116,11 +128,100 @@
       transform: scale(0.98);
     }
 
+    button:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .footer-note {
       margin-top: 20px;
       text-align: center;
       font-size: 12px;
       color: #9ca3af;
+    }
+
+    /* =========================================================
+       DASHBOARD (hidden until authenticated)
+    ========================================================= */
+    #dashboardScreen {
+      display: none;
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* top bar with admin email + logout */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: #e2e8f0;
+    }
+
+    .topbar .admin-email {
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(37,99,235,0.18);
+      border: 1px solid rgba(37,99,235,0.4);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #dbeafe;
+      max-width: 260px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .topbar .logout-btn {
+      width: auto;
+      background: #b91c1c;
+      padding: 9px 14px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .topbar .logout-btn:hover {
+      background: #991b1b;
+    }
+
+    /* ----- create admin card ----- */
+    .admin-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+      margin: 0 auto;
+    }
+
+    .admin-card h2 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .admin-card p {
+      text-align: center;
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 25px;
     }
 
     /* ----- current admins panel ----- */
@@ -316,62 +417,109 @@
 
 <body>
 
-  <div class="container">
+  <!-- ============================================================
+       LOGIN SCREEN
+  ============================================================ -->
+  <section id="loginScreen">
+    <div class="login-card">
+      <h2>Admin Access</h2>
+      <p>Authorized administrators only</p>
 
-    <!-- CREATE ADMIN CARD -->
-    <div class="admin-card">
-      <h2>Create Admin Account</h2>
-      <p>Authorized access only</p>
+      <div id="loginError" class="login-error"></div>
 
       <div class="form-group">
-        <label for="email">Admin Email</label>
-        <input type="email" id="email" placeholder="admin@example.com" />
+        <label for="loginEmail">Administrator Email</label>
+        <input type="email" id="loginEmail" placeholder="admin@example.com" autocomplete="username" />
       </div>
 
       <div class="form-group">
-        <label for="password">Admin Password</label>
-        <input type="password" id="password" placeholder="••••••••" />
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
       </div>
 
-      <button id="createAdmin">Create Admin</button>
+      <button id="loginBtn">Login as Administrator</button>
 
       <div class="footer-note">
         SoilSpark Admin Panel • Secure Access
       </div>
     </div>
+  </section>
 
-    <!-- CURRENT ADMINS PANEL -->
-    <div class="admins-panel">
-      <div class="admins-panel-header">
-        <h3><i class="fas fa-users-cog"></i> Current Admins</h3>
-        <span class="admin-count-badge" id="adminCount">Loading...</span>
+  <!-- ============================================================
+       DASHBOARD (create + manage admins)
+  ============================================================ -->
+  <section id="dashboardScreen">
+    <div class="container">
+
+      <!-- top bar -->
+      <div class="topbar">
+        <span id="adminEmailDisplay" class="admin-email">Administrator</span>
+        <button id="logoutBtn" class="logout-btn">
+          <i class="fas fa-right-from-bracket"></i> Logout
+        </button>
       </div>
-      <div class="admins-table-wrapper" id="adminsTableWrapper">
-        <div class="loading-state">
-          <i class="fas fa-spinner"></i> Loading admin accounts...
+
+      <!-- CREATE ADMIN CARD -->
+      <div class="admin-card">
+        <h2>Create Admin Account</h2>
+        <p>Authorized access only</p>
+
+        <div class="form-group">
+          <label for="email">Admin Email</label>
+          <input type="email" id="email" placeholder="admin@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Admin Password</label>
+          <input type="password" id="password" placeholder="••••••••" />
+        </div>
+
+        <button id="createAdmin">Create Admin</button>
+
+        <div class="footer-note">
+          SoilSpark Admin Panel • Secure Access
         </div>
       </div>
-    </div>
 
-  </div>
+      <!-- CURRENT ADMINS PANEL -->
+      <div class="admins-panel">
+        <div class="admins-panel-header">
+          <h3><i class="fas fa-users-cog"></i> Current Admins</h3>
+          <span class="admin-count-badge" id="adminCount">Loading...</span>
+        </div>
+        <div class="admins-table-wrapper" id="adminsTableWrapper">
+          <div class="loading-state">
+            <i class="fas fa-spinner"></i> Loading admin accounts...
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import {
       getAuth,
-      createUserWithEmailAndPassword
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
     import {
       getFirestore,
       doc,
       setDoc,
+      getDoc,
       serverTimestamp,
       collection,
       getDocs,
       deleteDoc
     } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-    // Firebase configuration (uncomment the one you use)
+    /* ============================================================
+       FIREBASE CONFIG
+    ============================================================ */
     // const firebaseConfig = {
     //   apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
     //   authDomain: "soilspark.firebaseapp.com",
@@ -396,10 +544,142 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    /* ---------- CREATE ADMIN ---------- */
-    document.getElementById("createAdmin").onclick = async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+    /* ============================================================
+       DOM HELPERS
+    ============================================================ */
+    const $ = (id) => document.getElementById(id);
+    const loginScreen = $("loginScreen");
+    const dashboardScreen = $("dashboardScreen");
+    const loginError = $("loginError");
+
+    /* ============================================================
+       ADMIN VERIFICATION (against Firestore "admins" collection)
+    ============================================================ */
+    async function verifyAdministrator(user) {
+      if (!user) throw new Error("You are not authenticated.");
+
+      const adminSnap = await getDoc(doc(db, "admins", user.uid));
+      if (!adminSnap.exists()) {
+        throw new Error("Access denied. This account is not registered as an administrator.");
+      }
+
+      const adminData = adminSnap.data();
+      if (adminData.role && String(adminData.role).toLowerCase() !== "admin") {
+        throw new Error("Access denied. Administrator role required.");
+      }
+      if (adminData.active === false) {
+        throw new Error("This administrator account is inactive.");
+      }
+
+      return adminData;
+    }
+
+    /* ============================================================
+       SCREEN SWITCHING
+    ============================================================ */
+    function showLogin() {
+      loginScreen.style.display = "flex";
+      dashboardScreen.style.display = "none";
+    }
+
+    function showDashboard() {
+      loginScreen.style.display = "none";
+      dashboardScreen.style.display = "block";
+    }
+
+    function showLoginError(message) {
+      loginError.textContent = message;
+      loginError.style.display = "block";
+    }
+
+    function clearLoginError() {
+      loginError.style.display = "none";
+    }
+
+    /* ============================================================
+       AUTH STATE — gating logic
+    ============================================================ */
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        showLogin();
+        return;
+      }
+
+      try {
+        await verifyAdministrator(user);
+        $("adminEmailDisplay").textContent = user.email || "Administrator";
+        showDashboard();
+        loadAdmins();
+      } catch (error) {
+        console.error("Admin verification:", error);
+        try { await signOut(auth); } catch (_) {}
+        showLogin();
+        showLoginError(error.message);
+      }
+    });
+
+    /* ============================================================
+       LOGIN
+    ============================================================ */
+    async function loginAdmin() {
+      clearLoginError();
+      const email = $("loginEmail").value.trim();
+      const password = $("loginPassword").value;
+
+      if (!email || !password) {
+        showLoginError("Please enter both administrator email and password.");
+        return;
+      }
+
+      const btn = $("loginBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        await verifyAdministrator(cred.user);
+        // onAuthStateChanged will handle the rest
+      } catch (error) {
+        console.error("Login:", error);
+        let message = "Unable to sign in.";
+        if (error.code === "auth/invalid-credential") message = "Incorrect email or password.";
+        else if (error.code === "auth/invalid-email") message = "Please enter a valid email address.";
+        else if (error.code === "auth/too-many-requests") message = "Too many attempts. Please try again later.";
+        else if (error.message && (error.message.includes("Access denied") || error.message.includes("Administrator")))
+          message = error.message;
+
+        try { await signOut(auth); } catch (_) {}
+        showLogin();
+        showLoginError(message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Login as Administrator';
+      }
+    }
+
+    $("loginBtn").addEventListener("click", loginAdmin);
+    $("loginPassword").addEventListener("keydown", (e) => { if (e.key === "Enter") loginAdmin(); });
+    $("loginEmail").addEventListener("keydown", (e) => { if (e.key === "Enter") loginAdmin(); });
+
+    /* ============================================================
+       LOGOUT
+    ============================================================ */
+    $("logoutBtn").addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        showLogin();
+        clearLoginError();
+      } catch (err) {
+        alert("Logout failed: " + err.message);
+      }
+    });
+
+    /* ============================================================
+       CREATE ADMIN
+    ============================================================ */
+    $("createAdmin").onclick = async () => {
+      const email = $("email").value.trim();
+      const password = $("password").value.trim();
 
       if (!email || !password) {
         alert("Email and password are required");
@@ -420,8 +700,8 @@
         });
 
         alert("✅ Admin created successfully using UID!");
-        document.getElementById("email").value = "";
-        document.getElementById("password").value = "";
+        $("email").value = "";
+        $("password").value = "";
 
         // Refresh the admins list
         loadAdmins();
@@ -430,9 +710,11 @@
       }
     };
 
-    /* ---------- LOAD & DISPLAY ADMINS ---------- */
-    const adminsTableWrapper = document.getElementById("adminsTableWrapper");
-    const adminCountEl = document.getElementById("adminCount");
+    /* ============================================================
+       LOAD & DISPLAY ADMINS
+    ============================================================ */
+    const adminsTableWrapper = $("adminsTableWrapper");
+    const adminCountEl = $("adminCount");
 
     async function loadAdmins() {
       adminsTableWrapper.innerHTML = `
@@ -449,7 +731,6 @@
           admins.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        // sort by createdAt descending (newest first) if available
         admins.sort((a, b) => {
           const aTime = a.createdAt?.toMillis?.() || 0;
           const bTime = b.createdAt?.toMillis?.() || 0;
@@ -468,7 +749,6 @@
           return;
         }
 
-        // build table
         let html = `
           <table>
             <thead>
@@ -509,9 +789,8 @@
         html += `</tbody></table>`;
         adminsTableWrapper.innerHTML = html;
 
-        // Attach delete handlers
         adminsTableWrapper.querySelectorAll(".action-btn.delete").forEach((btn) => {
-          btn.addEventListener("click", async (e) => {
+          btn.addEventListener("click", async () => {
             const id = btn.getAttribute("data-id");
             const email = btn.getAttribute("data-email");
             await deleteAdmin(id, email);
@@ -530,7 +809,9 @@
       }
     }
 
-    /* ---------- DELETE ADMIN ---------- */
+    /* ============================================================
+       DELETE ADMIN
+    ============================================================ */
     async function deleteAdmin(adminDocId, email) {
       const confirmed = confirm(
         `Are you sure you want to remove admin "${email}"?\n\n` +
@@ -548,7 +829,9 @@
       }
     }
 
-    /* ---------- UTILITY: escape HTML ---------- */
+    /* ============================================================
+       UTILITY: escape HTML
+    ============================================================ */
     function escapeHtml(str) {
       if (!str) return "";
       return String(str)
@@ -558,10 +841,6 @@
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
     }
-
-    /* ---------- INITIAL LOAD ---------- */
-    loadAdmins();
-
   </script>
 
 </body>
@@ -577,28 +856,23 @@
     document.addEventListener('keydown', function (e) {
       const key = e.key.toLowerCase();
 
-      // Ctrl+C, Ctrl+X, Ctrl+S, Ctrl+U, Ctrl+A, Ctrl+P
       if (e.ctrlKey && ['c', 'x', 's', 'u', 'a', 'p'].includes(key)) {
         e.preventDefault();
       }
 
-      // Ctrl+Shift+I, Ctrl+Shift+J
       if (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(key)) {
         e.preventDefault();
       }
 
-      // F12
       if (e.key === 'F12') {
         e.preventDefault();
       }
     });
 
-    // Disable text selection
     document.addEventListener('selectstart', function (e) {
       e.preventDefault();
     });
 
-    // Disable copy/cut events
     document.addEventListener('copy', function (e) {
       e.preventDefault();
     });
