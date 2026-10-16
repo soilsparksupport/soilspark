@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -197,71 +196,377 @@ button,input{font:inherit}
 
 /* ===== QUESTION / RESULT / HISTORY VIEWS ===== */
 #questionView,#resultView,#historyView{display:none}
-.question-shell,.result-card,.history-shell{
-  background:#fff;border:1px solid var(--border);border-radius:22px;
-  box-shadow:var(--shadow);overflow:hidden;
+
+/* ===== NEW EXAM-STYLE QUESTION LAYOUT ===== */
+.exam-shell{
+  display:flex;
+  gap:0;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  min-height:600px;
 }
-.question-head{
-  padding:17px 22px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;gap:15px;align-items:center;
+
+/* Left: question area */
+.exam-main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.exam-topbar{
+  padding:16px 22px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
   background:linear-gradient(135deg,var(--sky-light),var(--peach-light));
+  flex-wrap:wrap;
 }
+.exam-topbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.exam-topbar-right{display:flex;align-items:center;gap:10px}
+
 .back{
   border:1px solid var(--border);background:#fff;color:var(--blue-dark);
   padding:9px 13px;border-radius:10px;font-weight:800;cursor:pointer;
+  display:inline-flex;align-items:center;gap:7px;font-size:13px;
 }
 .back:hover{background:var(--orange-light);border-color:var(--orange-soft)}
-.topic-title{font:700 18px Poppins;color:var(--text-dark)}
-.progress{font-size:12px;color:var(--muted);font-weight:700}
-.question-area{padding:28px;max-width:900px;margin:auto}
-.q-label{
-  font-size:12px;font-weight:800;color:var(--orange);
-  margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px;
-}
-.q-text{
-  font:700 21px/1.5 Poppins;color:var(--text-dark);
-  background:linear-gradient(135deg,var(--mint-light),var(--lime-light));
-  border:1px solid var(--green-soft);border-radius:18px;
-  padding:21px;margin-bottom:22px;
-}
 
-/* ===== OPTIONS ===== */
-.options{display:flex;flex-direction:column;gap:12px}
-.option{
-  display:flex;gap:14px;align-items:flex-start;
-  border:1.5px solid var(--border);border-radius:15px;
-  padding:15px 17px;cursor:pointer;transition:.2s;background:#fff;
-}
-.option:hover{border-color:var(--orange);background:var(--orange-light)}
-.option.selected{
-  border-color:var(--green);background:var(--green-light);
-  box-shadow:0 4px 14px rgba(127,176,105,.15);
-}
-.letter{
-  width:30px;height:30px;min-width:30px;border-radius:9px;
-  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
-  display:grid;place-items:center;font-weight:800;color:var(--orange);
-}
-.option.selected .letter{
-  background:linear-gradient(135deg,var(--green),var(--green-soft));
+.exam-topic-name{font:700 16px Poppins;color:var(--text-dark)}
+
+.exam-timer{
+  background:#3d3025;
   color:#fff;
+  padding:7px 14px;
+  border-radius:40px;
+  font-family:monospace;
+  font-weight:700;
+  font-size:14px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  letter-spacing:.5px;
 }
-.option-text{font-size:14px;line-height:1.5;padding-top:4px}
+.exam-timer i{color:var(--yellow)}
 
-/* ===== ACTIONS ===== */
-.actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}
-.action{border:0;border-radius:11px;padding:11px 17px;font-weight:800;cursor:pointer}
-.secondary{background:linear-gradient(135deg,var(--peach-light),var(--orange-light));color:var(--text)}
-.secondary:hover{background:linear-gradient(135deg,var(--orange-soft),var(--peach))}
-.primary{background:rgb(58, 150, 58)}
-.primary:hover{background:rgb(58, 150, 58)}
-.disabled{opacity:.45;cursor:not-allowed}
+.exam-progress-badge{
+  background:#fff;
+  border:1px solid var(--border);
+  padding:7px 14px;
+  border-radius:40px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--orange);
+  white-space:nowrap;
+}
 
-/* ===== EXPLANATION ===== */
-.explanation{
-  display:none;margin-top:20px;
+/* Question body */
+.exam-body{
+  flex:1;
+  overflow-y:auto;
+  padding:26px 28px;
+  max-height:calc(100vh - 280px);
+  min-height:400px;
+}
+
+.q-meta-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+  border-left:4px solid var(--orange);
+  padding-left:14px;
+}
+.q-number{
+  font:800 22px Poppins;
+  color:var(--text-dark);
+}
+.q-type-tag{
+  background:linear-gradient(135deg,var(--mint-light),var(--lime-light));
   border:1px solid var(--green-soft);
-  background:rgb(58, 150, 58);
+  padding:4px 12px;
+  border-radius:40px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--green);
+}
+
+.q-text-new{
+  font:600 19px/1.55 Poppins;
+  color:var(--text-dark);
+  background:linear-gradient(135deg,var(--mint-light),var(--lime-light));
+  border:1px solid var(--green-soft);
+  border-radius:18px;
+  padding:22px;
+  margin-bottom:24px;
+}
+
+/* Options - modern stacked */
+.options-new{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.option-new{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:15px 20px;
+  background:#fefefe;
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  cursor:pointer;
+  transition:all .18s ease;
+  font-weight:500;
+  font-size:14px;
+  line-height:1.45;
+  color:var(--text);
+}
+.option-new:hover{
+  background:#f9fff9;
+  border-color:var(--orange);
+  transform:translateX(3px);
+  box-shadow:0 4px 14px rgba(244,162,97,.12);
+}
+.option-new.selected{
+  background:linear-gradient(135deg,var(--green-light),var(--mint-light));
+  border-color:var(--green);
+  box-shadow:0 4px 14px rgba(127,176,105,.18);
+}
+
+.option-letter{
+  width:34px;
+  height:34px;
+  min-width:34px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  color:var(--orange);
+  font-size:14px;
+  transition:all .18s ease;
+  border:1.5px solid var(--orange-soft);
+}
+.option-new.selected .option-letter{
+  background:linear-gradient(135deg,var(--green),#5d8a47);
+  color:#fff;
+  border-color:var(--green);
+}
+
+.option-radio-dot{
+  width:20px;
+  height:20px;
+  min-width:20px;
+  border-radius:50%;
+  border:2px solid var(--border);
+  margin-left:auto;
+  display:grid;
+  place-items:center;
+  transition:all .18s ease;
+}
+.option-new.selected .option-radio-dot{
+  border-color:var(--green);
+  background:var(--green);
+}
+.option-radio-dot::after{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#fff;
+  transform:scale(0);
+  transition:transform .18s ease;
+}
+.option-new.selected .option-radio-dot::after{
+  transform:scale(1);
+}
+
+/* Action bar inside exam */
+.exam-action-bar{
+  padding:14px 24px;
+  background:#fbfaf7;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.exam-action-left{display:flex;gap:10px;flex-wrap:wrap}
+.exam-action-right{display:flex;gap:10px;flex-wrap:wrap}
+
+.nta-btn{
+  padding:10px 18px;
+  border-radius:40px;
+  font-weight:700;
+  font-size:12px;
+  border:1px solid var(--border);
+  cursor:pointer;
+  transition:.2s;
+  background:#fff;
+  color:var(--text);
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+.nta-btn:hover{background:var(--orange-light);border-color:var(--orange-soft)}
+.nta-btn-primary{
+  background:rgb(58,150,58);
+  color:#fff;
+  border:none;
+}
+.nta-btn-primary:hover{background:rgb(48,130,48)}
+.nta-btn-warning{
+  background:linear-gradient(135deg,var(--yellow-soft),var(--orange-light));
+  border-color:var(--orange-soft);
+  color:#8a6d1f;
+}
+.nta-btn-info{
+  background:linear-gradient(135deg,var(--sky-light),var(--mint-light));
+  border-color:var(--border-blue);
+  color:var(--blue-dark);
+}
+.nta-btn:disabled,.nta-btn.disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+/* Right: palette sidebar */
+.exam-palette{
+  width:280px;
+  min-width:280px;
+  background:#fdfcf9;
+  border-left:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:16px;
+}
+.palette-legend{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:10px;
+  font-weight:700;
+  color:var(--muted);
+}
+.legend-swatch{
+  width:26px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  font-size:10px;
+  font-weight:800;
+  flex-shrink:0;
+}
+.legend-swatch.not-visited{background:#e8e2d6;border-radius:6px;color:var(--muted);border:1px solid var(--border)}
+.legend-swatch.not-answered{background:#c96b5c;color:#fff;border-radius:6px;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%)}
+.legend-swatch.answered{background:#7a9e5b;color:#fff;border-radius:6px;clip-path:polygon(0% 0%,80% 0%,100% 50%,80% 100%,0% 100%)}
+.legend-swatch.marked{background:linear-gradient(145deg,#c3b1e1,#9b7fd4);color:#fff;border-radius:50%}
+.legend-swatch.marked-answered{background:linear-gradient(145deg,#c3b1e1,#9b7fd4);color:#fff;border-radius:50%;position:relative}
+.legend-swatch.marked-answered::after{
+  content:"✓";
+  position:absolute;
+  bottom:-4px;
+  right:-5px;
+  background:#fff;
+  color:#7a9e5b;
+  font-size:8px;
+  border-radius:50%;
+  width:12px;
+  height:12px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  border:1px solid var(--green-soft);
+}
+
+.palette-scroll{
+  flex:1;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.palette-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:9px;
+}
+.palette-cell{
+  width:40px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  font-size:12px;
+  cursor:pointer;
+  transition:.15s;
+  border:none;
+  font-family:inherit;
+}
+.palette-cell:hover{transform:scale(1.08);filter:brightness(1.05)}
+.palette-cell.not-visited{background:#e8e2d6;border-radius:8px;color:var(--muted);border:1px solid var(--border)}
+.palette-cell.not-answered{background:#c96b5c;color:#fff;border-radius:8px;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%)}
+.palette-cell.answered{background:#7a9e5b;color:#fff;border-radius:8px;clip-path:polygon(0% 0%,80% 0%,100% 50%,80% 100%,0% 100%)}
+.palette-cell.marked{background:linear-gradient(145deg,#c3b1e1,#9b7fd4);color:#fff;border-radius:50%}
+.palette-cell.marked-answered{background:linear-gradient(145deg,#c3b1e1,#9b7fd4);color:#fff;border-radius:50%;position:relative}
+.palette-cell.marked-answered::after{
+  content:"✓";
+  position:absolute;
+  bottom:-2px;
+  right:-2px;
+  background:#fff;
+  color:#7a9e5b;
+  font-size:8px;
+  border-radius:50%;
+  width:13px;
+  height:13px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  border:1px solid var(--green-soft);
+}
+.palette-cell.current{
+  outline:3px solid var(--orange);
+  outline-offset:2px;
+  filter:brightness(1.03);
+}
+
+/* Mobile palette toggle */
+.mobile-palette-btn{
+  display:none;
+  background:var(--orange);
+  color:#fff;
+  border:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* Explanation box */
+.explanation{
+  display:none;margin-top:18px;
+  border:1px solid var(--green-soft);
+  background:var(--success-soft);
   border-radius:14px;padding:15px;color:#4e683e;font-size:13px;line-height:1.6;
 }
 .explanation.show{display:block}
@@ -291,6 +596,10 @@ button,input{font:inherit}
 .dash-card span{font-size:10px;color:var(--muted)}
 
 /* ===== HISTORY ===== */
+.history-shell{
+  background:#fff;border:1px solid var(--border);border-radius:22px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
 .history-head{
   padding:18px 20px;border-bottom:1px solid var(--border);
   display:flex;justify-content:space-between;align-items:center;gap:10px;
@@ -321,7 +630,31 @@ button,input{font:inherit}
 .tag.wrong{background:var(--danger-soft);color:#a14a3e}
 .top-actions-mobile{display:flex;gap:8px}
 
+/* Drawer overlay for mobile palette */
+.palette-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:90;
+}
+.palette-backdrop.open{display:block}
+
 /* ===== RESPONSIVE ===== */
+@media(max-width:1050px){
+  .exam-palette{
+    position:fixed;
+    right:0;top:0;height:100%;
+    transform:translateX(100%);
+    box-shadow:-8px 0 25px rgba(0,0,0,.12);
+    z-index:95;
+    transition:transform .25s ease;
+    width:290px;
+    min-width:290px;
+  }
+  .exam-palette.drawer-open{transform:translateX(0)}
+  .mobile-palette-btn{display:inline-flex;align-items:center;justify-content:center}
+}
 @media(max-width:950px){
   .topic-grid{grid-template-columns:repeat(2,1fr)}
   .result-grid,.dashboard{grid-template-columns:repeat(2,1fr)}
@@ -333,14 +666,20 @@ button,input{font:inherit}
   .user-email{display:none}
   .page{padding:22px 15px 35px}
   .topic-grid{grid-template-columns:1fr}
-  .question-area{padding:20px 15px}
-  .q-text{font-size:18px}
-  .question-head{align-items:flex-start;flex-direction:column}
-  .actions{flex-wrap:wrap}
-  .action{flex:1;min-width:120px}
+  .exam-body{padding:18px 15px}
+  .q-text-new{font-size:16px;padding:16px}
+  .q-number{font-size:18px}
+  .exam-topbar{padding:12px 15px;flex-direction:column;align-items:stretch}
+  .exam-topbar-left{width:100%}
+  .exam-topbar-right{width:100%;justify-content:space-between}
+  .exam-action-bar{flex-direction:column}
+  .exam-action-left,.exam-action-right{width:100%}
+  .nta-btn{flex:1;justify-content:center;font-size:11px;padding:9px 10px}
+  .option-new{padding:12px 14px;font-size:13px}
   .result-grid,.dashboard{grid-template-columns:1fr 1fr}
   .history-row{grid-template-columns:1fr}
   .history-score{text-align:left}
+  .palette-grid{grid-template-columns:repeat(5,1fr)}
 }
 </style>
 
@@ -373,7 +712,65 @@ button,input{font:inherit}
 <div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
 </section>
 
-<section id="questionView"><div class="question-shell"><div class="question-head"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button><div><div id="topicTitle" class="topic-title">Topic</div><div id="progress" class="progress">Question 1</div></div></div><div class="question-area"><div id="qLabel" class="q-label">QUESTION 1</div><div id="qText" class="q-text">Loading question...</div><div id="options" class="options"></div><div id="explanation" class="explanation"></div><div class="actions"><button id="prevBtn" class="action secondary">Previous</button><button id="nextBtn" class="action primary">Next</button></div></div></div></section>
+<!-- ===== REDESIGNED QUESTION VIEW ===== -->
+<section id="questionView">
+  <div class="exam-shell">
+    <!-- Main question column -->
+    <div class="exam-main">
+      <!-- Top bar -->
+      <div class="exam-topbar">
+        <div class="exam-topbar-left">
+          <button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button>
+          <div class="exam-topic-name" id="topicTitle">Topic</div>
+        </div>
+        <div class="exam-topbar-right">
+          <div class="exam-timer" id="examTimer"><i class="fa-regular fa-clock"></i> <span id="timerValue">00:00</span></div>
+          <div class="exam-progress-badge" id="progress">Q 1 / 1</div>
+          <button class="mobile-palette-btn" id="mobilePaletteBtn" type="button"><i class="fa-solid fa-table-cells"></i></button>
+        </div>
+      </div>
+
+      <!-- Question body -->
+      <div class="exam-body" id="examBody">
+        <div class="q-meta-row">
+          <span class="q-number" id="qLabel">Question 1</span>
+          <span class="q-type-tag"><i class="fa-regular fa-circle-question"></i> MCQ</span>
+        </div>
+        <div class="q-text-new" id="qText">Loading question...</div>
+        <div class="options-new" id="options"></div>
+        <div class="explanation" id="explanation"></div>
+      </div>
+
+      <!-- Action bar -->
+      <div class="exam-action-bar">
+        <div class="exam-action-left">
+          <button class="nta-btn" id="clearBtn" type="button"><i class="fa-regular fa-trash-can"></i> Clear</button>
+          <button class="nta-btn nta-btn-warning" id="markBtn" type="button"><i class="fa-regular fa-bookmark"></i> Mark</button>
+          <button class="nta-btn nta-btn-info" id="markNextBtn" type="button"><i class="fa-regular fa-flag"></i> Mark & Next</button>
+        </div>
+        <div class="exam-action-right">
+          <button class="nta-btn" id="prevBtn" type="button"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+          <button class="nta-btn nta-btn-primary" id="nextBtn" type="button">Save & Next <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right palette -->
+    <aside class="exam-palette" id="examPalette">
+      <div class="palette-legend">
+        <div class="legend-item"><span class="legend-swatch not-visited" id="cntNotVisited">0</span> Not Visited</div>
+        <div class="legend-item"><span class="legend-swatch not-answered" id="cntNotAnswered">0</span> Not Answered</div>
+        <div class="legend-item"><span class="legend-swatch answered" id="cntAnswered">0</span> Answered</div>
+        <div class="legend-item"><span class="legend-swatch marked" id="cntMarked">0</span> Marked</div>
+        <div class="legend-item" style="grid-column:span 2"><span class="legend-swatch marked-answered" id="cntMarkedAnswered">0</span> Marked + Answered</div>
+      </div>
+      <div class="palette-scroll">
+        <div class="palette-grid" id="paletteGrid"></div>
+      </div>
+    </aside>
+  </div>
+</section>
+<div class="palette-backdrop" id="paletteBackdrop"></div>
 
 <section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
@@ -408,6 +805,10 @@ import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTime
 const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomain:"soilspark.firebaseapp.com",projectId:"soilspark",storageBucket:"soilspark.firebasestorage.app",messagingSenderId:"22641848933",appId:"1:22641848933:web:4c08ce5046681dbb698c8c",measurementId:"G-1M406BN9JK"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
+
+/* ===== EXAM STATE TRACKING ===== */
+let examStates={}; // 0:not visited, 1:not answered, 2:answered, 3:marked, 4:marked+answered
+const STATE_KEY="soilspark_examstates_";
 
 /* ===== PLANS (dynamic) ===== */
 let PLANS = [];
@@ -718,8 +1119,42 @@ onAuthStateChanged(auth,async u=>{
  await loadBook();
 });
 // Removed the logout button event listener since the button was removed.
-$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
+$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;
 $("topicSearch").addEventListener("input",renderBook);$("purchaseClose").onclick=closePurchase;$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
+
+/* ===== NEW ACTION BINDINGS ===== */
+$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};
+$("nextBtn").onclick=nextQuestion;
+$("clearBtn").onclick=()=>{
+  if(!questions[currentIndex])return;
+  delete answers[questions[currentIndex].id];
+  examStates[questions[currentIndex].id]=1;
+  saveExamStates();
+  renderQuestion();
+};
+$("markBtn").onclick=()=>{
+  const q=questions[currentIndex];if(!q)return;
+  examStates[q.id]=answers[q.id]!==undefined?4:3;
+  saveExamStates();
+  renderQuestion();
+  refreshPalette();
+};
+$("markNextBtn").onclick=()=>{
+  const q=questions[currentIndex];if(!q)return;
+  examStates[q.id]=answers[q.id]!==undefined?4:3;
+  saveExamStates();
+  if(currentIndex<questions.length-1){currentIndex++;renderQuestion()}else finishTest();
+  refreshPalette();
+};
+$("mobilePaletteBtn").onclick=()=>togglePalette();
+$("paletteBackdrop").onclick=()=>togglePalette(false);
+
+function togglePalette(open){
+  const pal=$("examPalette"),bd=$("paletteBackdrop");
+  const shouldOpen=open!==undefined?open:!pal.classList.contains("drawer-open");
+  pal.classList.toggle("drawer-open",shouldOpen);
+  bd.classList.toggle("open",shouldOpen);
+}
 
 async function loadBook(){
  const cached=readCache();
@@ -808,21 +1243,122 @@ async function openTopic(id,retry=false){
    const snap=await getDocs(query(collection(db,"questions"),where("topicId","==",id),where("active","==",true)));
    questions=snap.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);try{localStorage.setItem(cacheKey,JSON.stringify({savedAt:Date.now(),questions}))}catch(_){}
   }
-  currentIndex=0;answers={};if(!questions.length){$("qText").textContent="No active questions in this topic.";$("options").innerHTML="";return}renderQuestion();
+  currentIndex=0;answers={};examStates={};
+  // init states
+  questions.forEach(q=>{examStates[q.id]=0});
+  if(questions.length)examStates[questions[0].id]=1;
+  saveExamStates();
+  if(!questions.length){$("qText").textContent="No active questions in this topic.";$("options").innerHTML="";return}
+  renderQuestion();
+  startExamTimer();
  }catch(e){console.error(e);$("qText").textContent="Unable to load questions. Check your connection and try again."}
 }
-function renderQuestion(){
- const q=questions[currentIndex];if(!q)return;$("progress").textContent=`Question ${currentIndex+1} of ${questions.length}`;$("qLabel").textContent=`QUESTION ${currentIndex+1}`;$("qText").textContent=q.text||"";
- const opts=Array.isArray(q.options)?q.options:[q.option_a,q.option_b,q.option_c,q.option_d];$("options").innerHTML=opts.map((o,i)=>`<div class="option ${answers[q.id]===i?"selected":""}" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span><span class="option-text">${esc(o||"")}</span></div>`).join("");
- $("options").querySelectorAll(".option").forEach(el=>el.onclick=()=>selectAnswer(Number(el.dataset.i)));$("prevBtn").classList.toggle("disabled",currentIndex===0);$("nextBtn").innerHTML=currentIndex===questions.length-1?'Finish <i class="fa-solid fa-check"></i>':'Next <i class="fa-solid fa-chevron-right"></i>';$("explanation").classList.remove("show");$("explanation").innerHTML="";
+
+/* ===== EXAM STATE HELPERS ===== */
+function saveExamStates(){
+  if(!currentTopic)return;
+  try{localStorage.setItem(STATE_KEY+currentTopic.id,JSON.stringify(examStates))}catch(_){}
 }
-function selectAnswer(i){const q=questions[currentIndex];answers[q.id]=i;$("options").querySelectorAll(".option").forEach(x=>x.classList.remove("selected"));$("options").querySelectorAll(".option")[i]?.classList.add("selected")}
+function loadExamStates(){
+  if(!currentTopic)return;
+  try{
+    const s=JSON.parse(localStorage.getItem(STATE_KEY+currentTopic.id)||"{}");
+    if(s && typeof s==="object")examStates=s;
+  }catch(_){examStates={}}
+}
+
+/* ===== TIMER ===== */
+let examTimerInterval=null;
+let examTimeLeft=0;
+const EXAM_DURATION=45*60; // 45 minutes
+function startExamTimer(){
+  clearInterval(examTimerInterval);
+  examTimeLeft=EXAM_DURATION;
+  updateTimerDisplay();
+  examTimerInterval=setInterval(()=>{
+    examTimeLeft--;
+    if(examTimeLeft<=0){
+      clearInterval(examTimerInterval);
+      updateTimerDisplay();
+      finishTest();
+      return;
+    }
+    updateTimerDisplay();
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(examTimeLeft/60);
+  const s=examTimeLeft%60;
+  const el=$("timerValue");
+  if(el)el.textContent=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+
+function renderQuestion(){
+ const q=questions[currentIndex];if(!q)return;
+ // mark visited
+ if(examStates[q.id]===0||examStates[q.id]===undefined)examStates[q.id]=1;
+ saveExamStates();
+ $("progress").textContent=`Q ${currentIndex+1} / ${questions.length}`;
+ $("qLabel").textContent=`Question ${currentIndex+1}`;
+ $("qText").textContent=q.text||"";
+ const opts=Array.isArray(q.options)?q.options:[q.option_a,q.option_b,q.option_c,q.option_d];
+ $("options").innerHTML=opts.map((o,i)=>`
+   <div class="option-new ${answers[q.id]===i?"selected":""}" data-i="${i}">
+     <span class="option-letter">${String.fromCharCode(65+i)}</span>
+     <span class="option-text">${esc(o||"")}</span>
+     <span class="option-radio-dot"></span>
+   </div>`).join("");
+ $("options").querySelectorAll(".option-new").forEach(el=>el.onclick=()=>selectAnswer(Number(el.dataset.i)));
+ $("prevBtn").classList.toggle("disabled",currentIndex===0);
+ $("prevBtn").disabled=currentIndex===0;
+ $("nextBtn").innerHTML=currentIndex===questions.length-1?'Finish <i class="fa-solid fa-check"></i>':'Save & Next <i class="fa-solid fa-chevron-right"></i>';
+ $("explanation").classList.remove("show");$("explanation").innerHTML="";
+ refreshPalette();
+}
+function selectAnswer(i){
+ const q=questions[currentIndex];
+ answers[q.id]=i;
+ // update state: answered (or marked+answered)
+ examStates[q.id]=(examStates[q.id]===3||examStates[q.id]===4)?4:2;
+ saveExamStates();
+ $("options").querySelectorAll(".option-new").forEach(x=>x.classList.remove("selected"));
+ $("options").querySelectorAll(".option-new")[i]?.classList.add("selected");
+ refreshPalette();
+}
 function nextQuestion(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion()}else finishTest()}
+
+function refreshPalette(){
+  const grid=$("paletteGrid");
+  if(!grid)return;
+  const counts={0:0,1:0,2:0,3:0,4:0};
+  grid.innerHTML=questions.map((q,idx)=>{
+    let st=examStates[q.id]??0;
+    counts[st]=(counts[st]||0)+1;
+    const clsMap={0:"not-visited",1:"not-answered",2:"answered",3:"marked",4:"marked-answered"};
+    const cls=clsMap[st]||"not-visited";
+    return `<button type="button" class="palette-cell ${cls} ${idx===currentIndex?'current':''}" data-idx="${idx}">${idx+1}</button>`;
+  }).join("");
+  grid.querySelectorAll("[data-idx]").forEach(b=>b.onclick=()=>{
+    currentIndex=Number(b.dataset.idx);
+    renderQuestion();
+    togglePalette(false);
+  });
+  const set=(id,v)=>{const el=$(id);if(el)el.textContent=v};
+  set("cntNotVisited",counts[0]||0);
+  set("cntNotAnswered",counts[1]||0);
+  set("cntAnswered",counts[2]||0);
+  set("cntMarked",counts[3]||0);
+  set("cntMarkedAnswered",counts[4]||0);
+}
+
 async function finishTest(){
+ clearInterval(examTimerInterval);
  let correct=0,wrong=0,unanswered=0;const review=questions.map(q=>{const selected=answers[q.id];const isUnanswered=selected===undefined;if(isUnanswered)unanswered++;else if(selected===Number(q.correctIndex))correct++;else wrong++;return{questionId:q.id,question:q.text||"",selectedIndex:isUnanswered?null:selected,correctIndex:Number(q.correctIndex),isCorrect:!isUnanswered&&selected===Number(q.correctIndex)}});
  const total=questions.length,percent=total?Math.round(correct/total*100):0;
  currentResult={id:"local_"+Date.now(),topicId:currentTopic.id,sectionId:currentTopic.sectionId||null,topicName:currentTopic.name,total,correct,wrong,unanswered,percent,completedAt:Date.now(),review};
  history.unshift(currentResult);history=history.slice(0,100);saveLocalHistory();renderResult();syncAttempt(currentResult);
+ // clear exam states for this topic after finishing
+ try{localStorage.removeItem(STATE_KEY+currentTopic.id)}catch(_){}
 }
 function renderResult(){
  $("questionView").style.display="none";$("resultView").style.display="block";$("score").textContent=`${currentResult.correct}/${currentResult.total}`;$("resultPercent").textContent=`${currentResult.percent}%`;$("rCorrect").textContent=currentResult.correct;$("rWrong").textContent=currentResult.wrong;$("rUnanswered").textContent=currentResult.unanswered;$("rTotal").textContent=currentResult.total
@@ -834,8 +1370,14 @@ async function syncAttempt(r){
 }
 function loadLocalHistory(){try{history=JSON.parse(localStorage.getItem(HISTORY_KEY_PREFIX+user.uid)||"[]")}catch(_){history=[]}}
 function saveLocalHistory(){try{localStorage.setItem(HISTORY_KEY_PREFIX+user.uid,JSON.stringify(history))}catch(_){}}
-function showBook(){$("questionView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="none";$("bookView").style.display="block"}
+function showBook(){
+ clearInterval(examTimerInterval);
+ $("questionView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="none";$("bookView").style.display="block";
+ // clean up palette drawer
+ togglePalette(false);
+}
 function showHistory(){
+ clearInterval(examTimerInterval);
  $("bookView").style.display="none";$("questionView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="block";
  const attempts=history.length,answered=history.reduce((n,x)=>n+(x.total-x.unanswered),0),correct=history.reduce((n,x)=>n+x.correct,0),wrong=history.reduce((n,x)=>n+x.wrong,0);$("statAttempts").textContent=attempts;$("statQuestions").textContent=answered;$("statCorrect").textContent=correct;$("statWrong").textContent=wrong;
  $("historyList").innerHTML=history.length?history.map((r,i)=>`<article class="history-row"><div><strong>${esc(r.topicName)}</strong><small>${new Date(r.completedAt).toLocaleString()} · ${r.total} questions · ${r.unanswered} unanswered</small></div><div class="history-score"><b>${r.correct}/${r.total}</b><span>${r.percent}% · ${r.wrong} wrong</span><button class="action secondary" style="padding:6px 8px;margin-top:6px;font-size:10px" data-review="${i}">Review</button></div></article><div id="review-${i}" class="review" style="display:none"></div>`).join(""):'<div class="empty"><i class="fa-regular fa-clock"></i><p>No completed tests yet.</p></div>';
