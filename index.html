@@ -678,22 +678,17 @@
 
     .ticker-window {
       height: 230px;
-      overflow: hidden;
+      overflow-y: auto; 
       position: relative;
       padding: 18px;
     }
 
-    .ticker-track {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      animation: tickerScroll 26s linear infinite;
-      will-change: transform;
-    }
-
-    .ticker-track:hover {
-      animation-play-state: paused;
-    }
+   .ticker-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* no animation */
+}
 
     @keyframes tickerScroll {
       0%   { transform: translateY(0); }
@@ -3053,26 +3048,10 @@
 
     const rowsHtml = docs.map(buildTickerRow).join("");
 
-    // Repeat the content enough times so that ONE copy of the list
-    // is always taller than the visible ticker window (230px).
-    // This prevents a single short announcement from appearing twice
-    // on screen at the same time, while still allowing a seamless loop.
-    const repeat = Math.max(2, Math.ceil(4 / docs.length));
-    const block = rowsHtml.repeat(repeat);
-
-    listEl.innerHTML = `
-      <div class="ticker-track">
-        ${block}
-        ${block}
-      </div>`;
-
-    const track = listEl.querySelector(".ticker-track");
-    if (track) {
-      // Base duration on the number of unique announcements, not repeats,
-      // so the perceived scroll speed stays consistent.
-      const seconds = Math.max(18, Math.min(60, docs.length * 8));
-      track.style.animationDuration = seconds + "s";
-    }
+listEl.innerHTML = `
+  <div class="ticker-track">
+    ${rowsHtml}
+  </div>`;
   }
 
   const announcementsQuery = query(
