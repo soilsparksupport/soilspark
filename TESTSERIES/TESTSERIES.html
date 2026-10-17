@@ -1391,23 +1391,24 @@ function renderLeaderboard(){
   const tabsContainer = $("leaderboardTabs");
   const listContainer = $("leaderboardList");
   
-  // Filter data
+  // Filter data by selected test/topic
   let filtered = leaderboardData;
   if(leaderboardFilter !== 'all') {
     filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
   }
   
-  // Deduplicate: best score per user per topic (or overall best per user)
-  const bestPerUser = new Map();
+  // Deduplicate: best score per user PER TOPIC (never merge different tests)
+  const bestPerUserPerTopic = new Map();
   filtered.forEach(e => {
-    const key = leaderboardFilter === 'all' ? e.userId : `${e.userId}_${e.topicId}`;
-    if(!bestPerUser.has(key) || (e.percent > bestPerUser.get(key).percent) || 
-       (e.percent === bestPerUser.get(key).percent && e.correct > bestPerUser.get(key).correct)) {
-      bestPerUser.set(key, e);
+    const key = `${e.userId}_${e.topicId}`;
+    const existing = bestPerUserPerTopic.get(key);
+    if(!existing || (e.percent > existing.percent) || 
+       (e.percent === existing.percent && e.correct > existing.correct)) {
+      bestPerUserPerTopic.set(key, e);
     }
   });
   
-  let entries = Array.from(bestPerUser.values());
+  let entries = Array.from(bestPerUserPerTopic.values());
   // Sort by percent desc, then correct desc, then completedAt asc
   entries.sort((a,b) => {
     if(b.percent !== a.percent) return b.percent - a.percent;
@@ -1416,7 +1417,7 @@ function renderLeaderboard(){
   });
   
   // Render tabs
-  let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Topics</button>`;
+  let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Tests</button>`;
   leaderboardTopics.forEach(t => {
     tabsHtml += `<button class="leaderboard-tab ${leaderboardFilter === t.id ? 'active' : ''}" data-filter="${esc(t.id)}">${esc(t.name)}</button>`;
   });
