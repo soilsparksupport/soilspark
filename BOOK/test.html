@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<head>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SoilSpark · Books</title>
+<title>SoilSpark · Question Book</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -52,9 +53,6 @@
   --coral-light:#ffe8e5;
   --lime:#d4e157;
   --lime-light:#f7fce0;
-  --primary:#0f5c2f;
-  --primary-dark:#0a4523;
-  --primary-light:#eaf7ef;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -189,7 +187,17 @@ button,input{font:inherit}
   background:green;
   color:#fff;padding:8px 10px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;
 }
-.open:hover{background:rgb(55, 149, 55)}
+.open:hover{background:linear-gradient(135deg,var(--green-soft),var(--green))}
+
+/* Duration badge on topic cards */
+.topic-duration{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,var(--sky-light),var(--mint-light));
+  color:var(--blue-dark);border:1px solid var(--border-blue);
+  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;
+  margin-bottom:8px;
+}
+.topic-duration.no-timer{background:#f5f0e8;color:var(--muted);border-color:var(--border)}
 
 /* ===== LOADING / EMPTY ===== */
 .loading,.empty{
@@ -230,56 +238,20 @@ button,input{font:inherit}
   padding:21px;margin-bottom:22px;
 }
 
-/* ===== OPTIONS (redesigned — inspired by neemrajsunda1.html) ===== */
-.options{display:flex;flex-direction:column;gap:14px}
-.option{
-  display:flex;align-items:center;gap:16px;
-  border:1.5px solid var(--border);border-radius:18px;
-  padding:14px 20px;cursor:pointer;transition:all .2s;background:#fff;
-  font-weight:500;
-}
-.option:hover{
-  background:#f9fff9;
-  border-color:var(--primary);
-  transform:translateX(3px);
-}
-.option.selected{
-  background:var(--primary-light);
-  border-color:var(--primary);
-  box-shadow:0 4px 10px rgba(15,92,47,0.08);
-}
-.option input[type="radio"]{
-  transform:scale(1.2);
-  accent-color:var(--primary);
-  pointer-events:none;
-  margin:0;
-}
-.option .letter{
-  width:30px;height:30px;min-width:30px;border-radius:9px;
-  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
-  display:grid;place-items:center;font-weight:800;color:var(--orange);
-  font-size:13px;
-}
-.option.selected .letter{
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff;
-}
-.option-text{font-size:14px;line-height:1.5}
-
 /* ===== ACTIONS ===== */
 .actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}
 .action{border:0;border-radius:11px;padding:11px 17px;font-weight:800;cursor:pointer}
 .secondary{background:linear-gradient(135deg,var(--peach-light),var(--orange-light));color:var(--text)}
 .secondary:hover{background:linear-gradient(135deg,var(--orange-soft),var(--peach))}
-.primary{background:rgb(58, 150, 58)}
-.primary:hover{background:rgb(58, 150, 58)}
+.primary{background:linear-gradient(135deg,var(--green),var(--green-soft));color:#fff}
+.primary:hover{background:linear-gradient(135deg,var(--green-soft),var(--green))}
 .disabled{opacity:.45;cursor:not-allowed}
 
 /* ===== EXPLANATION ===== */
 .explanation{
   display:none;margin-top:20px;
   border:1px solid var(--green-soft);
-  background:rgb(58, 150, 58);
+  background:linear-gradient(135deg,var(--mint-light),var(--green-light));
   border-radius:14px;padding:15px;color:#4e683e;font-size:13px;line-height:1.6;
 }
 .explanation.show{display:block}
@@ -339,12 +311,148 @@ button,input{font:inherit}
 .tag.wrong{background:var(--danger-soft);color:#a14a3e}
 .top-actions-mobile{display:flex;gap:8px}
 
+/* ===== NTA-STYLE EXAM CONSOLE ===== */
+.exam-workspace{
+  display:flex;gap:0;min-height:calc(100vh - 220px);
+  background:#f8faf8;border-radius:20px;overflow:hidden;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+}
+.question-stream-panel{
+  flex:1;display:flex;flex-direction:column;background:#fff;
+  max-width:calc(100% - 320px);
+}
+.scrollable-question-content{flex:1;overflow-y:auto;padding:28px 32px}
+.q-meta{
+  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;
+  margin-bottom:20px;border-left:4px solid var(--green);padding-left:15px;
+}
+.q-number{font-weight:800;font-size:1.3rem;color:var(--text-dark)}
+.q-tag{
+  background:#f0f4f0;padding:4px 12px;border-radius:40px;
+  font-size:0.7rem;font-weight:600;color:var(--muted);
+}
+.question-text-canvas{
+  font-size:1.15rem;line-height:1.5;font-weight:600;color:var(--text-dark);
+  margin-bottom:24px;background:var(--green-light);padding:20px;
+  border-radius:20px;border:1px solid var(--green-soft);
+}
+.options-vertical-stack{display:flex;flex-direction:column;gap:14px}
+.option-radio-wrapper{
+  display:flex;align-items:center;gap:16px;padding:14px 20px;
+  background:#fefefe;border:1.5px solid var(--border);border-radius:18px;
+  cursor:pointer;transition:all 0.2s;font-weight:500;
+}
+.option-radio-wrapper:hover{
+  background:#f9fff9;border-color:var(--green);transform:translateX(3px);
+}
+.option-radio-wrapper.selected{
+  background:#eef9f0;border-color:var(--green);
+  box-shadow:0 4px 10px rgba(127,176,105,0.08);
+}
+.option-radio-wrapper input{transform:scale(1.2);accent-color:var(--green);pointer-events:none}
+
+/* Action bar */
+.action-control-bar{
+  padding:14px 28px;background:#ffffff;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
+}
+.left-action-group{display:flex;gap:12px;flex-wrap:wrap}
+.nta-btn{
+  padding:10px 20px;border-radius:40px;font-weight:700;font-size:0.8rem;
+  border:none;cursor:pointer;transition:0.2s;background:white;border:1px solid #ccc;
+}
+.nta-btn:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.nta-btn-success{background:var(--green);color:white;border:none}
+.nta-btn-success:hover{background:#5a8a4a}
+.nta-btn-warning{background:var(--orange);color:#2c2c2c;border:none}
+.nta-btn-warning:hover{background:#e08a4a}
+.nta-btn-info{background:#2c6e9e;color:white;border:none}
+.nta-btn-info:hover{background:#1d5a8a}
+
+/* Sidebar palette */
+.sidebar-palette-panel{
+  width:320px;background:#fff;display:flex;flex-direction:column;
+  border-left:1px solid var(--border);padding:20px 16px;
+  z-index:90;transition:transform 0.25s ease;
+}
+.legend-container{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  background:#fbfdfb;border-radius:20px;padding:16px;
+  margin-bottom:18px;border:1px solid var(--border);
+}
+.legend-box{display:flex;align-items:center;gap:10px;font-size:0.75rem;font-weight:600}
+.shape-tag{
+  width:42px;height:36px;display:inline-flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:0.85rem;cursor:pointer;
+  transition:transform 0.15s;
+}
+.shape-tag:hover{transform:scale(1.08)}
+.shape-tag.not-visited{background:#e2e8e2;border-radius:8px;border:1px solid #bdc3bd;color:#555}
+.shape-tag.not-answered{background:var(--danger);color:white;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%)}
+.shape-tag.answered{background:var(--green);color:white;clip-path:polygon(0% 0%,80% 0%,100% 50%,80% 100%,0% 100%)}
+.shape-tag.marked{background:linear-gradient(145deg,#6a1b9a,#3c096c);border-radius:50%;color:white}
+.shape-tag.marked-answered{
+  background:linear-gradient(145deg,#6a1b9a,#3c096c);
+  border-radius:50%;position:relative;color:white;
+}
+.shape-tag.marked-answered::after{
+  content:"\f00c";font-family:"Font Awesome 6 Free";font-weight:900;
+  position:absolute;bottom:-4px;right:-5px;background:white;
+  color:var(--green);font-size:9px;border-radius:20px;padding:2px;
+}
+.shape-tag.active-focus{outline:3px solid var(--orange);outline-offset:2px;filter:brightness(1.02)}
+.palette-scroll-viewport{flex:1;overflow-y:auto}
+.palette-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;place-items:center}
+
+/* Timer display */
+.timer-display{
+  background:linear-gradient(135deg,#4f8fae,#8ecae6);color:white;
+  padding:8px 16px;border-radius:40px;font-family:monospace;font-weight:700;
+  font-size:1.1rem;display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 12px rgba(79,143,174,0.3);transition:background 0.3s;
+}
+.timer-display.warning{background:linear-gradient(135deg,#e76f51,#f4a261);animation:pulse 1s infinite}
+.timer-display.danger{background:linear-gradient(135deg,#d14800,#e76f51);animation:pulse 0.5s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* Mobile palette toggle */
+.mobile-palette-toggle{
+  display:none;background:var(--green);color:white;border:none;
+  width:44px;height:44px;border-radius:12px;cursor:pointer;
+}
+.drawer-overlay-backdrop{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.4);z-index:80;
+}
+
+/* Timer warning modal */
+.timer-warning-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  display:none;align-items:center;justify-content:center;z-index:300;
+  backdrop-filter:blur(3px);
+}
+.timer-warning-modal.show{display:flex}
+.timer-warning-card{
+  background:white;border-radius:24px;padding:32px;max-width:420px;
+  width:90%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.3);
+  animation:popIn 0.25s ease;
+}
+@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+
 /* ===== RESPONSIVE ===== */
-@media(max-width:950px){
+@media(max-width:1000px){
   .topic-grid{grid-template-columns:repeat(2,1fr)}
   .result-grid,.dashboard{grid-template-columns:repeat(2,1fr)}
   .hero{align-items:stretch;flex-direction:column}
   .search{width:100%}
+  .question-stream-panel{max-width:100%}
+  .sidebar-palette-panel{
+    position:fixed;right:0;top:0;height:100%;
+    transform:translateX(100%);box-shadow:-8px 0 25px rgba(0,0,0,0.1);
+  }
+  .sidebar-palette-panel.drawer-open{transform:translateX(0)}
+  .mobile-palette-toggle{display:inline-flex;align-items:center;justify-content:center}
+  .drawer-overlay-backdrop.drawer-open{display:block}
 }
 @media(max-width:600px){
   .topbar-inner{padding:12px 15px}
@@ -359,9 +467,14 @@ button,input{font:inherit}
   .result-grid,.dashboard{grid-template-columns:1fr 1fr}
   .history-row{grid-template-columns:1fr}
   .history-score{text-align:left}
+  .action-control-bar{flex-direction:column}
+  .left-action-group{width:100%;justify-content:space-between}
+  .nta-btn{flex:1;text-align:center;font-size:0.7rem;padding:8px 6px}
+  .timer-display{font-size:0.9rem;padding:6px 12px}
 }
 </style>
 
+<!-- Purchase / section lock styles -->
 <style id="sectionPurchaseStyles">
 .section-lock{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:#fff8e6;border:1px solid #f2d58b;color:#725400;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px}
 .section-lock button,.buy-section{border:0;border-radius:9px;padding:8px 12px;background:#111827;color:#fff;font-weight:700;cursor:pointer}
@@ -383,15 +496,57 @@ button,input{font:inherit}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Books Section</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Question Book</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Books</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="hero"><div><h2>Question Book</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
 <div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
 </section>
 
-<section id="questionView"><div class="question-shell"><div class="question-head"><button class="back" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Book</button><div><div id="topicTitle" class="topic-title">Topic</div><div id="progress" class="progress">Question 1</div></div></div><div class="question-area"><div id="qLabel" class="q-label">QUESTION 1</div><div id="qText" class="q-text">Loading question...</div><div id="options" class="options"></div><div id="explanation" class="explanation"></div><div class="actions"><button id="prevBtn" class="action secondary">Previous</button><button id="nextBtn" class="action primary">Next</button></div></div></div></section>
+<!-- NTA-STYLE EXAM CONSOLE -->
+<section id="questionView">
+  <div class="exam-workspace">
+    <div class="question-stream-panel">
+      <div class="scrollable-question-content" id="scrollableContent">
+        <div class="q-meta">
+          <span class="q-number" id="questionHeaderIdx">Question 1 of 1</span>
+          <span class="q-tag"><i class="fa-regular fa-clock"></i> <span id="topicTag">Topic</span></span>
+        </div>
+        <div class="question-text-canvas" id="questionBodyArea">Loading assessment...</div>
+        <div class="options-vertical-stack" id="optionsRenderCanvas"></div>
+      </div>
+      <div class="action-control-bar">
+        <div class="left-action-group">
+          <button type="button" class="nta-btn" onclick="executeNtaAction('clear')"><i class="fa-regular fa-trash-can"></i> Clear</button>
+          <button type="button" class="nta-btn nta-btn-warning" onclick="executeNtaAction('save-mark')"><i class="fa-regular fa-bookmark"></i> Save &amp; Mark</button>
+          <button type="button" class="nta-btn nta-btn-info" onclick="executeNtaAction('mark-next')"><i class="fa-regular fa-flag"></i> Mark &amp; Next</button>
+        </div>
+        <button type="button" class="nta-btn nta-btn-success" onclick="executeNtaAction('save-next')"><i class="fa-regular fa-floppy-disk"></i> Save &amp; Next</button>
+      </div>
+    </div>
+    <div class="sidebar-palette-panel" id="sidebarPalette">
+      <div class="legend-container">
+        <div class="legend-box"><div class="shape-tag not-visited" id="cntNotVisited">0</div> Not Visited</div>
+        <div class="legend-box"><div class="shape-tag not-answered" id="cntNotAnswered">0</div> Not Answered</div>
+        <div class="legend-box"><div class="shape-tag answered" id="cntAnswered">0</div> Answered</div>
+        <div class="legend-box"><div class="shape-tag marked" id="cntMarked">0</div> Marked</div>
+        <div class="legend-box" style="grid-column:span 2"><div class="shape-tag marked-answered" id="cntMarkedAnswered">0</div> Marked + Answered</div>
+      </div>
+      <div class="palette-scroll-viewport"><div class="palette-grid" id="paletteGridRender"></div></div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:15px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;gap:12px;align-items:center">
+      <button class="nta-btn" onclick="shiftIndex(-1)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+      <button class="nta-btn" onclick="shiftIndex(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+      <button class="mobile-palette-toggle" onclick="toggleMobilePalette(true)"><i class="fa-solid fa-grip"></i></button>
+    </div>
+    <button class="nta-btn nta-btn-success" style="padding:10px 28px;border-radius:40px" onclick="triggerFinalSubmit()">
+      <i class="fa-regular fa-paper-plane"></i> Submit Test
+    </button>
+  </div>
+</section>
 
 <section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
@@ -417,6 +572,20 @@ button,input{font:inherit}
     <p class="purchase-note">Payment is processed securely by Razorpay. Your section access starts after successful payment verification.</p>
   </div>
 </div>
+
+<!-- Timer warning modal -->
+<div id="timerWarningModal" class="timer-warning-modal">
+  <div class="timer-warning-card">
+    <i class="fa-solid fa-hourglass-end" style="font-size:3rem;color:var(--danger);margin-bottom:15px"></i>
+    <h3 style="margin-bottom:10px;font:800 22px Poppins;color:var(--text-dark)">Time is running out!</h3>
+    <p style="color:var(--muted);margin-bottom:20px">Only <strong id="warningMinutes" style="color:var(--danger)">5</strong> minutes remaining.</p>
+    <button class="nta-btn nta-btn-success" onclick="dismissTimerWarning()" style="width:100%;padding:12px;font-size:14px">Continue Test</button>
+  </div>
+</div>
+
+<!-- Mobile drawer backdrop -->
+<div class="drawer-overlay-backdrop" id="drawerBackdrop" onclick="toggleMobilePalette(false)"></div>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
@@ -427,7 +596,14 @@ const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomai
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
-/* ===== PLANS (dynamic) ===== */
+/* ===== NTA EXAM STATE ===== */
+let examStates={};
+let timerInterval=null;
+let timeRemaining=0;
+let timerActive=false;
+let warning5Shown=false;
+
+/* ===== PLANS ===== */
 let PLANS = [];
 let appliedCoupon = null;
 const DEFAULT_PLANS = [
@@ -441,8 +617,7 @@ const DEFAULT_PLANS = [
 async function loadPlans(){
   try{
     const snap = await getDocs(query(collection(db,"pricing_plans"), where("active","==",true)));
-    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}))
-      .sort((a,b)=>(a.order??999)-(b.order??999));
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).sort((a,b)=>(a.order??999)-(b.order??999));
     PLANS = rows.length ? rows : DEFAULT_PLANS;
   }catch(e){
     console.warn("Plan load failed, using defaults.", e);
@@ -613,99 +788,39 @@ async function startPurchase(planId){
             })
           });
           const vd = await safeJson(vr);
+          if(!vr.ok || !vd.success) throw new Error(vd.message || "Payment verification failed.");
 
-if(!vr.ok || !vd.success) {
-  throw new Error(
-    vd.message || "Payment verification failed."
-  );
-}
+          const startDate = new Date();
+          const expiryDate = new Date(startDate.getTime() + Number(plan.days) * 24 * 60 * 60 * 1000);
 
-/* ===============================
-   SAVE SUBSCRIPTION TO FIRESTORE
-   =============================== */
+          const subscriptionData = {
+            userId: user.uid,
+            subjectId: purchaseSubjectId,
+            sectionName: purchaseSectionName,
+            planId: plan.id,
+            planName: plan.name,
+            planDays: Number(plan.days),
+            planAmount: Number(plan.price),
+            discount: Number(discount || 0),
+            finalAmount: Number(finalAmount),
+            couponCode: appliedCoupon?.id || null,
+            userName: $("purchaseName").value || user.displayName || "",
+            userPhone: $("purchasePhone").value || "",
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            status: "active",
+            startDate: startDate.toISOString(),
+            expiryDate: expiryDate.toISOString(),
+            createdAt: serverTimestamp()
+          };
 
-const startDate = new Date();
+          const subscriptionRef = await addDoc(collection(db, "subscriptions"), subscriptionData);
 
-const expiryDate = new Date(
-  startDate.getTime() +
-  Number(plan.days) * 24 * 60 * 60 * 1000
-);
-
-const subscriptionData = {
-  userId: user.uid,
-
-  subjectId: purchaseSubjectId,
-
-  sectionName: purchaseSectionName,
-
-  planId: plan.id,
-
-  planName: plan.name,
-
-  planDays: Number(plan.days),
-
-  planAmount: Number(plan.price),
-
-  discount: Number(discount || 0),
-
-  finalAmount: Number(finalAmount),
-
-  couponCode: appliedCoupon?.id || null,
-
-  userName:
-    $("purchaseName").value ||
-    user.displayName ||
-    "",
-
-  userPhone:
-    $("purchasePhone").value ||
-    "",
-
-  razorpayPaymentId:
-    response.razorpay_payment_id,
-
-  razorpayOrderId:
-    response.razorpay_order_id,
-
-  status: "active",
-
-  startDate: startDate.toISOString(),
-
-  expiryDate: expiryDate.toISOString(),
-
-  createdAt: serverTimestamp()
-};
-
-console.log(
-  "Writing subscription to Firestore:",
-  subscriptionData
-);
-
-const subscriptionRef = await addDoc(
-  collection(db, "subscriptions"),
-  subscriptionData
-);
-
-console.log(
-  "Subscription successfully created:",
-  subscriptionRef.id
-);
-
-/* ===============================
-   FINISH PURCHASE
-   =============================== */
-
-alert(
-  `Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`
-);
-
-appliedCoupon = null;
-
-closePurchase();
-
-await loadSubscriptions();
-
-renderBook();
+          alert(`Payment successful. ${purchaseSectionName} unlocked for ${plan.days} days.`);
+          appliedCoupon = null;
+          closePurchase();
+          await loadSubscriptions();
+          renderBook();
         }catch(e){console.error(e);alert(e.message||"Payment verification failed.")}
       },
       modal:{ondismiss:()=>{}}
@@ -724,7 +839,7 @@ onAuthStateChanged(auth,async u=>{
    $("userEmail").textContent="Not signed in";
    $("authActionBtn").href="https://soilsparks.in/login.html";
    $("authActionBtn").innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';
-   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the books.</p></div>';
+   $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the book.</p></div>';
    return;
  }
  $("userEmail").textContent=u.email||"Student";
@@ -735,16 +850,24 @@ onAuthStateChanged(auth,async u=>{
  await loadPlans();
  await loadBook();
 });
-// Removed the logout button event listener since the button was removed.
-$("statsBtn").onclick=showHistory;$("historyBtn").onclick=showHistory;$("historyBack").onclick=showBook;$("resultHistoryBtn").onclick=showHistory;$("resultBookBtn").onclick=showBook;$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);$("backBtn").onclick=showBook;$("prevBtn").onclick=()=>{if(currentIndex>0){currentIndex--;renderQuestion()}};$("nextBtn").onclick=nextQuestion;
-$("topicSearch").addEventListener("input",renderBook);$("purchaseClose").onclick=closePurchase;$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
+
+$("statsBtn").onclick=showHistory;
+$("historyBtn").onclick=showHistory;
+$("historyBack").onclick=showBook;
+$("resultHistoryBtn").onclick=showHistory;
+$("resultBookBtn").onclick=showBook;
+$("retryBtn").onclick=()=>openTopic(currentTopic.id,true);
+$("topicSearch").addEventListener("input",renderBook);
+$("purchaseClose").onclick=closePurchase;
+$("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
 
 async function loadBook(){
  const cached=readCache();
  if(cached){sections=cached.sections||[];topics=cached.topics||[];renderBook();return}
  try{
   const [ss,ts]=await Promise.all([getDocs(query(collection(db,"sections"),where("active","==",true))),getDocs(query(collection(db,"topics"),where("active","==",true)))]);
-  sections=ss.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);topics=ts.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+  sections=ss.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+  topics=ts.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
   saveCache({sections,topics});renderBook();
  }catch(e){console.error(e);$("book").innerHTML='<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><h3>Unable to load book</h3><p>Check your connection and Firestore rules.</p></div>'}
 }
@@ -752,8 +875,14 @@ function readCache(){try{const x=JSON.parse(localStorage.getItem(CACHE_KEY)||"nu
 function saveCache(data){try{localStorage.setItem(CACHE_KEY,JSON.stringify({...data,savedAt:Date.now()}))}catch(_){}}
 function orderName(a,b){return (a.order??9999)-(b.order??9999)||(a.name||"").localeCompare(b.name||"")}
 
-// State to track collapsed sections
 const collapsedSections = new Set();
+
+function formatDuration(mins){
+  if(!mins||mins<=0)return "";
+  if(mins<60)return `${mins} min`;
+  const h=Math.floor(mins/60),m=mins%60;
+  return m?`${h}h ${m}m`:`${h}h`;
+}
 
 function renderBook(){
  const s=$("topicSearch").value.toLowerCase().trim();
@@ -764,8 +893,7 @@ function renderBook(){
 
  $("book").innerHTML=secs.length?secs.map(sec=>{
    const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
-   const isCollapsed = true;
-   return `<article class="section ${isCollapsed ? 'collapsed' : ''}" data-section-id="${esc(sec.id)}">
+   return `<article class="section collapsed" data-section-id="${esc(sec.id)}">
     <div class="section-head" data-toggle-section="${esc(sec.id)}">
       <div class="section-title">
         <div class="section-icon"><i class="fa-solid fa-layer-group"></i></div>
@@ -784,15 +912,19 @@ function renderBook(){
         <span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>
         ${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}
       </div>
-      <div class="topic-grid">${sec.topics.map(t=>`<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p><div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`).join("")}</div>
+      <div class="topic-grid">${sec.topics.map(t=>{
+        const mins=Number(t.duration||0);
+        const durBadge=mins>0
+          ?`<span class="topic-duration"><i class="fa-regular fa-clock"></i> ${formatDuration(mins)}</span>`
+          :`<span class="topic-duration no-timer"><i class="fa-solid fa-infinity"></i> No timer</span>`;
+        return `<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`;
+      }).join("")}</div>
     </div>
    </article>`;
  }).join(""):'<div class="empty"><i class="fa-regular fa-folder-open"></i><h3>No topics found</h3><p>No active sections/topics match your search.</p></div>';
 
- // Toggle section collapse/expand
  $("book").querySelectorAll("[data-toggle-section]").forEach(head=>{
    head.addEventListener("click", (e) => {
-     // Don't toggle if clicking a button/link inside the head
      if (e.target.closest("button") || e.target.closest("a")) return;
      const sectionId = head.dataset.toggleSection;
      const sectionEl = head.closest(".section");
@@ -816,72 +948,315 @@ function renderBook(){
    else showPurchase(sid,sec?.name||sid);
  });
 }
-async function openTopic(id,retry=false){
- currentTopic=topics.find(t=>t.id===id)||null;if(!currentTopic)return;
- $("bookView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="none";$("questionView").style.display="block";$("topicTitle").textContent=currentTopic.name;$("qText").textContent="Loading questions...";
- const cacheKey=`soilspark_questions_${id}_v1`;let cached=null;try{cached=JSON.parse(localStorage.getItem(cacheKey)||"null")}catch(_){}
- try{
-  if(cached&&cached.questions&&cached.savedAt&&Date.now()-cached.savedAt<6*60*60*1000){questions=cached.questions}
-  else{
-   const snap=await getDocs(query(collection(db,"questions"),where("topicId","==",id),where("active","==",true)));
-   questions=snap.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);try{localStorage.setItem(cacheKey,JSON.stringify({savedAt:Date.now(),questions}))}catch(_){}
+
+/* ===== TIMER FUNCTIONS ===== */
+function startTimer(durationMinutes){
+  if(!durationMinutes||durationMinutes<=0){
+    $("timerDisplay").style.display="none";
+    timerActive=false;
+    return;
   }
-  currentIndex=0;answers={};if(!questions.length){$("qText").textContent="No active questions in this topic.";$("options").innerHTML="";return}renderQuestion();
- }catch(e){console.error(e);$("qText").textContent="Unable to load questions. Check your connection and try again."}
+  timeRemaining=durationMinutes*60;
+  timerActive=true;
+  warning5Shown=false;
+  $("timerDisplay").style.display="flex";
+  updateTimerDisplay();
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timeRemaining--;
+    updateTimerDisplay();
+    if(timeRemaining===300 && !warning5Shown){ warning5Shown=true; showTimerWarning(5); }
+    if(timeRemaining===60){ showTimerWarning(1); }
+    if(timeRemaining<=0){ clearInterval(timerInterval); timerInterval=null; timerActive=false; autoSubmitTest(); }
+  },1000);
 }
-function renderQuestion(){
- const q=questions[currentIndex];if(!q)return;$("progress").textContent=`Question ${currentIndex+1} of ${questions.length}`;$("qLabel").textContent=`QUESTION ${currentIndex+1}`;$("qText").textContent=q.text||"";
- const opts=Array.isArray(q.options)?q.options:[q.option_a,q.option_b,q.option_c,q.option_d];
- // Redesigned options — inspired by neemrajsunda1.html (radio + letter badge style)
- $("options").innerHTML=opts.map((o,i)=>{
-   const isSelected = answers[q.id]===i;
-   return `<div class="option ${isSelected?"selected":""}" data-i="${i}">
-     <input type="radio" name="opt" ${isSelected?"checked":""} tabindex="-1">
-     <span class="letter">${String.fromCharCode(65+i)}</span>
-     <span class="option-text">${esc(o||"")}</span>
-   </div>`;
- }).join("");
- $("options").querySelectorAll(".option").forEach(el=>el.onclick=()=>selectAnswer(Number(el.dataset.i)));
- $("prevBtn").classList.toggle("disabled",currentIndex===0);
- $("nextBtn").innerHTML=currentIndex===questions.length-1?'Finish <i class="fa-solid fa-check"></i>':'Next <i class="fa-solid fa-chevron-right"></i>';
- $("explanation").classList.remove("show");$("explanation").innerHTML="";
+function updateTimerDisplay(){
+  const mins=Math.floor(timeRemaining/60),secs=timeRemaining%60;
+  $("timerText").textContent=`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  const display=$("timerDisplay");
+  display.classList.remove("warning","danger");
+  if(timeRemaining<=60) display.classList.add("danger");
+  else if(timeRemaining<=300) display.classList.add("warning");
 }
-function selectAnswer(i){
- const q=questions[currentIndex];
- answers[q.id]=i;
- $("options").querySelectorAll(".option").forEach((x,idx)=>{
-   x.classList.toggle("selected", idx===i);
-   const radio = x.querySelector('input[type="radio"]');
-   if(radio) radio.checked = idx===i;
- });
+function stopTimer(){
+  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+  timerActive=false;
+  $("timerDisplay").style.display="none";
 }
-function nextQuestion(){if(currentIndex<questions.length-1){currentIndex++;renderQuestion()}else finishTest()}
+function showTimerWarning(minutes){
+  $("warningMinutes").textContent=minutes;
+  $("timerWarningModal").classList.add("show");
+}
+function dismissTimerWarning(){ $("timerWarningModal").classList.remove("show"); }
+function autoSubmitTest(){ alert("Time's up! Your test will be submitted automatically."); finishTest(); }
+
+/* ===== NTA EXAM STATE FUNCTIONS ===== */
+function initExamStates(){
+  examStates={};
+  questions.forEach(q=>{ examStates[q.id]=0; });
+  if(questions[0]) examStates[questions[0].id]=1;
+}
+function saveExamStates(){
+  if(currentTopic){
+    try{ localStorage.setItem(`soilspark_states_${currentTopic.id}`,JSON.stringify(examStates)); }catch(_){}
+  }
+}
+function loadExamStates(){
+  if(currentTopic){
+    try{
+      const saved=localStorage.getItem(`soilspark_states_${currentTopic.id}`);
+      if(saved) examStates=JSON.parse(saved);
+    }catch(_){ examStates={}; }
+  }
+}
+
+function loadActiveQuestion(){
+  const q=questions[currentIndex];
+  if(!q) return;
+  if(examStates[q.id]===0) examStates[q.id]=1;
+  saveExamStates();
+  $("questionHeaderIdx").textContent=`Question ${currentIndex+1} of ${questions.length}`;
+  $("topicTag").textContent=currentTopic?.name||"Topic";
+  $("questionBodyArea").textContent=q.text||"";
+  const opts=Array.isArray(q.options)?q.options:[q.option_a,q.option_b,q.option_c,q.option_d];
+  const container=$("optionsRenderCanvas");
+  container.innerHTML="";
+  opts.forEach((opt,idx)=>{
+    const selected=(answers[q.id]!==undefined && answers[q.id]===idx);
+    const wrapper=document.createElement("div");
+    wrapper.className=`option-radio-wrapper ${selected?"selected":""}`;
+    wrapper.onclick=(e)=>{ e.stopPropagation(); captureOption(q.id,idx); };
+    wrapper.innerHTML=`<input type="radio" name="opt" ${selected?"checked":""}> <strong>${String.fromCharCode(65+idx)}.</strong> &nbsp; ${esc(opt||"")}`;
+    container.appendChild(wrapper);
+  });
+  refreshPalette();
+}
+
+function captureOption(qId,optIdx){
+  answers[qId]=optIdx;
+  examStates[qId]=(examStates[qId]===3||examStates[qId]===4)?4:2;
+  saveExamStates();
+  loadActiveQuestion();
+}
+
+function executeNtaAction(action){
+  const q=questions[currentIndex];
+  if(!q) return;
+  if(action==="clear"){
+    delete answers[q.id];
+    examStates[q.id]=1;
+    saveExamStates();
+    loadActiveQuestion();
+  }
+  else if(action==="save-next"){
+    examStates[q.id]=(answers[q.id]!==undefined)?2:1;
+    saveExamStates();
+    shiftIndex(1);
+  }
+  else if(action==="save-mark"){
+    examStates[q.id]=(answers[q.id]!==undefined)?4:3;
+    saveExamStates();
+    shiftIndex(1);
+  }
+  else if(action==="mark-next"){
+    examStates[q.id]=(answers[q.id]!==undefined)?4:3;
+    saveExamStates();
+    shiftIndex(1);
+  }
+}
+window.executeNtaAction=executeNtaAction;
+
+function shiftIndex(step){
+  const newIdx=currentIndex+step;
+  if(newIdx>=0 && newIdx<questions.length) currentIndex=newIdx;
+  loadActiveQuestion();
+  toggleMobilePalette(false);
+}
+window.shiftIndex=shiftIndex;
+
+function refreshPalette(){
+  const grid=$("paletteGridRender");
+  if(!grid) return;
+  grid.innerHTML="";
+  const cnt={0:0,1:0,2:0,3:0,4:0};
+  questions.forEach((q,idx)=>{
+    const state=examStates[q.id]??0;
+    cnt[state]++;
+    const div=document.createElement("div");
+    div.innerText=idx+1;
+    let cls="not-visited";
+    if(state===1) cls="not-answered";
+    if(state===2) cls="answered";
+    if(state===3) cls="marked";
+    if(state===4) cls="marked-answered";
+    div.className=`shape-tag ${cls} ${currentIndex===idx?"active-focus":""}`;
+    div.onclick=()=>{ currentIndex=idx; loadActiveQuestion(); toggleMobilePalette(false); };
+    grid.appendChild(div);
+  });
+  $("cntNotVisited").textContent=cnt[0];
+  $("cntNotAnswered").textContent=cnt[1];
+  $("cntAnswered").textContent=cnt[2];
+  $("cntMarked").textContent=cnt[3];
+  $("cntMarkedAnswered").textContent=cnt[4];
+}
+
+function toggleMobilePalette(open){
+  $("sidebarPalette")?.classList.toggle("drawer-open",open);
+  $("drawerBackdrop")?.classList.toggle("drawer-open",open);
+}
+window.toggleMobilePalette=toggleMobilePalette;
+
+window.triggerFinalSubmit=function(){
+  if(confirm("Are you sure you want to submit the test?")) finishTest();
+};
+
+/* ===== OPEN TOPIC ===== */
+async function openTopic(id,retry=false){
+  currentTopic=topics.find(t=>t.id===id)||null;
+  if(!currentTopic) return;
+  $("bookView").style.display="none";
+  $("resultView").style.display="none";
+  $("historyView").style.display="none";
+  $("questionView").style.display="block";
+  $("questionBodyArea").textContent="Loading questions...";
+
+  const cacheKey=`soilspark_questions_${id}_v1`;
+  let cached=null;
+  try{ cached=JSON.parse(localStorage.getItem(cacheKey)||"null"); }catch(_){}
+
+  try{
+    if(cached&&cached.questions&&cached.savedAt&&Date.now()-cached.savedAt<6*60*60*1000){
+      questions=cached.questions;
+    } else {
+      const snap=await getDocs(query(collection(db,"questions"),where("topicId","==",id),where("active","==",true)));
+      questions=snap.docs.map(d=>({id:d.id,...d.data()})).sort(orderName);
+      try{ localStorage.setItem(cacheKey,JSON.stringify({savedAt:Date.now(),questions})); }catch(_){}
+    }
+
+    currentIndex=0;
+    answers={};
+    examStates={};
+    warning5Shown=false;
+
+    if(!questions.length){
+      $("questionBodyArea").textContent="No active questions in this topic.";
+      $("optionsRenderCanvas").innerHTML="";
+      $("paletteGridRender").innerHTML="";
+      return;
+    }
+
+    initExamStates();
+    loadExamStates();
+
+    const duration=Number(currentTopic.duration||0);
+    startTimer(duration);
+
+    loadActiveQuestion();
+    refreshPalette();
+  }catch(e){
+    console.error(e);
+    $("questionBodyArea").textContent="Unable to load questions. Check your connection and try again.";
+  }
+}
+
+/* ===== FINISH TEST ===== */
 async function finishTest(){
- let correct=0,wrong=0,unanswered=0;const review=questions.map(q=>{const selected=answers[q.id];const isUnanswered=selected===undefined;if(isUnanswered)unanswered++;else if(selected===Number(q.correctIndex))correct++;else wrong++;return{questionId:q.id,question:q.text||"",selectedIndex:isUnanswered?null:selected,correctIndex:Number(q.correctIndex),isCorrect:!isUnanswered&&selected===Number(q.correctIndex)}});
- const total=questions.length,percent=total?Math.round(correct/total*100):0;
- currentResult={id:"local_"+Date.now(),topicId:currentTopic.id,sectionId:currentTopic.sectionId||null,topicName:currentTopic.name,total,correct,wrong,unanswered,percent,completedAt:Date.now(),review};
- history.unshift(currentResult);history=history.slice(0,100);saveLocalHistory();renderResult();syncAttempt(currentResult);
+  stopTimer();
+  let correct=0,wrong=0,unanswered=0;
+  const review=questions.map(q=>{
+    const selected=answers[q.id];
+    const isUnanswered=selected===undefined;
+    if(isUnanswered) unanswered++;
+    else if(selected===Number(q.correctIndex)) correct++;
+    else wrong++;
+    return {
+      questionId:q.id,
+      question:q.text||"",
+      selectedIndex:isUnanswered?null:selected,
+      correctIndex:Number(q.correctIndex),
+      isCorrect:!isUnanswered&&selected===Number(q.correctIndex)
+    };
+  });
+  const total=questions.length;
+  const percent=total?Math.round(correct/total*100):0;
+  currentResult={
+    id:"local_"+Date.now(),
+    topicId:currentTopic.id,
+    sectionId:currentTopic.sectionId||null,
+    topicName:currentTopic.name,
+    total,correct,wrong,unanswered,percent,
+    completedAt:Date.now(),
+    review
+  };
+  history.unshift(currentResult);
+  history=history.slice(0,100);
+  saveLocalHistory();
+  renderResult();
+  syncAttempt(currentResult);
 }
+
 function renderResult(){
- $("questionView").style.display="none";$("resultView").style.display="block";$("score").textContent=`${currentResult.correct}/${currentResult.total}`;$("resultPercent").textContent=`${currentResult.percent}%`;$("rCorrect").textContent=currentResult.correct;$("rWrong").textContent=currentResult.wrong;$("rUnanswered").textContent=currentResult.unanswered;$("rTotal").textContent=currentResult.total
+  $("questionView").style.display="none";
+  $("resultView").style.display="block";
+  $("score").textContent=`${currentResult.correct}/${currentResult.total}`;
+  $("resultPercent").textContent=`${currentResult.percent}%`;
+  $("rCorrect").textContent=currentResult.correct;
+  $("rWrong").textContent=currentResult.wrong;
+  $("rUnanswered").textContent=currentResult.unanswered;
+  $("rTotal").textContent=currentResult.total;
 }
+
 async function syncAttempt(r){
- if(!user)return;try{
-  await addDoc(collection(db,"users",user.uid,"testHistory"),{topicId:r.topicId,sectionId:r.sectionId,topicName:r.topicName,total:r.total,correct:r.correct,wrong:r.wrong,unanswered:r.unanswered,percent:r.percent,review:r.review,completedAt:serverTimestamp()});
- }catch(e){console.warn("Attempt sync failed; local history remains available.",e)}
+  if(!user)return;
+  try{
+    await addDoc(collection(db,"users",user.uid,"testHistory"),{
+      topicId:r.topicId,sectionId:r.sectionId,topicName:r.topicName,
+      total:r.total,correct:r.correct,wrong:r.wrong,unanswered:r.unanswered,
+      percent:r.percent,review:r.review,completedAt:serverTimestamp()
+    });
+  }catch(e){console.warn("Attempt sync failed; local history remains available.",e)}
 }
+
 function loadLocalHistory(){try{history=JSON.parse(localStorage.getItem(HISTORY_KEY_PREFIX+user.uid)||"[]")}catch(_){history=[]}}
 function saveLocalHistory(){try{localStorage.setItem(HISTORY_KEY_PREFIX+user.uid,JSON.stringify(history))}catch(_){}}
-function showBook(){$("questionView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="none";$("bookView").style.display="block"}
+
+function showBook(){
+  stopTimer();
+  $("questionView").style.display="none";
+  $("resultView").style.display="none";
+  $("historyView").style.display="none";
+  $("bookView").style.display="block";
+}
+
 function showHistory(){
- $("bookView").style.display="none";$("questionView").style.display="none";$("resultView").style.display="none";$("historyView").style.display="block";
- const attempts=history.length,answered=history.reduce((n,x)=>n+(x.total-x.unanswered),0),correct=history.reduce((n,x)=>n+x.correct,0),wrong=history.reduce((n,x)=>n+x.wrong,0);$("statAttempts").textContent=attempts;$("statQuestions").textContent=answered;$("statCorrect").textContent=correct;$("statWrong").textContent=wrong;
- $("historyList").innerHTML=history.length?history.map((r,i)=>`<article class="history-row"><div><strong>${esc(r.topicName)}</strong><small>${new Date(r.completedAt).toLocaleString()} · ${r.total} questions · ${r.unanswered} unanswered</small></div><div class="history-score"><b>${r.correct}/${r.total}</b><span>${r.percent}% · ${r.wrong} wrong</span><button class="action secondary" style="padding:6px 8px;margin-top:6px;font-size:10px" data-review="${i}">Review</button></div></article><div id="review-${i}" class="review" style="display:none"></div>`).join(""):'<div class="empty"><i class="fa-regular fa-clock"></i><p>No completed tests yet.</p></div>';
- $("historyList").querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>toggleReview(Number(b.dataset.review)));
+  stopTimer();
+  $("bookView").style.display="none";
+  $("questionView").style.display="none";
+  $("resultView").style.display="none";
+  $("historyView").style.display="block";
+  const attempts=history.length,answered=history.reduce((n,x)=>n+(x.total-x.unanswered),0),
+        correct=history.reduce((n,x)=>n+x.correct,0),wrong=history.reduce((n,x)=>n+x.wrong,0);
+  $("statAttempts").textContent=attempts;
+  $("statQuestions").textContent=answered;
+  $("statCorrect").textContent=correct;
+  $("statWrong").textContent=wrong;
+  $("historyList").innerHTML=history.length?history.map((r,i)=>`<article class="history-row"><div><strong>${esc(r.topicName)}</strong><small>${new Date(r.completedAt).toLocaleString()} · ${r.total} questions · ${r.unanswered} unanswered</small></div><div class="history-score"><b>${r.correct}/${r.total}</b><span>${r.percent}% · ${r.wrong} wrong</span><button class="action secondary" style="padding:6px 8px;margin-top:6px;font-size:10px" data-review="${i}">Review</button></div></article><div id="review-${i}" class="review" style="display:none"></div>`).join(""):'<div class="empty"><i class="fa-regular fa-clock"></i><p>No completed tests yet.</p></div>';
+  $("historyList").querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>toggleReview(Number(b.dataset.review)));
 }
+
 function toggleReview(i){
- const r=history[i],el=$("review-"+i);if(el.style.display==="block"){el.style.display="none";return}el.innerHTML=r.review.map((x,n)=>`<div class="review-item ${x.isCorrect?"correct":"wrong"}"><h4>${n+1}. ${esc(x.question)}</h4><p>Your answer: ${x.selectedIndex===null?"Not answered":String.fromCharCode(65+x.selectedIndex)} · Correct answer: ${String.fromCharCode(65+x.correctIndex)}</p><span class="tag ${x.isCorrect?"correct":"wrong"}">${x.isCorrect?"CORRECT":"WRONG"}</span></div>`).join("");el.style.display="block";
+  const r=history[i],el=$("review-"+i);
+  if(el.style.display==="block"){el.style.display="none";return}
+  el.innerHTML=r.review.map((x,n)=>`<div class="review-item ${x.isCorrect?"correct":"wrong"}"><h4>${n+1}. ${esc(x.question)}</h4><p>Your answer: ${x.selectedIndex===null?"Not answered":String.fromCharCode(65+x.selectedIndex)} · Correct answer: ${String.fromCharCode(65+x.correctIndex)}</p><span class="tag ${x.isCorrect?"correct":"wrong"}">${x.isCorrect?"CORRECT":"WRONG"}</span></div>`).join("");
+  el.style.display="block";
 }
+
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+/* Clean up timer on unload */
+window.addEventListener("beforeunload",()=>{
+  if(timerInterval) clearInterval(timerInterval);
+});
 </script>
-</body></html>
+</body>
+</html>
