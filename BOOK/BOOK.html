@@ -199,6 +199,17 @@ button,input{font:inherit}
 }
 .topic-duration.no-timer{background:#f5f0e8;color:var(--muted);border-color:var(--border)}
 
+/* Attempt badge on topic cards */
+.topic-attempts{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#fff7d9;color:#725400;border:1px solid #f2d58b;
+  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;
+  margin-bottom:8px;margin-left:4px;
+}
+.topic-attempts.exhausted{background:var(--danger-soft);color:var(--danger);border-color:#f0c9c3}
+.topic.limit-reached{opacity:.72}
+.topic.limit-reached .open{background:#c96b5c;cursor:not-allowed}
+
 /* ===== LOADING / EMPTY ===== */
 .loading,.empty{
   background:#fff;border:1px solid var(--border);border-radius:18px;
@@ -875,6 +886,11 @@ function readCache(){try{const x=JSON.parse(localStorage.getItem(CACHE_KEY)||"nu
 function saveCache(data){try{localStorage.setItem(CACHE_KEY,JSON.stringify({...data,savedAt:Date.now()}))}catch(_){}}
 function orderName(a,b){return (a.order??9999)-(b.order??9999)||(a.name||"").localeCompare(b.name||"")}
 
+/* ===== ATTEMPT LIMIT HELPER ===== */
+function attemptsUsedFor(topicId){
+  return history.filter(r => r.topicId === topicId).length;
+}
+
 const collapsedSections = new Set();
 
 function formatDuration(mins){
@@ -917,7 +933,19 @@ function renderBook(){
         const durBadge=mins>0
           ?`<span class="topic-duration"><i class="fa-regular fa-clock"></i> ${formatDuration(mins)}</span>`
           :`<span class="topic-duration no-timer"><i class="fa-solid fa-infinity"></i> No timer</span>`;
-        return `<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`;
+
+        // Attempt limit badge
+        const limit=Number(t.maxAttempts||0);
+        const used=limit>0?attemptsUsedFor(t.id):0;
+        const remaining=limit>0?Math.max(0,limit-used):0;
+        const exhausted=limit>0 && used>=limit;
+        const attemptBadge=limit>0
+          ?`<span class="topic-attempts ${exhausted?"exhausted":""}"><i class="fa-solid fa-rotate"></i> ${remaining}/${limit} left</span>`
+          :"";
+
+        const openLabel=paid?(exhausted?"Limit reached":"Open"):"🔒 Buy";
+        const cardClass=`topic ${paid?"":"locked"} ${exhausted?"limit-reached":""}`;
+        return `<article class="${cardClass}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}${attemptBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${openLabel}</button></div></article>`;
       }).join("")}</div>
     </div>
    </article>`;
@@ -944,8 +972,14 @@ function renderBook(){
  });
  $("book").querySelectorAll("[data-topic]").forEach(el=>el.onclick=()=>{
    const t=topics.find(x=>x.id===el.dataset.topic),sec=sections.find(x=>x.id===t?.sectionId),sid=subjectIdForSection(sec||{});
-   if(activeSubscription(sid))openTopic(el.dataset.topic);
-   else showPurchase(sid,sec?.name||sid);
+   if(!activeSubscription(sid)){ showPurchase(sid,sec?.name||sid); return; }
+   // Attempt-limit guard (front-line UX check)
+   const lim=Number(t?.maxAttempts||0);
+   if(lim>0 && attemptsUsedFor(t.id)>=lim){
+     alert(`You have used all ${lim} attempt(s) for "${t.name}".`);
+     return;
+   }
+   openTopic(el.dataset.topic);
  });
 }
 
@@ -1110,10 +1144,21 @@ window.triggerFinalSubmit=function(){
   if(confirm("Are you sure you want to submit the test?")) finishTest();
 };
 
-/* ===== OPEN TOPIC ===== */
+/* ===== OPEN TOPIC (with attempt-limit guard) ===== */
 async function openTopic(id,retry=false){
   currentTopic=topics.find(t=>t.id===id)||null;
   if(!currentTopic) return;
+
+  // Attempt-limit guard — covers card clicks AND the retry button
+  const limit=Number(currentTopic.maxAttempts||0);
+  if(limit>0){
+    const used=attemptsUsedFor(id);
+    if(used>=limit){
+      alert(`You have used all ${limit} attempt(s) for "${currentTopic.name}".`);
+      return;
+    }
+  }
+
   $("bookView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
@@ -1226,6 +1271,8 @@ function showBook(){
   $("resultView").style.display="none";
   $("historyView").style.display="none";
   $("bookView").style.display="block";
+  // Re-render so attempt badges reflect the just-completed test
+  renderBook();
 }
 
 function showHistory(){
