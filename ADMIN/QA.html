@@ -34,14 +34,14 @@
 <div class="heading"><div><h1>Books </h1><p>Build the book as Sections → Topics → Questions. Students see only active content.</p></div><div class="toolbar"><button id="addSection" class="btn secondary"><i class="fa-solid fa-folder-plus"></i> New Section</button><button id="addTopic" class="btn primary"><i class="fa-solid fa-plus"></i> New Topic</button><button id="bulkBtn" class="btn green"><i class="fa-solid fa-file-csv"></i> Bulk CSV</button><button id="refresh" class="btn secondary"><i class="fa-solid fa-rotate"></i></button></div></div>
 <div class="stats"><div class="stat"><strong id="sectionCount">0</strong><span>Sections</span></div><div class="stat"><strong id="topicCount">0</strong><span>Topics</span></div><div class="stat"><strong id="questionCount">0</strong><span>Questions</span></div><div class="stat"><strong id="activeCount">0</strong><span>Active Questions</span></div></div>
 <div class="grid">
-<section class="panel"><div class="panel-head"><h3>Book Structure</h3></div><div class="panel-body"><div id="structure"></div><div class="hint"><b>Recommended:</b> keep sections broad (e.g. Agronomy, Genetics) and topics focused (e.g. Cropping Systems). Question counts are stored on topic documents so students do not need to download the question bank just to display the book.</div></div></section>
+<section class="panel"><div class="panel-head"><h3>Book Structure</h3></div><div class="panel-body"><div id="structure"></div><div class="hint"><b>Recommended:</b> keep sections broad (e.g. Agronomy, Genetics) and topics focused (e.g. Cropping Systems). Question counts are stored on topic documents so students do not need to download the question bank just to display the book. <b>Max Attempts</b> on each topic limits how many completed tests a student can submit for that topic (0 = unlimited).</div></div></section>
 <section class="panel"><div class="panel-head"><div><h3 id="questionHeading">Select a topic</h3><small id="questionSub" style="color:var(--muted);font-size:10px"></small></div><button id="addQuestion" class="btn primary" disabled><i class="fa-solid fa-plus"></i> New Question</button></div><div class="panel-body"><div id="questionList" class="list"><div class="empty"><i class="fa-regular fa-folder-open"></i><p>Select a topic to manage its questions.</p></div></div></div></section>
 </div>
 </main></section>
 
 <div id="sectionModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="sectionModalTitle">New Section</h3><button class="close" data-close="sectionModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Section Name</label><input id="sectionName" maxlength="100"></div><div class="form-field full"><label>Description</label><textarea id="sectionDesc" maxlength="300"></textarea></div><div class="form-field"><label>Display Order</label><input id="sectionOrder" type="number" min="0" value="0"></div><div class="form-field"><label class="check"><input id="sectionActive" type="checkbox" checked> Active for students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="sectionModal">Cancel</button><button id="saveSection" class="btn primary">Save Section</button></div></div></div>
 
-<div id="topicModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="topicModalTitle">New Topic</h3><button class="close" data-close="topicModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Section</label><select id="topicSection"></select></div><div class="form-field full"><label>Topic Name</label><input id="topicName" maxlength="100"></div><div class="form-field full"><label>Description</label><textarea id="topicDesc" maxlength="300"></textarea></div><div class="form-field"><label>Display Order</label><input id="topicOrder" type="number" min="0" value="0"></div><div class="form-field"><label class="check"><input id="topicActive" type="checkbox" checked> Active for students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="topicModal">Cancel</button><button id="saveTopic" class="btn primary">Save Topic</button></div></div></div>
+<div id="topicModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="topicModalTitle">New Topic</h3><button class="close" data-close="topicModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Section</label><select id="topicSection"></select></div><div class="form-field full"><label>Topic Name</label><input id="topicName" maxlength="100"></div><div class="form-field full"><label>Description</label><textarea id="topicDesc" maxlength="300"></textarea></div><div class="form-field"><label>Display Order</label><input id="topicOrder" type="number" min="0" value="0"></div><div class="form-field"><label>Max Attempts (0 = unlimited)</label><input id="topicMaxAttempts" type="number" min="0" value="0"></div><div class="form-field"><label class="check"><input id="topicActive" type="checkbox" checked> Active for students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="topicModal">Cancel</button><button id="saveTopic" class="btn primary">Save Topic</button></div></div></div>
 
 <div id="questionModal" class="modal"><div class="modal-card"><div class="modal-head"><h3 id="questionModalTitle">New Question</h3><button class="close" data-close="questionModal">×</button></div><div class="modal-body"><div class="form-grid"><div class="form-field full"><label>Question</label><textarea id="qText" maxlength="2000"></textarea></div><div class="form-field"><label>Option A</label><input id="opt0"></div><div class="form-field"><label>Option B</label><input id="opt1"></div><div class="form-field"><label>Option C</label><input id="opt2"></div><div class="form-field"><label>Option D</label><input id="opt3"></div><div class="form-field"><label>Correct Answer</label><select id="correct"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div><div class="form-field"><label>Display Order</label><input id="qOrder" type="number" min="0" value="0"></div><div class="form-field full"><label>Explanation (optional)</label><textarea id="explanation" maxlength="3000"></textarea></div><div class="form-field full"><label class="check"><input id="qActive" type="checkbox" checked> Active — visible to students</label></div></div></div><div class="modal-foot"><button class="btn secondary" data-close="questionModal">Cancel</button><button id="saveQuestion" class="btn primary">Save Question</button></div></div></div>
 
@@ -116,13 +116,19 @@ function renderStructure(){
  $("structure").querySelectorAll("[data-sectedit]").forEach(b=>b.onclick=()=>editSection(b.dataset.sectedit));
  $("structure").querySelectorAll("[data-sectdelete]").forEach(b=>b.onclick=()=>deleteSection(b.dataset.sectdelete));
 }
-function legacyTopicsHtml(ts){return ts.map(t=>`<div class="topic-item ${selectedTopic?.id===t.id?"active":""}" data-topic="${esc(t.id)}"><h4>${esc(t.name||"Untitled Topic")}</h4><p>${t.active===false?"Inactive":"Active"} · ${Number(t.questionCount||0)} questions</p><div class="topic-actions"><button class="mini edit" data-edit="${esc(t.id)}">Edit</button><button class="mini del" data-delete="${esc(t.id)}">Delete</button></div></div>`).join("")}
+function legacyTopicsHtml(ts){
+  return ts.map(t=>{
+    const maxA = Number(t.maxAttempts||0);
+    const attemptLabel = maxA > 0 ? ` · ${maxA} attempt${maxA===1?"":"s"} max` : "";
+    return `<div class="topic-item ${selectedTopic?.id===t.id?"active":""}" data-topic="${esc(t.id)}"><h4>${esc(t.name||"Untitled Topic")}</h4><p>${t.active===false?"Inactive":"Active"} · ${Number(t.questionCount||0)} questions${attemptLabel}</p><div class="topic-actions"><button class="mini edit" data-edit="${esc(t.id)}">Edit</button><button class="mini del" data-delete="${esc(t.id)}">Delete</button></div></div>`;
+  }).join("");
+}
 function bindTopicEvents(){
  $("structure").querySelectorAll("[data-topic]").forEach(x=>x.onclick=e=>{if(e.target.closest("button"))return;selectTopic(x.dataset.topic)});
  $("structure").querySelectorAll("[data-edit]").forEach(b=>b.onclick=e=>{e.stopPropagation();editTopic(b.dataset.edit)});
  $("structure").querySelectorAll("[data-delete]").forEach(b=>b.onclick=e=>{e.stopPropagation();deleteTopic(b.dataset.delete)});
 }
-function selectTopic(id){selectedTopic=topics.find(t=>t.id===id)||null;$("addQuestion").disabled=!selectedTopic;$("questionHeading").textContent=selectedTopic?.name||"Select a topic";$("questionSub").textContent=selectedTopic?`${sectionName(selectedTopic.sectionId)} · ${selectedTopic.questionCount||0} questions`:"";renderStructure();renderQuestions()}
+function selectTopic(id){selectedTopic=topics.find(t=>t.id===id)||null;$("addQuestion").disabled=!selectedTopic;$("questionHeading").textContent=selectedTopic?.name||"Select a topic";$("questionSub").textContent=selectedTopic?`${sectionName(selectedTopic.sectionId)} · ${selectedTopic.questionCount||0} questions${Number(selectedTopic.maxAttempts||0)>0?` · ${selectedTopic.maxAttempts} attempts max`:""}`:"";renderStructure();renderQuestions()}
 function clearQuestions(){$("addQuestion").disabled=true;$("questionHeading").textContent="Select a topic";$("questionSub").textContent="";$("questionList").innerHTML='<div class="empty"><i class="fa-regular fa-folder-open"></i><p>Select a topic to manage its questions.</p></div>'}
 function renderQuestions(){
  const list=questions.filter(q=>q.topicId===selectedTopic?.id).sort(orderName);
@@ -148,11 +154,26 @@ async function deleteSection(id){
 function openTopicModal(id=null){
  editingTopicId=id;$("topicModalTitle").textContent=id?"Edit Topic":"New Topic";$("topicSection").innerHTML=sections.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join("");
  const t=id?topics.find(x=>x.id===id):null;if(!t&&sections.length)$("topicSection").value=sections[0].id;
- $("topicSection").value=t?.sectionId||$("topicSection").value;$("topicName").value=t?.name||"";$("topicDesc").value=t?.description||"";$("topicOrder").value=t?.order??0;$("topicActive").checked=t?.active!==false;openModal("topicModal")
+ $("topicSection").value=t?.sectionId||$("topicSection").value;
+ $("topicName").value=t?.name||"";
+ $("topicDesc").value=t?.description||"";
+ $("topicOrder").value=t?.order??0;
+ $("topicMaxAttempts").value=t?.maxAttempts??0;   // ← NEW
+ $("topicActive").checked=t?.active!==false;
+ openModal("topicModal")
 }
 async function saveTopic(){
  const name=$("topicName").value.trim(),sectionId=$("topicSection").value;if(!name||!sectionId){alert("Create/select a section first.");return}
- const old=editingTopicId?topics.find(t=>t.id===editingTopicId):null;const data={sectionId,name,description:$("topicDesc").value.trim(),order:Number($("topicOrder").value)||0,active:$("topicActive").checked,questionCount:Number(old?.questionCount||0),updatedAt:serverTimestamp()};
+ const old=editingTopicId?topics.find(t=>t.id===editingTopicId):null;
+ const data={
+   sectionId,name,
+   description:$("topicDesc").value.trim(),
+   order:Number($("topicOrder").value)||0,
+   active:$("topicActive").checked,
+   questionCount:Number(old?.questionCount||0),
+   maxAttempts:Math.max(0, Number($("topicMaxAttempts").value)||0),   // ← NEW
+   updatedAt:serverTimestamp()
+ };
  try{if(editingTopicId)await updateDoc(doc(db,"topics",editingTopicId),data);else await addDoc(collection(db,"topics"),{...data,createdAt:serverTimestamp()});closeModal("topicModal");toast("Topic saved.");await loadAll()}catch(e){alert("Unable to save topic: "+e.message)}
 }
 async function deleteTopic(id){
