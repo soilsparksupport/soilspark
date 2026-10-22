@@ -1303,9 +1303,10 @@ function toggleReview(i){
     const opts=x.options||[];
     const isUnanswered = x.isUnanswered !== undefined ? x.isUnanswered : (x.selectedIndex === null);
     const selectedLabel=x.selectedIndex===null?null:String.fromCharCode(65+x.selectedIndex);
-    const correctLabel=String.fromCharCode(x.correctIndex);
+    const correctIdx = (x.correctIndex!=null && !isNaN(x.correctIndex)) ? x.correctIndex : -1;
+    const correctLabel = correctIdx>=0 ? String.fromCharCode(65+correctIdx) : "?";
     const selectedText=selectedLabel!=null?opts[x.selectedIndex]:null;
-    const correctText=opts[x.correctIndex];
+    const correctText = correctIdx>=0 ? (opts[correctIdx]||"") : "";
     let statusClass="wrong";
     let statusLabel="WRONG";
     if(isUnanswered){statusClass="unanswered";statusLabel="NOT ANSWERED";}
@@ -1313,7 +1314,7 @@ function toggleReview(i){
     return `<div class="review-item ${statusClass}">
       <h4>${n+1}. ${esc(x.question)}</h4>
       <p><b>Your answer:</b> ${selectedLabel!=null?`(${selectedLabel}) ${esc(selectedText||"")}`:"<i>Not answered</i>"}</p>
-      <p><b>Correct answer:</b> (${correctLabel}) ${esc(correctText||"")}</p>
+      <p><b>Correct answer:</b> ${correctIdx>=0?`(${correctLabel}) ${esc(correctText)}`:"<i>Not available</i>"}</p>
       ${x.explanation?`<p style="margin-top:8px;padding:8px;background:#f6f9f2;border-radius:8px;border-left:3px solid var(--green)"><b>Explanation:</b> ${esc(x.explanation)}</p>`:""}
       <span class="tag ${statusClass}">${statusLabel}</span>
     </div>`;
