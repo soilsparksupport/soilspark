@@ -178,22 +178,10 @@
       font-size: 20px;
       flex-shrink: 0;
     }
-    .stat-icon.users {
-      background: #eaf4fc;
-      color: #1769aa;
-    }
-    .stat-icon.subscribed {
-      background: #e8f7ee;
-      color: #198754;
-    }
-    .stat-icon.revenue {
-      background: #fff4dc;
-      color: #b37b00;
-    }
-    .stat-icon.active {
-      background: #f3e8ff;
-      color: #7e3ff2;
-    }
+    .stat-icon.users { background: #eaf4fc; color: #1769aa; }
+    .stat-icon.subscribed { background: #e8f7ee; color: #198754; }
+    .stat-icon.revenue { background: #fff4dc; color: #b37b00; }
+    .stat-icon.active { background: #f3e8ff; color: #7e3ff2; }
     .stat-content strong {
       display: block;
       font-family: "Poppins", sans-serif;
@@ -201,11 +189,7 @@
       color: var(--blue-dark);
       line-height: 1.2;
     }
-    .stat-content span {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 500;
-    }
+    .stat-content span { color: var(--muted); font-size: 12px; font-weight: 500; }
 
     /* PANEL */
     .panel {
@@ -290,108 +274,46 @@
       letter-spacing: 0.4px;
       white-space: nowrap;
     }
-    .badge-premium {
-      background: #e8f7ee;
-      color: #198754;
-      border: 1px solid #b8dfc6;
-    }
-    .badge-free {
-      background: #f0f4f8;
-      color: #718394;
-      border: 1px solid #dbe8f1;
-    }
-    .badge-active {
-      background: #e8f7ee;
-      color: #198754;
-      border: 1px solid #b8dfc6;
-    }
-    .badge-expired {
-      background: #fff0f0;
-      color: #9b3030;
-      border: 1px solid #efc1c1;
-    }
-    .badge-plan {
-      background: #eaf4fc;
-      color: #1769aa;
-      border: 1px solid #b9d1ec;
-    }
+    .badge-premium { background: #e8f7ee; color: #198754; border: 1px solid #b8dfc6; }
+    .badge-free { background: #f0f4f8; color: #718394; border: 1px solid #dbe8f1; }
+    .badge-active { background: #e8f7ee; color: #198754; border: 1px solid #b8dfc6; }
+    .badge-expired { background: #fff0f0; color: #9b3030; border: 1px solid #efc1c1; }
+    .badge-plan { background: #eaf4fc; color: #1769aa; border: 1px solid #b9d1ec; }
+    .badge-warn { background: #fff4dc; color: #8a5a00; border: 1px solid #f2d58b; }
 
-    .user-cell {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .user-cell { display: flex; align-items: center; gap: 10px; }
     .user-avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--blue-light);
-      color: var(--blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 13px;
-      flex-shrink: 0;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--blue-light); color: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px; flex-shrink: 0;
     }
     .user-info { min-width: 0; }
     .user-info strong { display: block; font-size: 13px; color: var(--text); }
     .user-info small { display: block; font-size: 11px; color: var(--muted); }
 
-    .empty {
-      text-align: center;
-      padding: 65px 20px;
-      color: var(--muted);
-    }
-    .empty i {
-      font-size: 42px;
-      margin-bottom: 15px;
-      color: #bfd2df;
-    }
+    .empty { text-align: center; padding: 65px 20px; color: var(--muted); }
+    .empty i { font-size: 42px; margin-bottom: 15px; color: #bfd2df; }
     .empty h3 { color: var(--text); margin-bottom: 5px; }
-    .loading {
-      text-align: center;
-      padding: 50px;
-      color: var(--muted);
-    }
-    .loading i {
-      color: var(--blue);
-      font-size: 25px;
-      margin-bottom: 10px;
-    }
+    .loading { text-align: center; padding: 50px; color: var(--muted); }
+    .loading i { color: var(--blue); font-size: 25px; margin-bottom: 10px; }
     .error-box {
-      margin: 20px 25px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #fff1f2;
-      border: 1px solid #ffc7cd;
-      color: #a61b29;
-      font-size: 13px;
-      line-height: 1.6;
+      margin: 20px 25px; padding: 16px; border-radius: 12px;
+      background: #fff1f2; border: 1px solid #ffc7cd;
+      color: #a61b29; font-size: 13px; line-height: 1.6;
     }
 
     /* TOAST */
     #toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      max-width: 360px;
-      background: #183247;
-      color: white;
-      padding: 13px 17px;
-      border-radius: 11px;
+      position: fixed; right: 22px; bottom: 22px;
+      max-width: 360px; background: #183247; color: white;
+      padding: 13px 17px; border-radius: 11px;
       box-shadow: 0 12px 30px rgba(0,0,0,.18);
       font-size: 13px;
-      transform: translateY(100px);
-      opacity: 0;
-      pointer-events: none;
-      transition: .3s;
-      z-index: 2000;
+      transform: translateY(100px); opacity: 0;
+      pointer-events: none; transition: .3s; z-index: 2000;
     }
-    #toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    #toast.show { transform: translateY(0); opacity: 1; }
     #toast.success { border-left: 4px solid #25a45b; }
     #toast.error { border-left: 4px solid var(--danger); }
 
@@ -501,7 +423,7 @@
       </div>
     </div>
 
-    <!-- SUBSCRIBED USERS PANEL -->
+    <!-- SUBSCRIBED USERS PANEL (driven by subscription records) -->
     <section class="panel" id="subscribedPanel">
       <div class="panel-header">
         <div>
@@ -537,7 +459,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, getDoc, doc, query, orderBy }
+  import { getFirestore, collection, getDocs, getDoc, doc }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -648,8 +570,8 @@
 
   /* ============================================================
      LOAD DASHBOARD DATA
-     - Fetches users and subscriptions once
-     - Renders summary cards + both tables
+     Summary cards + two separate tables, both driven by the
+     same `subscriptions` snapshot so counts always agree.
   ============================================================ */
   let cachedUsers = [];
   let cachedActiveSubs = [];
@@ -672,13 +594,7 @@
         console.warn("Users read failed:", e);
       }
 
-      /* Sort users by createdAt desc (client-side, handles missing fields) */
-      users.sort((a, b) => {
-        const ta = getTimestampMs(a.createdAt);
-        const tb = getTimestampMs(b.createdAt);
-        return tb - ta;
-      });
-
+      users.sort((a, b) => getTimestampMs(b.createdAt) - getTimestampMs(a.createdAt));
       cachedUsers = users;
       $("totalUsers").textContent = users.length.toLocaleString("en-IN");
 
@@ -698,7 +614,7 @@
       });
       cachedActiveSubs = activeSubs;
 
-      /* Unique subscribed user IDs */
+      /* Unique subscribed user IDs (from subscription.userId) */
       const subscribedUserIds = new Set(activeSubs.map(s => s.userId).filter(Boolean));
       $("totalSubscribed").textContent = subscribedUserIds.size.toLocaleString("en-IN");
       $("activeSubscriptions").textContent = activeSubs.length.toLocaleString("en-IN");
@@ -710,18 +626,25 @@
       }, 0);
       $("totalRevenue").textContent = revenue.toLocaleString("en-IN");
 
-      /* 4. BUILD LOOKUP: userId -> active subscription(s) */
+      /* 4. LOOKUPS */
+      const usersById = new Map(users.map(u => [u.id, u]));
+      const usersByEmail = new Map();
+      const usersByPhone = new Map();
+      users.forEach(u => {
+        if (u.email) usersByEmail.set(String(u.email).toLowerCase(), u);
+        if (u.phone) usersByPhone.set(normalizePhone(u.phone), u);
+      });
+
+      /* 5. RENDER SUBSCRIBED USERS TABLE (driven by subscription records) */
+      renderSubscribedUsers(activeSubs, usersById, usersByEmail, usersByPhone);
+
+      /* 6. RENDER ALL USERS TABLE */
       const subsByUser = new Map();
       activeSubs.forEach(s => {
         if (!s.userId) return;
         if (!subsByUser.has(s.userId)) subsByUser.set(s.userId, []);
         subsByUser.get(s.userId).push(s);
       });
-
-      /* 5. RENDER SUBSCRIBED USERS TABLE */
-      renderSubscribedUsers(users, subsByUser);
-
-      /* 6. RENDER ALL USERS TABLE */
       renderAllUsers(users, subsByUser);
     } catch (error) {
       console.error(error);
@@ -733,28 +656,53 @@
     }
   }
 
-  /* ---------- SUBSCRIBED USERS TABLE ---------- */
-  function renderSubscribedUsers(users, subsByUser) {
+  /* ---------- SUBSCRIBED USERS TABLE (driven by subscription records) ---------- */
+  function renderSubscribedUsers(activeSubs, usersById, usersByEmail, usersByPhone) {
     const container = $("subscribedTableContainer");
 
-    /* Only users that have at least one active subscription */
-    const rows = users.filter(u => subsByUser.has(u.id));
-
-    if (!rows.length) {
+    if (!activeSubs.length) {
       container.innerHTML =
         `<div class="empty"><i class="fas fa-crown"></i><h3>No subscribed users</h3><p>Active subscription holders will appear here.</p></div>`;
       return;
     }
 
-    const html = rows.map(u => {
-      const subs = subsByUser.get(u.id) || [];
-      /* Pick the subscription with the latest expiry for display */
+    /* Group subscriptions by userId (fallback to email/phone/id if userId missing) */
+    const byUser = new Map();
+    activeSubs.forEach(s => {
+      const key =
+        (s.userId && String(s.userId)) ||
+        (s.userEmail && "email:" + String(s.userEmail).toLowerCase()) ||
+        (s.email && "email:" + String(s.email).toLowerCase()) ||
+        (s.userPhone && "phone:" + normalizePhone(s.userPhone)) ||
+        s.id;
+      if (!byUser.has(key)) byUser.set(key, []);
+      byUser.get(key).push(s);
+    });
+
+    const rowsHtml = Array.from(byUser.entries()).map(([key, subs]) => {
+      /* Display the subscription with the latest expiry */
       const latest = subs.slice().sort(
         (a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0)
       )[0] || {};
 
-      const name = u.name || u.displayName || "Unnamed User";
-      const email = u.email || "—";
+      /* Resolve the user profile from multiple possible identifiers */
+      let user = null;
+      if (latest.userId && usersById.has(String(latest.userId))) {
+        user = usersById.get(String(latest.userId));
+      }
+      if (!user && latest.userEmail && usersByEmail.has(String(latest.userEmail).toLowerCase())) {
+        user = usersByEmail.get(String(latest.userEmail).toLowerCase());
+      }
+      if (!user && latest.email && usersByEmail.has(String(latest.email).toLowerCase())) {
+        user = usersByEmail.get(String(latest.email).toLowerCase());
+      }
+      if (!user && latest.userPhone && usersByPhone.has(normalizePhone(latest.userPhone))) {
+        user = usersByPhone.get(normalizePhone(latest.userPhone));
+      }
+
+      const name = user?.name || user?.displayName || latest.userName || latest.userEmail || latest.email || "Subscribed User";
+      const email = user?.email || latest.userEmail || latest.email || "—";
+      const phone = user?.phone || latest.userPhone || "—";
       const initial = (name || email || "?").charAt(0).toUpperCase();
 
       const planName = latest.planName || latest.planId || "—";
@@ -768,13 +716,17 @@
       const isActive = latest.status === "active" &&
         new Date(latest.expiryDate || 0).getTime() > Date.now();
 
+      const profileBadge = user
+        ? ""
+        : ` <span class="badge badge-warn" title="Subscription exists but no matching user profile was found"><i class="fas fa-triangle-exclamation"></i> No profile</span>`;
+
       return `<tr>
         <td>
           <div class="user-cell">
             <div class="user-avatar">${escapeHtml(initial)}</div>
             <div class="user-info">
-              <strong>${escapeHtml(name)}</strong>
-              <small>${escapeHtml(email)}</small>
+              <strong>${escapeHtml(name)}${profileBadge}</strong>
+              <small>${escapeHtml(email)} · ${escapeHtml(phone)}</small>
             </div>
           </div>
         </td>
@@ -807,7 +759,7 @@
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>${html}</tbody>
+        <tbody>${rowsHtml}</tbody>
       </table>`;
   }
 
@@ -876,6 +828,10 @@
   }
 
   /* HELPERS */
+  function normalizePhone(v) {
+    return String(v ?? "").replace(/[^\d]/g, "").slice(-10);
+  }
+
   function getTimestampMs(ts) {
     if (!ts) return 0;
     try {
