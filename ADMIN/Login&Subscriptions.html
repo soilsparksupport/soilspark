@@ -7,7 +7,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin · SoilSpark — Book Users & Subscriptions</title>
+<title>Admin · SoilSpark — Users &amp; Subscriptions</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,684 +15,167 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-:root {
-  --blue: #1769aa;
-  --blue-dark: #0d4775;
-  --blue-light: #eaf4fc;
-  --white: #ffffff;
-  --bg: #f5f9fc;
-  --text: #183247;
-  --muted: #718394;
-  --border: #dbe8f1;
-  --danger: #dc3545;
-  --success: #198754;
-  --warning: #a86b00;
-  --shadow: 0 12px 35px rgba(25, 74, 109, 0.09);
-  --radius: 18px;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: "Inter", sans-serif;
-  background:
-    radial-gradient(circle at top right, rgba(42, 139, 207, 0.10), transparent 30%),
-    var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
-
-button, input, select { font-family: inherit; }
-
-/* ============ LOGIN ============ */
-#loginScreen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.login-card {
-  width: 100%;
-  max-width: 430px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 26px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-
-.login-top {
-  padding: 38px 30px 32px;
-  background: linear-gradient(135deg, #0d4775, #1d78b7);
-  color: white;
-  text-align: center;
-}
-
-.login-logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.14);
-  border: 1px solid rgba(255,255,255,0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 18px;
-  font-size: 30px;
-}
-
-.login-top h1 {
-  font-family: "Poppins", sans-serif;
-  font-size: 29px;
-  margin-bottom: 6px;
-}
-
-.login-top p { opacity: .85; font-size: 14px; }
-
-.login-body { padding: 30px; }
-
-.field { margin-bottom: 20px; }
-
-.field label {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--text);
-}
-
-.field-wrap { position: relative; }
-
-.field-wrap i {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8da2b2;
-}
-
-.field input {
-  width: 100%;
-  height: 50px;
-  border: 1.5px solid var(--border);
-  border-radius: 13px;
-  padding: 0 15px 0 45px;
-  outline: none;
-  font-size: 14px;
-  color: var(--text);
-  background: #fbfdff;
-  transition: .2s;
-}
-
-.field input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 4px rgba(23,105,170,.10);
-  background: white;
-}
-
-#loginBtn {
-  width: 100%;
-  height: 52px;
-  border: 0;
-  border-radius: 13px;
-  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s;
-  margin-top: 5px;
-}
-
-#loginBtn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(23,105,170,.22);
-}
-
-#loginBtn:disabled { opacity: .65; cursor: not-allowed; }
-
-.login-security {
-  margin-top: 22px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.login-error {
-  display: none;
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border-radius: 11px;
-  background: #fff1f2;
-  border: 1px solid #ffc7cd;
-  color: #a61b29;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* ============ DASHBOARD ============ */
-#dashboardScreen { display: none; min-height: 100vh; }
-
-.topbar {
-  background: white;
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 18px rgba(25,74,109,.05);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-
-.topbar-inner {
-  max-width: 1300px;
-  margin: auto;
-  padding: 17px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.brand { display: flex; align-items: center; gap: 13px; }
-
-.brand-icon {
-  width: 45px;
-  height: 45px;
-  border-radius: 13px;
-  background: var(--blue-light);
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.brand h2 {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  color: var(--blue-dark);
-}
-
-.brand small {
-  color: var(--muted);
-  font-size: 11px;
-  display: block;
-  margin-top: 1px;
-}
-
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.admin-email {
-  background: var(--blue-light);
-  color: var(--blue-dark);
-  padding: 9px 13px;
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 600;
-  max-width: 260px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.logout-btn {
-  border: 0;
-  background: #fff0f1;
-  color: var(--danger);
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.logout-btn:hover { background: #ffe0e3; }
-
-.page {
-  max-width: 1300px;
-  margin: auto;
-  padding: 32px 24px 50px;
-}
-
-.welcome { margin-bottom: 25px; }
-
-.welcome h1 {
-  font-family: "Poppins", sans-serif;
-  font-size: 28px;
-  color: var(--blue-dark);
-}
-
-.welcome p {
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-/* ============ STATS ============ */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.stat {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.stat-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
-  background: var(--blue-light);
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 19px;
-  flex-shrink: 0;
-}
-
-.stat-icon.warn { background: #fff4dc; color: var(--warning); }
-.stat-icon.ok { background: #e8f7ee; color: var(--success); }
-.stat-icon.bad { background: #fff0f1; color: var(--danger); }
-
-.stat strong {
-  display: block;
-  font-family: "Poppins", sans-serif;
-  font-size: 22px;
-  color: var(--blue-dark);
-}
-
-.stat span { color: var(--muted); font-size: 11px; }
-
-/* ============ PANEL ============ */
-.panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  margin-bottom: 28px;
-}
-
-.panel-header {
-  padding: 23px 25px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.panel-header h2 {
-  font-family: "Poppins", sans-serif;
-  font-size: 20px;
-  color: var(--blue-dark);
-}
-
-.panel-header p {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-.header-buttons { display: flex; gap: 9px; flex-wrap: wrap; }
-
-.refresh-btn, .export-btn {
-  border: 1px solid var(--border);
-  background: white;
-  color: var(--blue-dark);
-  padding: 10px 15px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-}
-
-.refresh-btn:hover, .export-btn:hover {
-  background: var(--blue-light);
-  border-color: #b7d5e9;
-}
-
-.export-btn {
-  background: #e8f7ee;
-  border-color: #b9e4c5;
-  color: var(--success);
-}
-
-.export-btn:hover { background: #d4f0e0; }
-
-.filters {
-  padding: 17px 25px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.search-box {
-  position: relative;
-  flex: 1;
-  min-width: 220px;
-}
-
-.search-box i {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8da2b2;
-}
-
-.search-box input {
-  width: 100%;
-  height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding-left: 40px;
-  outline: none;
-}
-
-.search-box input:focus { border-color: var(--blue); }
-
-.filter-buttons {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  border: 1px solid var(--border);
-  background: white;
-  color: var(--muted);
-  padding: 9px 13px;
-  border-radius: 9px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.filter-btn.active {
-  background: var(--blue);
-  border-color: var(--blue);
-  color: white;
-}
-
-/* ============ USER CARDS ============ */
-#usersContainer { padding: 23px 25px; }
-
-.user-card {
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 19px;
-  margin-bottom: 14px;
-  background: #fff;
-  transition: .2s;
-}
-
-.user-card:hover {
-  border-color: #b9d4e5;
-  box-shadow: 0 8px 22px rgba(20,70,100,.06);
-}
-
-.user-card:last-child { margin-bottom: 0; }
-
-.user-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 15px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.avatar {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  border-radius: 14px;
-  background: var(--blue-light);
-  color: var(--blue-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  position: relative;
-}
-
-.provider-badge {
-  position: absolute;
-  bottom: -4px;
-  right: -4px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  border: 2px solid white;
-  background: white;
-}
-
-.provider-google { color: #db4437; }
-.provider-email { color: var(--blue); }
-
-.user-name {
-  font-weight: 800;
-  font-size: 15px;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.user-email {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 3px;
-  word-break: break-word;
-}
-
-.user-meta {
-  color: #98a8b5;
-  font-size: 11px;
-  margin-top: 3px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.user-meta i { margin-right: 3px; }
-
-.badge {
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 800;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.badge-active { background: #e8f7ee; color: var(--success); }
-.badge-expired { background: #fff0f1; color: var(--danger); }
-.badge-none { background: #fff4dc; color: var(--warning); }
-.badge-verified { background: #e8f7ee; color: var(--success); }
-.badge-unverified { background: #fff4dc; color: var(--warning); }
-.badge-google { background: #fce8e6; color: #c5221f; }
-.badge-legacy { background: #eef2fa; color: #4a5b8a; }
-
-/* subscriptions */
-.sub-list {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.sub-item {
-  background: #f7fafc;
-  border: 1px solid #edf3f7;
-  border-radius: 12px;
-  padding: 12px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 13px;
-}
-
-.sub-item .sub-subject {
-  font-weight: 700;
-  color: var(--blue-dark);
-}
-
-.sub-item .sub-dates {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.sub-item .sub-status {
-  font-weight: 700;
-  font-size: 11px;
-}
-
-.sub-active { color: var(--success); }
-.sub-inactive { color: var(--danger); }
-.sub-legacy { color: #4a5b8a; }
-
-.empty {
-  text-align: center;
-  padding: 65px 20px;
-  color: var(--muted);
-}
-
-.empty i {
-  font-size: 42px;
-  margin-bottom: 15px;
-  color: #bfd2df;
-}
-
-.empty h3 { color: var(--text); margin-bottom: 5px; }
-
-.loading {
-  text-align: center;
-  padding: 50px;
-  color: var(--muted);
-}
-
-.loading i {
-  color: var(--blue);
-  font-size: 25px;
-  margin-bottom: 10px;
-}
-
-.error-box {
-  margin: 20px 25px;
-  padding: 16px;
-  border-radius: 12px;
-  background: #fff1f2;
-  border: 1px solid #ffc7cd;
-  color: #a61b29;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-/* ============ TOAST ============ */
-#toast {
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  max-width: 360px;
-  background: #183247;
-  color: white;
-  padding: 13px 17px;
-  border-radius: 11px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.18);
-  font-size: 13px;
-  transform: translateY(100px);
-  opacity: 0;
-  pointer-events: none;
-  transition: .3s;
-  z-index: 2000;
-}
-
-#toast.show { transform: translateY(0); opacity: 1; }
-#toast.success { border-left: 4px solid #25a45b; }
-#toast.error { border-left: 4px solid var(--danger); }
-
-/* ============ RESPONSIVE ============ */
-@media (max-width: 1100px) {
-  .stats { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 800px) {
-  .topbar-inner { padding: 14px 16px; }
-  .admin-email { display: none; }
-  .page { padding: 25px 15px 40px; }
-  #usersContainer { padding: 18px 15px; }
-  .panel-header, .filters { padding-left: 17px; padding-right: 17px; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 560px) {
-  .login-body { padding: 24px 20px; }
-  .login-top { padding: 30px 20px; }
-  .welcome h1 { font-size: 23px; }
-  .stats { grid-template-columns: 1fr; }
-  .user-head { flex-direction: column; }
-  .filters { flex-direction: column; }
-  .filter-buttons { width: 100%; }
-  .filter-btn { flex: 1; }
+:root{
+  --blue:#1769aa; --blue-dark:#0d4775; --blue-light:#eaf4fc;
+  --white:#ffffff; --bg:#f5f9fc; --text:#183247; --muted:#718394;
+  --border:#dbe8f1; --danger:#dc3545; --success:#198754;
+  --shadow:0 12px 35px rgba(25,74,109,.09); --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:"Inter",sans-serif;
+  background:radial-gradient(circle at top right,rgba(42,139,207,.10),transparent 30%),var(--bg);
+  color:var(--text);min-height:100vh;
+}
+button,input,select{font-family:inherit}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{width:100%;max-width:430px;background:var(--white);border:1px solid var(--border);border-radius:26px;box-shadow:var(--shadow);overflow:hidden}
+.login-top{padding:38px 30px 32px;background:linear-gradient(135deg,#0d4775,#1d78b7);color:white;text-align:center}
+.login-logo{width:72px;height:72px;border-radius:22px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px}
+.login-top h1{font-family:"Poppins",sans-serif;font-size:29px;margin-bottom:6px}
+.login-top p{opacity:.85;font-size:14px}
+.login-body{padding:30px}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.field-wrap{position:relative}
+.field-wrap i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#8da2b2}
+.field input{width:100%;height:50px;border:1.5px solid var(--border);border-radius:13px;padding:0 15px 0 45px;outline:none;font-size:14px;color:var(--text);background:#fbfdff;transition:.2s}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(23,105,170,.10);background:white}
+#loginBtn{width:100%;height:52px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:white;font-weight:700;cursor:pointer;transition:.2s;margin-top:5px}
+#loginBtn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(23,105,170,.22)}
+#loginBtn:disabled{opacity:.65;cursor:not-allowed}
+.login-security{margin-top:22px;text-align:center;color:var(--muted);font-size:12px}
+.login-error{display:none;margin-bottom:18px;padding:12px 14px;border-radius:11px;background:#fff1f2;border:1px solid #ffc7cd;color:#a61b29;font-size:13px;line-height:1.5}
+
+/* DASHBOARD */
+#dashboardScreen{display:none;min-height:100vh}
+.topbar{background:white;border-bottom:1px solid var(--border);box-shadow:0 4px 18px rgba(25,74,109,.05);position:sticky;top:0;z-index:50}
+.topbar-inner{max-width:1300px;margin:auto;padding:17px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-icon{width:45px;height:45px;border-radius:13px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand h2{font-family:"Poppins",sans-serif;font-size:20px;color:var(--blue-dark)}
+.brand small{color:var(--muted);font-size:11px;display:block;margin-top:1px}
+.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.admin-email{background:var(--blue-light);color:var(--blue-dark);padding:9px 13px;border-radius:10px;font-size:12px;font-weight:600;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{border:0;background:#fff0f1;color:var(--danger);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.logout-btn:hover{background:#ffe0e3}
+.page{max-width:1300px;margin:auto;padding:32px 24px 50px}
+.welcome{margin-bottom:25px}
+.welcome h1{font-family:"Poppins",sans-serif;font-size:28px;color:var(--blue-dark)}
+.welcome p{margin-top:5px;color:var(--muted);font-size:14px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-bottom:25px}
+.stat{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:21px;box-shadow:var(--shadow);display:flex;align-items:center;gap:15px}
+.stat-icon{width:52px;height:52px;border-radius:15px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px}
+.stat strong{display:block;font-family:"Poppins",sans-serif;font-size:24px;color:var(--blue-dark)}
+.stat span{color:var(--muted);font-size:12px}
+
+/* PANEL */
+.panel{background:white;border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:28px}
+.panel-header{padding:23px 25px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.panel-header h2{font-family:"Poppins",sans-serif;font-size:20px;color:var(--blue-dark)}
+.panel-header p{color:var(--muted);font-size:12px;margin-top:3px}
+.header-buttons{display:flex;gap:9px;flex-wrap:wrap}
+.refresh-btn,.export-btn{border:1px solid var(--border);background:white;color:var(--blue-dark);padding:10px 15px;border-radius:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.refresh-btn:hover,.export-btn:hover{background:var(--blue-light);border-color:#b7d5e9}
+.export-btn{background:#e8f7ee;border-color:#b9e4c5;color:var(--success)}
+.export-btn:hover{background:#d4f0e0}
+.filters{padding:17px 25px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.search-box{position:relative;flex:1;min-width:220px}
+.search-box i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#8da2b2}
+.search-box input{width:100%;height:44px;border:1px solid var(--border);border-radius:11px;padding-left:40px;outline:none}
+.search-box input:focus{border-color:var(--blue)}
+.filter-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.filter-btn{border:1px solid var(--border);background:white;color:var(--muted);padding:9px 13px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700}
+.filter-btn.active{background:var(--blue);border-color:var(--blue);color:white}
+
+/* USER CARDS */
+#usersContainer{padding:23px 25px}
+.user-card{border:1px solid var(--border);border-radius:16px;padding:19px;margin-bottom:14px;background:#fff;transition:.2s}
+.user-card:hover{border-color:#b9d4e5;box-shadow:0 8px 22px rgba(20,70,100,.06)}
+.user-card:last-child{margin-bottom:0}
+.user-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px}
+.user-info{display:flex;align-items:center;gap:12px;min-width:0}
+.avatar{width:48px;height:48px;min-width:48px;border-radius:14px;background:var(--blue-light);color:var(--blue-dark);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;position:relative}
+.provider-badge{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid white;background:white}
+.provider-google{color:#db4437}
+.provider-email{color:var(--blue)}
+.user-name{font-weight:800;font-size:15px;color:var(--text);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.user-email{color:var(--muted);font-size:11px;margin-top:3px;word-break:break-word}
+.user-meta{color:#98a8b5;font-size:11px;margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.user-meta i{margin-right:3px}
+.badge{padding:5px 10px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.badge-active{background:#e8f7ee;color:var(--success)}
+.badge-expired{background:#fff0f1;color:var(--danger)}
+.badge-none{background:#fff4dc;color:#a86b00}
+.badge-verified{background:#e8f7ee;color:var(--success)}
+.badge-unverified{background:#fff4dc;color:#a86b00}
+.badge-google{background:#fce8e6;color:#c5221f}
+
+/* SUBSCRIPTIONS */
+.sub-list{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.sub-item{background:#f7fafc;border:1px solid #edf3f7;border-radius:12px;padding:12px 15px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
+.sub-item .sub-subject{font-weight:700;color:var(--blue-dark)}
+.sub-item .sub-dates{color:var(--muted);font-size:11px}
+.sub-item .sub-status{font-weight:700;font-size:11px}
+.sub-active{color:var(--success)}
+.sub-inactive{color:var(--danger)}
+.empty{text-align:center;padding:65px 20px;color:var(--muted)}
+.empty i{font-size:42px;margin-bottom:15px;color:#bfd2df}
+.empty h3{color:var(--text);margin-bottom:5px}
+.loading{text-align:center;padding:50px;color:var(--muted)}
+.loading i{color:var(--blue);font-size:25px;margin-bottom:10px}
+.error-box{margin:20px 25px;padding:16px;border-radius:12px;background:#fff1f2;border:1px solid #ffc7cd;color:#a61b29;font-size:13px;line-height:1.6}
+
+/* DIAGNOSTICS */
+.diag{margin:0 25px 20px;padding:14px 16px;border-radius:12px;background:#f4f9ff;border:1px dashed #b7d5e9;color:var(--blue-dark);font-size:12px;line-height:1.6;font-family:ui-monospace,Menlo,monospace}
+.diag strong{color:var(--blue-dark)}
+.diag .ok{color:var(--success);font-weight:700}
+.diag .bad{color:var(--danger);font-weight:700}
+
+/* TOAST */
+#toast{position:fixed;right:22px;bottom:22px;max-width:360px;background:#183247;color:white;padding:13px 17px;border-radius:11px;box-shadow:0 12px 30px rgba(0,0,0,.18);font-size:13px;transform:translateY(100px);opacity:0;pointer-events:none;transition:.3s;z-index:2000}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{border-left:4px solid #25a45b}
+#toast.error{border-left:4px solid var(--danger)}
+
+/* RESPONSIVE */
+@media (max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:800px){
+  .topbar-inner{padding:14px 16px}
+  .admin-email{display:none}
+  .page{padding:25px 15px 40px}
+  #usersContainer{padding:18px 15px}
+  .panel-header,.filters{padding-left:17px;padding-right:17px}
+}
+@media (max-width:560px){
+  .login-body{padding:24px 20px}
+  .login-top{padding:30px 20px}
+  .welcome h1{font-size:23px}
+  .stats{grid-template-columns:1fr}
+  .user-head{flex-direction:column}
+  .filters{flex-direction:column}
+  .filter-buttons{width:100%}
+  .filter-btn{flex:1}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ============ LOGIN ============ -->
+<!-- LOGIN -->
 <section id="loginScreen">
   <div class="login-card">
     <div class="login-top">
       <div class="login-logo"><i class="fas fa-seedling"></i></div>
       <h1>SoilSpark</h1>
-      <p>Book Admin · Users &amp; Subscriptions</p>
+      <p>Administrator · Users &amp; Subscriptions</p>
     </div>
-
     <div class="login-body">
       <div id="loginError" class="login-error"></div>
-
       <div class="field">
         <label for="adminEmail">Administrator Email</label>
         <div class="field-wrap">
@@ -700,7 +183,6 @@ button, input, select { font-family: inherit; }
           <input type="email" id="adminEmail" placeholder="Enter admin email" autocomplete="username">
         </div>
       </div>
-
       <div class="field">
         <label for="adminPassword">Password</label>
         <div class="field-wrap">
@@ -708,9 +190,7 @@ button, input, select { font-family: inherit; }
           <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password">
         </div>
       </div>
-
       <button id="loginBtn"><i class="fas fa-right-to-bracket"></i> Login as Administrator</button>
-
       <div class="login-security">
         <i class="fas fa-shield-halved"></i>
         Authentication + administrator UID verification required
@@ -719,62 +199,42 @@ button, input, select { font-family: inherit; }
   </div>
 </section>
 
-<!-- ============ DASHBOARD ============ -->
+<!-- DASHBOARD -->
 <section id="dashboardScreen">
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="brand-icon"><i class="fas fa-book-open"></i></div>
+        <div class="brand-icon"><i class="fas fa-seedling"></i></div>
         <div>
           <h2>SoilSpark</h2>
-          <small>Book · Users &amp; Subscriptions</small>
+          <small>Users &amp; Subscriptions Dashboard</small>
         </div>
       </div>
       <div class="top-actions">
         <div id="adminEmailDisplay" class="admin-email">Administrator</div>
-        <button id="logoutBtn" class="logout-btn">
-          <i class="fas fa-right-from-bracket"></i> Logout
-        </button>
+        <button id="logoutBtn" class="logout-btn"><i class="fas fa-right-from-bracket"></i> Logout</button>
       </div>
     </div>
   </header>
 
   <main class="page">
     <div class="welcome">
-      <h1>Book User Management</h1>
-      <p>Live users, verified emails, and section subscriptions — merged from both the <code>subscriptions</code> and legacy <code>premium_users</code> flows used by BOOK.html.</p>
+      <h1>User Management</h1>
+      <p>View registered users (email &amp; Google), their login details, and active subscription plans.</p>
     </div>
 
-    <!-- STATS -->
     <div class="stats">
-      <div class="stat">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div><strong id="totalUsers">0</strong><span>Total Users</span></div>
-      </div>
-      <div class="stat">
-        <div class="stat-icon"><i class="fas fa-envelope-circle-check"></i></div>
-        <div><strong id="verifiedUsers">0</strong><span>Verified Emails</span></div>
-      </div>
-      <div class="stat">
-        <div class="stat-icon ok"><i class="fas fa-crown"></i></div>
-        <div><strong id="activeSubs">0</strong><span>Active Subscriptions</span></div>
-      </div>
-      <div class="stat">
-        <div class="stat-icon bad"><i class="fas fa-calendar-xmark"></i></div>
-        <div><strong id="expiredSubs">0</strong><span>Expired Subscriptions</span></div>
-      </div>
-      <div class="stat">
-        <div class="stat-icon warn"><i class="fas fa-user-clock"></i></div>
-        <div><strong id="unsubscribedUsers">0</strong><span>Users w/o Active Plan</span></div>
-      </div>
+      <div class="stat"><div class="stat-icon"><i class="fas fa-users"></i></div><div><strong id="totalUsers">0</strong><span>Total Users</span></div></div>
+      <div class="stat"><div class="stat-icon"><i class="fas fa-envelope-circle-check"></i></div><div><strong id="verifiedUsers">0</strong><span>Verified Emails</span></div></div>
+      <div class="stat"><div class="stat-icon"><i class="fas fa-crown"></i></div><div><strong id="activeSubs">0</strong><span>Active Subscriptions</span></div></div>
+      <div class="stat"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div><strong id="expiredSubs">0</strong><span>Expired Subscriptions</span></div></div>
     </div>
 
-    <!-- USERS PANEL -->
     <section class="panel">
       <div class="panel-header">
         <div>
-          <h2><i class="fas fa-user-gear"></i> Registered Book Users</h2>
-          <p>Data from <strong>users</strong>, <strong>subscriptions</strong> and <strong>premium_users</strong> collections.</p>
+          <h2><i class="fas fa-user-gear"></i> Registered Users</h2>
+          <p>Data from <strong>users</strong>, <strong>subscriptions</strong>, and legacy <strong>premium_users</strong>.</p>
         </div>
         <div class="header-buttons">
           <button class="export-btn" id="exportBtn"><i class="fas fa-file-excel"></i> Export to Excel</button>
@@ -795,6 +255,8 @@ button, input, select { font-family: inherit; }
           <button class="filter-btn" data-filter="unverified">Unverified</button>
         </div>
       </div>
+
+      <div id="diagnostics"></div>
 
       <div id="usersContainer">
         <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading users...</p></div>
@@ -817,7 +279,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 /* ============================================================
-   SAME PROJECT AS BOOK.html  (soilspark)
+   FIREBASE
 ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
@@ -828,92 +290,117 @@ const firebaseConfig = {
   appId: "1:22641848933:web:4c08ce5046681dbb698c8c",
   measurementId: "G-1M406BN9JK"
 };
-
-const app = initializeApp(firebaseConfig);
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db   = getFirestore(app);
 
 /* ============================================================
    STATE
 ============================================================ */
-let allUsers = [];          // [{ id, ...userDoc }]
-let subsByUser = {};        // { uid: [ {source:'subscriptions'|'legacy', ...} ] }
+let allUsers = [];
+let allSubs  = [];
 let currentFilter = "all";
 
 const $ = id => document.getElementById(id);
 
 /* ============================================================
-   HELPERS
+   SHARED HELPERS  (aligned with BOOK.html)
 ============================================================ */
-function toast(message, type = "success") {
+const SUBJECT_ALIASES = {
+  "agronomy":"Agronomy","horticulture":"Horticulture",
+  "plant sciences":"Plant Sciences","plant science":"Plant Sciences",
+  "physical science":"Physical Science","entomology":"Entomology",
+  "social sciences":"Social Sciences","social science":"Social Sciences",
+  "agricultural engineering":"Agricultural Engineering","engineering":"Agricultural Engineering",
+  "statistical science":"Statistical Science","statistics":"Statistical Science",
+  "dairy science":"Dairy Science","dairy tech":"Dairy Tech",
+  "plant biotechnology":"Plant Biotechnology","food science":"Food Science"
+};
+
+function normSubject(v){
+  const n = String(v ?? "").trim().toLowerCase().replace(/[_-]+/g," ").replace(/\s+/g," ");
+  return SUBJECT_ALIASES[n] || v || "Unknown";
+}
+
+function toMillis(v){
+  if (v == null) return 0;
+  if (typeof v.toDate === "function") return v.toDate().getTime();
+  if (typeof v === "object" && v.seconds !== undefined) return v.seconds * 1000;
+  if (v instanceof Date) return v.getTime();
+  const t = new Date(v).getTime();
+  return Number.isNaN(t) ? 0 : t;
+}
+
+function subExpiryMillis(s){
+  if (!s) return 0;
+  return toMillis(s.expiryDate ?? s.expiry ?? s.validTill ?? s.endDate ?? s.validUntil);
+}
+
+function subIsActive(s, now = Date.now()){
+  if (!s) return false;
+  const st = String(s.status || s.state || "active").toLowerCase();
+  const activeStatus = ["active","paid","valid","live","approved"].includes(st);
+  return activeStatus && subExpiryMillis(s) > now;
+}
+
+function subUserId(s){
+  return s.userId || s.user_id || s.uid || s.authUid || s.authUID || "";
+}
+
+function subsFor(user, now = Date.now()){
+  const ids = new Set([user.id, user.uid, user.authUid].filter(Boolean));
+  return allSubs.filter(s => ids.has(subUserId(s)));
+}
+
+function isVerifiedUser(u){
+  return u.emailVerified === true
+      || u.emailVerified === "true"
+      || u.isEmailVerified === true
+      || u.verified === true;
+}
+
+function formatDate(ts){
+  const ms = toMillis(ts);
+  if (!ms) return "—";
+  return new Date(ms).toLocaleString("en-IN", {
+    day:"numeric", month:"short", year:"numeric",
+    hour:"numeric", minute:"2-digit"
+  });
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+function toast(msg, type="success"){
   const el = $("toast");
-  el.textContent = message;
+  el.textContent = msg;
   el.className = "";
   el.classList.add(type);
   requestAnimationFrame(() => el.classList.add("show"));
   setTimeout(() => el.classList.remove("show"), 3500);
 }
 
-function showLoginError(message) {
-  const el = $("loginError");
-  el.textContent = message;
-  el.style.display = "block";
-}
-
-function clearLoginError() { $("loginError").style.display = "none"; }
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function formatDate(timestamp) {
-  if (!timestamp) return "—";
-  let date = null;
-  try {
-    if (typeof timestamp.toDate === "function") date = timestamp.toDate();
-    else if (timestamp.seconds !== undefined) date = new Date(timestamp.seconds * 1000);
-    else if (timestamp instanceof Date) date = timestamp;
-    else date = new Date(timestamp);
-  } catch (_) { return "—"; }
-  if (!date || Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleString("en-IN", {
-    day: "numeric", month: "short", year: "numeric",
-    hour: "numeric", minute: "2-digit"
-  });
-}
-
-function isSubActive(sub) {
-  if (!sub) return false;
-  const expiry = sub.expiryDate ? new Date(sub.expiryDate).getTime() : 0;
-  return sub.status === "active" && expiry > Date.now();
-}
-
-function activeSubsOf(uid) {
-  return (subsByUser[uid] || []).filter(isSubActive);
-}
+function showLoginError(m){ const el=$("loginError"); el.textContent=m; el.style.display="block"; }
+function clearLoginError(){ $("loginError").style.display="none"; }
 
 /* ============================================================
-   ADMIN VERIFICATION (same pattern as before)
+   ADMIN VERIFICATION
 ============================================================ */
-async function verifyAdministrator(user) {
+async function verifyAdministrator(user){
   if (!user) throw new Error("You are not authenticated.");
-  const adminSnap = await getDoc(doc(db, "admins", user.uid));
-  if (!adminSnap.exists()) {
-    throw new Error("Access denied. This account is not registered as an administrator.");
-  }
-  const adminData = adminSnap.data();
-  if (adminData.role && String(adminData.role).toLowerCase() !== "admin") {
+  const snap = await getDoc(doc(db, "admins", user.uid));
+  if (!snap.exists()) throw new Error("Access denied. This account is not registered as an administrator.");
+  const data = snap.data();
+  if (data.role && String(data.role).toLowerCase() !== "admin")
     throw new Error("Access denied. Administrator role required.");
-  }
-  if (adminData.active === false) {
-    throw new Error("This administrator account is inactive.");
-  }
-  return adminData;
+  if (data.active === false) throw new Error("This administrator account is inactive.");
+  return data;
 }
 
 /* ============================================================
@@ -926,57 +413,48 @@ onAuthStateChanged(auth, async user => {
     $("adminEmailDisplay").textContent = user.email || "Administrator";
     showDashboard();
     await loadDashboard();
-  } catch (error) {
-    console.error("Admin verification:", error);
-    await signOut(auth);
+  } catch (err) {
+    console.error("Admin verification:", err);
+    try { await signOut(auth); } catch (_) {}
     showLogin();
-    showLoginError(error.message);
+    showLoginError(err.message);
   }
 });
 
-function showLogin() {
-  $("loginScreen").style.display = "flex";
-  $("dashboardScreen").style.display = "none";
-}
-function showDashboard() {
-  $("loginScreen").style.display = "none";
-  $("dashboardScreen").style.display = "block";
-}
+function showLogin(){ $("loginScreen").style.display="flex"; $("dashboardScreen").style.display="none"; }
+function showDashboard(){ $("loginScreen").style.display="none"; $("dashboardScreen").style.display="block"; }
 
 /* ============================================================
    LOGIN / LOGOUT
 ============================================================ */
-async function loginAdmin() {
+async function loginAdmin(){
   clearLoginError();
   const email = $("adminEmail").value.trim();
   const password = $("adminPassword").value;
-  if (!email || !password) {
-    showLoginError("Please enter both administrator email and password.");
-    return;
-  }
-  const button = $("loginBtn");
-  button.disabled = true;
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
+  if (!email || !password){ showLoginError("Please enter both administrator email and password."); return; }
+
+  const btn = $("loginBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
   try {
-    const credential = await signInWithEmailAndPassword(auth, email, password);
-    await verifyAdministrator(credential.user);
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    await verifyAdministrator(cred.user);
     toast("Administrator authentication successful.");
-  } catch (error) {
-    console.error("Login:", error);
-    let message = "Unable to sign in.";
-    if (error.code === "auth/invalid-credential") message = "Incorrect email or password.";
-    else if (error.code === "auth/invalid-email") message = "Please enter a valid email address.";
-    else if (error.code === "auth/too-many-requests") message = "Too many attempts. Please try again later.";
-    else if (error.message && (error.message.includes("Access denied") || error.message.includes("Administrator"))) message = error.message;
+  } catch (err) {
+    console.error("Login:", err);
+    let msg = "Unable to sign in.";
+    if (err.code === "auth/invalid-credential") msg = "Incorrect email or password.";
+    else if (err.code === "auth/invalid-email") msg = "Please enter a valid email address.";
+    else if (err.code === "auth/too-many-requests") msg = "Too many attempts. Try again later.";
+    else if (err.message && (err.message.includes("Access denied") || err.message.includes("Administrator"))) msg = err.message;
     try { await signOut(auth); } catch (_) {}
     showLogin();
-    showLoginError(message);
+    showLoginError(msg);
   } finally {
-    button.disabled = false;
-    button.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login as Administrator';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> Login as Administrator';
   }
 }
-
 $("loginBtn").addEventListener("click", loginAdmin);
 $("adminPassword").addEventListener("keydown", e => { if (e.key === "Enter") loginAdmin(); });
 $("adminEmail").addEventListener("keydown", e => { if (e.key === "Enter") loginAdmin(); });
@@ -984,121 +462,129 @@ $("adminEmail").addEventListener("keydown", e => { if (e.key === "Enter") loginA
 $("logoutBtn").addEventListener("click", async () => {
   try {
     await signOut(auth);
-    allUsers = [];
-    subsByUser = {};
+    allUsers = []; allSubs = [];
+    $("diagnostics").innerHTML = "";
     showLogin();
     toast("Logged out successfully.");
-  } catch (error) {
-    toast("Unable to logout: " + error.message, "error");
-  }
+  } catch (err) { toast("Unable to logout: " + err.message, "error"); }
 });
 
 /* ============================================================
    LOAD DASHBOARD DATA
-   - users from `users`
-   - subs from `subscriptions` (new) + `premium_users` (legacy)
 ============================================================ */
-async function loadDashboard() {
+async function loadDashboard(){
   const container = $("usersContainer");
   container.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading users and subscriptions...</p></div>`;
+  $("diagnostics").innerHTML = "";
 
   try {
-    await verifyAdministrator(auth.currentUser);
+    const user = auth.currentUser;
+    await verifyAdministrator(user);
 
-    /* ---- Users ---- */
+    /* ---------- Users ---------- */
     const userSnap = await getDocs(collection(db, "users"));
     allUsers = userSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    /* ---- Subscriptions (new flow) ---- */
-    subsByUser = {};
+    /* ---------- Subscriptions (new) ---------- */
+    allSubs = [];
+    let subErr = null;
     try {
       const subSnap = await getDocs(collection(db, "subscriptions"));
-      subSnap.docs.forEach(d => {
-        const s = { id: d.id, source: "subscriptions", ...d.data() };
-        const uid = s.userId;
-        if (!uid) return;
-        (subsByUser[uid] ||= []).push(s);
-      });
+      allSubs = subSnap.docs.map(d => ({ id: d.id, ...d.data() }));
     } catch (e) {
-      console.warn("subscriptions read failed:", e);
+      subErr = e;
+      console.warn("subscriptions read failed:", e.code || e.message);
     }
 
-    /* ---- Legacy premium_users (nested array) ---- */
+    /* ---------- Legacy premium_users ---------- */
+    let legacyCount = 0;
+    let legacyErr = null;
     try {
       const premSnap = await getDocs(collection(db, "premium_users"));
-      premSnap.docs.forEach(d => {
+      premSnap.forEach(d => {
         const data = d.data();
-        const uid = d.id;                 // doc ID == user UID
-        const list = Array.isArray(data.subscriptions) ? data.subscriptions : [];
-        list.forEach((s, i) => {
-          (subsByUser[uid] ||= []).push({
-            id: `${uid}_legacy_${i}`,
-            source: "premium_users",
-            userId: uid,
-            subjectId: s.subjectId,
-            planName: s.planName || s.subjectId,
-            status: s.status || (new Date(s.expiryDate).getTime() > Date.now() ? "active" : "expired"),
-            startDate: s.startDate,
-            expiryDate: s.expiryDate
+        (data.subscriptions || []).forEach((s, i) => {
+          allSubs.push({
+            id: `legacy_${d.id}_${i}_${s.subjectId || s.planName || "x"}`,
+            userId: d.id,
+            ...s,
+            status: s.status || "active"
           });
+          legacyCount++;
         });
       });
     } catch (e) {
-      console.warn("premium_users read failed:", e);
+      legacyErr = e;
+      console.warn("premium_users read failed:", e.code || e.message);
     }
+
+    /* ---------- Diagnostics ---------- */
+    const now = Date.now();
+    const activeCount = allSubs.filter(s => subIsActive(s, now)).length;
+    const matchedActive = allUsers.filter(u => subsFor(u, now).some(s => subIsActive(s, now))).length;
+    const subUserIds = new Set(allSubs.map(subUserId).filter(Boolean));
+    const orphanUserIds = [...subUserIds].filter(id => !allUsers.some(u => u.id === id));
+
+    const dParts = [];
+    dParts.push(`<div><strong>Users loaded:</strong> ${allUsers.length}</div>`);
+    dParts.push(`<div><strong>Subscriptions loaded:</strong> ${allSubs.length} <span class="${allSubs.length ? 'ok' : 'bad'}">(${allSubs.length ? 'ok' : 'EMPTY — payment/addDoc may have failed'})</span></div>`);
+    dParts.push(`<div><strong>Legacy premium_users subs merged:</strong> ${legacyCount}</div>`);
+    dParts.push(`<div><strong>Active (now):</strong> ${activeCount} · <strong>Users with active sub:</strong> ${matchedActive}</div>`);
+    if (orphanUserIds.length) {
+      dParts.push(`<div class="bad"><strong>⚠ ${orphanUserIds.length} subscription userId(s) do not match any users/ doc ID:</strong> ${orphanUserIds.slice(0,5).map(escapeHtml).join(", ")}${orphanUserIds.length > 5 ? "…" : ""}</div>`);
+    }
+    if (subErr) dParts.push(`<div class="bad"><strong>subscriptions read error:</strong> ${escapeHtml(subErr.code || subErr.message)}</div>`);
+    if (legacyErr) dParts.push(`<div class="bad"><strong>premium_users read error:</strong> ${escapeHtml(legacyErr.code || legacyErr.message)}</div>`);
+    $("diagnostics").innerHTML = `<div class="diag">${dParts.join("")}</div>`;
+
+    console.log("[Admin] Users:", allUsers.length, "Subs:", allSubs.length,
+                "Active:", activeCount, "Orphan subs:", orphanUserIds);
 
     updateStats();
     renderUsers();
-  } catch (error) {
-    console.error("Dashboard load error:", error);
+
+  } catch (err) {
+    console.error("Dashboard load error:", err);
     container.innerHTML = `
       <div class="error-box">
         <strong><i class="fas fa-triangle-exclamation"></i> Unable to load user data</strong>
-        <br><br>${escapeHtml(error.message)}
-        <br><br>Make sure your admin account can read <strong>users</strong>, <strong>subscriptions</strong> and <strong>premium_users</strong> collections.
-      </div>
-    `;
+        <br><br>${escapeHtml(err.message)}
+        <br><br>Make sure your admin account can read <strong>users</strong> and <strong>subscriptions</strong> collections.
+      </div>`;
   }
 }
 
 /* ============================================================
    STATS
 ============================================================ */
-function updateStats() {
-  const total = allUsers.length;
-  const verified = allUsers.filter(u => u.emailVerified === true).length;
+function updateStats(){
+  const now = Date.now();
+  const total    = allUsers.length;
+  const verified = allUsers.filter(isVerifiedUser).length;
+  const activeSubs  = allSubs.filter(s => subIsActive(s, now)).length;
+  const expiredSubs = allSubs.filter(s => subExpiryMillis(s) > 0 && !subIsActive(s, now)).length;
 
-  let active = 0, expired = 0, usersWithActive = 0;
-  allUsers.forEach(u => {
-    const subs = subsByUser[u.id] || [];
-    const act = subs.filter(isSubActive);
-    if (act.length) usersWithActive++;
-    active += act.length;
-    expired += subs.filter(s => !isSubActive(s)).length;
-  });
-
-  $("totalUsers").textContent = total;
+  $("totalUsers").textContent    = total;
   $("verifiedUsers").textContent = verified;
-  $("activeSubs").textContent = active;
-  $("expiredSubs").textContent = expired;
-  $("unsubscribedUsers").textContent = total - usersWithActive;
+  $("activeSubs").textContent    = activeSubs;
+  $("expiredSubs").textContent   = expiredSubs;
 }
 
 /* ============================================================
-   FILTERS + RENDER
-============================================================ */
-function filterUsers() {
+   FILTER + SEARCH============================================================ */
+function getFilteredUsers(){
+  const now  = Date.now();
   const search = $("searchInput").value.trim().toLowerCase();
   let users = [...allUsers];
 
   if (currentFilter === "subscribed") {
-    users = users.filter(u => activeSubsOf(u.id).length > 0);
+    users = users.filter(u => subsFor(u, now).some(s => subIsActive(s, now)));
   } else if (currentFilter === "unsubscribed") {
-    users = users.filter(u => activeSubsOf(u.id).length === 0);
+    users = users.filter(u => !subsFor(u, now).some(s => subIsActive(s, now)));
   } else if (currentFilter === "verified") {
-    users = users.filter(u => u.emailVerified === true);
+    users = users.filter(isVerifiedUser);
   } else if (currentFilter === "unverified") {
-    users = users.filter(u => u.emailVerified !== true);
+    users = users.filter(u => !isVerifiedUser(u));
   }
 
   if (search) {
@@ -1110,11 +596,10 @@ function filterUsers() {
   return users;
 }
 
-function renderUsers() {
+function renderUsers(){
   const container = $("usersContainer");
-  const users = filterUsers();
-
-  if (!users.length) {
+  const users = getFilteredUsers();
+  if (!users.length){
     container.innerHTML = `
       <div class="empty">
         <i class="far fa-user"></i>
@@ -1129,7 +614,7 @@ function renderUsers() {
 /* ============================================================
    PROVIDER DETECTION
 ============================================================ */
-function getProvider(user) {
+function getProvider(user){
   if (user.providerData && Array.isArray(user.providerData)) {
     const hasGoogle = user.providerData.some(p => p.providerId === "google.com");
     const hasPassword = user.providerData.some(p => p.providerId === "password");
@@ -1137,9 +622,7 @@ function getProvider(user) {
     if (hasGoogle) return "google";
     if (hasPassword) return "email";
   }
-  if (user.signInProvider) {
-    if (String(user.signInProvider).includes("google")) return "google";
-  }
+  if (user.signInProvider && String(user.signInProvider).includes("google")) return "google";
   if (!user.createdAt && !user.phone) return "google";
   return "email";
 }
@@ -1147,17 +630,22 @@ function getProvider(user) {
 /* ============================================================
    USER CARD
 ============================================================ */
-function createUserCard(user) {
-  const name = String(user.name || user.displayName || "SoilSpark Student").trim();
+function createUserCard(user){
+  const now = Date.now();
+  const name  = String(user.name || user.displayName || "SoilSpark Student").trim();
   const email = String(user.email || "No email");
   const phone = String(user.phone || "No phone");
   const createdAt = formatDate(user.createdAt);
   const initial = escapeHtml(name.charAt(0).toUpperCase());
-  const isVerified = user.emailVerified === true;
+  const isVerified = isVerifiedUser(user);
   const role = user.role || "student";
-  const provider = getProvider(user);
 
-  let providerIcon = "", providerClass = "", providerTitle = "", providerBadge = "";
+  const provider = getProvider(user);
+  let providerIcon = "fas fa-envelope";
+  let providerClass = "provider-email";
+  let providerTitle = "Signed up with Email";
+  let providerBadge = "";
+
   if (provider === "google") {
     providerIcon = "fab fa-google"; providerClass = "provider-google";
     providerTitle = "Signed up with Google";
@@ -1165,34 +653,27 @@ function createUserCard(user) {
   } else if (provider === "both") {
     providerIcon = "fas fa-link"; providerClass = "provider-email";
     providerTitle = "Linked Email & Google";
-    providerBadge = `<span class="badge badge-google"><i class="fab fa-google"></i> Google</span><span class="badge badge-verified"><i class="fas fa-envelope"></i> Email</span>`;
-  } else {
-    providerIcon = "fas fa-envelope"; providerClass = "provider-email";
-    providerTitle = "Signed up with Email";
+    providerBadge = `<span class="badge badge-google"><i class="fab fa-google"></i> Google</span> <span class="badge badge-verified"><i class="fas fa-envelope"></i> Email</span>`;
   }
 
-  const subs = (subsByUser[user.id] || [])
-    .slice()
-    .sort((a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0));
+  const userSubs = subsFor(user, now)
+    .sort((a,b) => subExpiryMillis(b) - subExpiryMillis(a));
+  const hasActive = userSubs.some(s => subIsActive(s, now));
 
-  const hasActive = subs.some(isSubActive);
-
-  const subHtml = subs.length
-    ? subs.map(s => {
-        const act = isSubActive(s);
-        const isLegacy = s.source === "premium_users";
-        const statusClass = act ? "sub-active" : "sub-inactive";
-        const statusText = act ? "Active" : "Expired";
-        const subject = s.subjectId || s.planName || "Unknown";
-        const plan = s.planName || s.planId || "—";
-        const start = s.startDate ? formatDate(s.startDate) : "—";
-        const end = s.expiryDate ? formatDate(s.expiryDate) : "—";
+  const subHtml = userSubs.length
+    ? userSubs.map(s => {
+        const isActive = subIsActive(s, now);
+        const statusClass = isActive ? "sub-active" : "sub-inactive";
+        const statusText  = isActive ? "Active" : "Expired";
+        const subject = normSubject(s.subjectId || s.planName || "Unknown");
+        const plan    = s.planName || s.planId || "—";
+        const start   = formatDate(s.startDate);
+        const end     = formatDate(s.expiryDate ?? s.expiry ?? s.validTill ?? s.endDate);
         return `
           <div class="sub-item">
             <div>
               <span class="sub-subject">${escapeHtml(subject)}</span>
               <span class="sub-dates"> · ${escapeHtml(plan)}</span>
-              ${isLegacy ? `<span class="badge badge-legacy" style="margin-left:6px;">legacy</span>` : ""}
               <div class="sub-dates">${escapeHtml(start)} → ${escapeHtml(end)}</div>
             </div>
             <span class="sub-status ${statusClass}">${statusText}</span>
@@ -1209,10 +690,7 @@ function createUserCard(user) {
             <span class="provider-badge ${providerClass}"><i class="${providerIcon}"></i></span>
           </div>
           <div>
-            <div class="user-name">
-              ${escapeHtml(name)}
-              ${providerBadge}
-            </div>
+            <div class="user-name">${escapeHtml(name)} ${providerBadge}</div>
             <div class="user-email">${escapeHtml(email)}</div>
             <div class="user-meta">
               <span><i class="fas fa-phone"></i>${escapeHtml(phone)}</span>
@@ -1239,18 +717,16 @@ function createUserCard(user) {
 /* ============================================================
    EXPORT TO EXCEL
 ============================================================ */
-function exportToExcel() {
-  const users = filterUsers();
-  if (!users.length) {
-    toast("No users to export.", "error");
-    return;
-  }
+function exportToExcel(){
+  const now = Date.now();
+  const users = getFilteredUsers();
+  if (!users.length){ toast("No users to export.", "error"); return; }
 
   const rows = users.map(u => {
     const provider = getProvider(u);
-    const subs = (subsByUser[u.id] || []).slice().sort((a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0));
-    const active = subs.find(isSubActive);
-    const latest = subs[0] || null;
+    const userSubs = subsFor(u, now).sort((a,b) => subExpiryMillis(b) - subExpiryMillis(a));
+    const activeSub = userSubs.find(s => subIsActive(s, now));
+    const latestSub = userSubs[0] || null;
 
     return {
       "Name": u.name || u.displayName || "—",
@@ -1258,33 +734,29 @@ function exportToExcel() {
       "Phone": u.phone || "—",
       "Role": u.role || "student",
       "Provider": provider === "google" ? "Google" : provider === "both" ? "Email + Google" : "Email",
-      "Email Verified": u.emailVerified === true ? "Yes" : "No",
+      "Email Verified": isVerifiedUser(u) ? "Yes" : "No",
       "Joined": formatDate(u.createdAt),
-      "Active Subscription": active ? "Yes" : "No",
-      "Active Subject": active ? (active.subjectId || active.planName || "—") : "—",
-      "Active Plan": active ? (active.planName || active.planId || "—") : "—",
-      "Active Start": active ? formatDate(active.startDate) : "—",
-      "Active Expiry": active ? formatDate(active.expiryDate) : "—",
-      "Active Source": active ? active.source : "—",
-      "Total Subscriptions": subs.length,
-      "Latest Status": latest ? (latest.status || "—") : "—",
+      "Active Subscription": activeSub ? "Yes" : "No",
+      "Subscription Subject": activeSub ? normSubject(activeSub.subjectId || activeSub.planName) : "—",
+      "Subscription Plan": activeSub ? (activeSub.planName || activeSub.planId || "—") : "—",
+      "Subscription Start": activeSub ? formatDate(activeSub.startDate) : "—",
+      "Subscription Expiry": activeSub ? formatDate(activeSub.expiryDate ?? activeSub.expiry ?? activeSub.validTill ?? activeSub.endDate) : "—",
+      "Latest Subscription Status": latestSub ? (latestSub.status || "—") : "—",
       "UID": u.id
     };
   });
 
   const ws = XLSX.utils.json_to_sheet(rows);
-  ws["!cols"] = Object.keys(rows[0]).map(key => ({
-    wch: Math.max(key.length, ...rows.map(r => String(r[key] || "").length)) + 2
+  ws["!cols"] = Object.keys(rows[0]).map(k => ({
+    wch: Math.max(k.length, ...rows.map(r => String(r[k] || "").length)) + 2
   }));
 
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Book Users");
-
+  XLSX.utils.book_append_sheet(wb, ws, "Users");
   const dateStr = new Date().toISOString().slice(0, 10);
-  XLSX.writeFile(wb, `soilspark_book_users_${dateStr}.xlsx`);
+  XLSX.writeFile(wb, `soilspark_users_${dateStr}.xlsx`);
   toast(`Exported ${rows.length} user(s) to Excel.`);
 }
-
 $("exportBtn").addEventListener("click", exportToExcel);
 
 /* ============================================================
@@ -1292,25 +764,25 @@ $("exportBtn").addEventListener("click", exportToExcel);
 ============================================================ */
 $("searchInput").addEventListener("input", renderUsers);
 
-document.querySelectorAll(".filter-btn").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-    button.classList.add("active");
-    currentFilter = button.dataset.filter;
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
     renderUsers();
   });
 });
 
 $("refreshBtn").addEventListener("click", async () => {
-  const button = $("refreshBtn");
-  button.disabled = true;
-  button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+  const btn = $("refreshBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
   try {
     await loadDashboard();
     toast("User data refreshed.");
   } finally {
-    button.disabled = false;
-    button.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
   }
 });
 </script>
