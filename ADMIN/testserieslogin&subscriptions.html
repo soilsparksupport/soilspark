@@ -279,7 +279,6 @@
     .badge-active { background: #e8f7ee; color: #198754; border: 1px solid #b8dfc6; }
     .badge-expired { background: #fff0f0; color: #9b3030; border: 1px solid #efc1c1; }
     .badge-plan { background: #eaf4fc; color: #1769aa; border: 1px solid #b9d1ec; }
-    .badge-warn { background: #fff4dc; color: #8a5a00; border: 1px solid #f2d58b; }
 
     .user-cell { display: flex; align-items: center; gap: 10px; }
     .user-avatar {
@@ -714,16 +713,12 @@
       const isActive = latest.status === "active" &&
         new Date(latest.expiryDate || 0).getTime() > Date.now();
 
-      const profileBadge = user
-        ? ""
-        : ` <span class="badge badge-warn" title="Subscription exists but no matching user profile was found"><i class="fas fa-triangle-exclamation"></i> No profile</span>`;
-
       return `<tr>
         <td>
           <div class="user-cell">
             <div class="user-avatar">${escapeHtml(initial)}</div>
             <div class="user-info">
-              <strong>${escapeHtml(name)}${profileBadge}</strong>
+              <strong>${escapeHtml(name)}</strong>
               <small>${escapeHtml(email)} · ${escapeHtml(phone)}</small>
             </div>
           </div>
@@ -779,7 +774,6 @@
       const isSubscribed = subsByUser.has(u.id);
       const joined = formatDate(u.createdAt);
       const role = u.role || "student";
-      const emailVerified = u.emailVerified === true;
 
       return `<tr>
         <td>
@@ -799,12 +793,6 @@
           </span>
         </td>
         <td>${escapeHtml(role)}</td>
-        <td>
-          <span class="badge ${emailVerified ? "badge-active" : "badge-expired"}">
-            <i class="fas ${emailVerified ? "fa-check" : "fa-xmark"}"></i>
-            ${emailVerified ? "Verified" : "Unverified"}
-          </span>
-        </td>
         <td>${escapeHtml(joined)}</td>
       </tr>`;
     }).join("");
@@ -817,7 +805,6 @@
             <th>Phone</th>
             <th>Subscription</th>
             <th>Role</th>
-            <th>Email Status</th>
             <th>Joined</th>
           </tr>
         </thead>
