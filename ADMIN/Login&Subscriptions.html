@@ -149,7 +149,7 @@
     /* STATS CARDS */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 17px;
       margin-bottom: 30px;
     }
@@ -207,7 +207,7 @@
       font-weight: 500;
     }
 
-    /* RECENT USERS TABLE */
+    /* PANEL */
     .panel {
       background: white;
       border: 1px solid var(--border);
@@ -247,10 +247,8 @@
     .btn-secondary:hover { background: var(--blue-light); border-color: var(--blue); }
     .btn-secondary:disabled { opacity: .6; cursor: not-allowed; }
 
-    .table-wrap {
-      overflow-x: auto;
-      padding: 0;
-    }
+    /* TABLE */
+    .table-wrap { overflow-x: auto; padding: 0; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -311,6 +309,11 @@
       background: #fff0f0;
       color: #9b3030;
       border: 1px solid #efc1c1;
+    }
+    .badge-plan {
+      background: #eaf4fc;
+      color: #1769aa;
+      border: 1px solid #b9d1ec;
     }
 
     .user-cell {
@@ -466,7 +469,7 @@
       <p>Live metrics for user growth and subscription status across SoilSpark.</p>
     </div>
 
-    <!-- STATS CARDS -->
+    <!-- SUMMARY CARDS -->
     <div class="stats">
       <div class="stat">
         <div class="stat-icon users"><i class="fas fa-users"></i></div>
@@ -498,16 +501,30 @@
       </div>
     </div>
 
-    <!-- RECENT USERS -->
-    <section class="panel">
+    <!-- SUBSCRIBED USERS PANEL -->
+    <section class="panel" id="subscribedPanel">
       <div class="panel-header">
         <div>
-          <h2><i class="fas fa-user-plus"></i> Recent Users</h2>
-          <p>Latest sign-ups and their subscription status.</p>
+          <h2><i class="fas fa-crown" style="color:#198754"></i> Subscribed Users</h2>
+          <p>Users with at least one active subscription plan.</p>
         </div>
-        <button class="btn-secondary" id="refreshBtn"><i class="fas fa-rotate"></i> Refresh</button>
+        <button class="btn-secondary" id="refreshSubscribedBtn"><i class="fas fa-rotate"></i> Refresh</button>
       </div>
-      <div id="usersTableContainer" class="table-wrap">
+      <div id="subscribedTableContainer" class="table-wrap">
+        <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading subscribed users...</p></div>
+      </div>
+    </section>
+
+    <!-- ALL USERS PANEL -->
+    <section class="panel" id="allUsersPanel">
+      <div class="panel-header">
+        <div>
+          <h2><i class="fas fa-users" style="color:#1769aa"></i> All Users</h2>
+          <p>Complete list of registered users on SoilSpark.</p>
+        </div>
+        <button class="btn-secondary" id="refreshAllUsersBtn"><i class="fas fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="allUsersTableContainer" class="table-wrap">
         <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading users...</p></div>
       </div>
     </section>
@@ -520,7 +537,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, getDoc, doc, query, orderBy, limit, where }
+  import { getFirestore, collection, getDocs, getDoc, doc, query, orderBy }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -631,23 +648,39 @@
 
   /* ============================================================
      LOAD DASHBOARD DATA
-     - total users      : count of documents in "users"
-     - subscribed users : unique userIds with an active subscription
-     - active subs      : subscription docs with status === "active" and expiry > now
-     - total revenue    : sum of finalAmount for active / paid subscriptions
-     - recent users     : latest 10 users by createdAt
+     - Fetches users and subscriptions once
+     - Renders summary cards + both tables
   ============================================================ */
+  let cachedUsers = [];
+  let cachedActiveSubs = [];
+
   async function loadDashboardData() {
     await verifyAdministrator(auth.currentUser);
 
-    $("usersTableContainer").innerHTML =
+    $("subscribedTableContainer").innerHTML =
+      `<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading subscribed users...</p></div>`;
+    $("allUsersTableContainer").innerHTML =
       `<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading users...</p></div>`;
 
     try {
-      /* 1. TOTAL USERS */
-      const usersSnap = await getDocs(collection(db, "users"));
-      const totalUsers = usersSnap.size;
-      $("totalUsers").textContent = totalUsers.toLocaleString("en-IN");
+      /* 1. USERS */
+      let users = [];
+      try {
+        const usersSnap = await getDocs(collection(db, "users"));
+        users = usersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      } catch (e) {
+        console.warn("Users read failed:", e);
+      }
+
+      /* Sort users by createdAt desc (client-side, handles missing fields) */
+      users.sort((a, b) => {
+        const ta = getTimestampMs(a.createdAt);
+        const tb = getTimestampMs(b.createdAt);
+        return tb - ta;
+      });
+
+      cachedUsers = users;
+      $("totalUsers").textContent = users.length.toLocaleString("en-IN");
 
       /* 2. SUBSCRIPTIONS */
       let subscriptions = [];
@@ -655,71 +688,85 @@
         const subsSnap = await getDocs(collection(db, "subscriptions"));
         subscriptions = subsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
       } catch (e) {
-        console.warn("Subscription collection read failed:", e);
+        console.warn("Subscriptions read failed:", e);
       }
 
       const now = Date.now();
-
       const activeSubs = subscriptions.filter(s => {
         const expiry = new Date(s.expiryDate || 0).getTime();
         return s.status === "active" && expiry > now;
       });
+      cachedActiveSubs = activeSubs;
 
-      /* Unique subscribed users (any active subscription) */
-      const subscribedUserIds = new Set(
-        activeSubs.map(s => s.userId).filter(Boolean)
-      );
+      /* Unique subscribed user IDs */
+      const subscribedUserIds = new Set(activeSubs.map(s => s.userId).filter(Boolean));
       $("totalSubscribed").textContent = subscribedUserIds.size.toLocaleString("en-IN");
-
-      /* Count of active subscription records */
       $("activeSubscriptions").textContent = activeSubs.length.toLocaleString("en-IN");
 
-      /* 3. TOTAL REVENUE (from active subscriptions, fall back to planAmount) */
+      /* 3. REVENUE */
       const revenue = activeSubs.reduce((sum, s) => {
         const amount = Number(s.finalAmount ?? s.planAmount ?? 0);
         return sum + (isNaN(amount) ? 0 : amount);
       }, 0);
       $("totalRevenue").textContent = revenue.toLocaleString("en-IN");
 
-      /* 4. RECENT USERS TABLE */
-      let recentUsers = [];
-      try {
-        const q = query(collection(db, "users"), orderBy("createdAt", "desc"), limit(10));
-        const snap = await getDocs(q);
-        recentUsers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      } catch (e) {
-        // createdAt ordering may fail if some docs lack the field; fall back to unsorted
-        console.warn("Ordered user query failed, falling back:", e);
-        recentUsers = usersSnap.docs.slice(0, 10).map(d => ({ id: d.id, ...d.data() }));
-      }
+      /* 4. BUILD LOOKUP: userId -> active subscription(s) */
+      const subsByUser = new Map();
+      activeSubs.forEach(s => {
+        if (!s.userId) return;
+        if (!subsByUser.has(s.userId)) subsByUser.set(s.userId, []);
+        subsByUser.get(s.userId).push(s);
+      });
 
-      renderRecentUsers(recentUsers, activeSubs);
+      /* 5. RENDER SUBSCRIBED USERS TABLE */
+      renderSubscribedUsers(users, subsByUser);
+
+      /* 6. RENDER ALL USERS TABLE */
+      renderAllUsers(users, subsByUser);
     } catch (error) {
       console.error(error);
-      $("usersTableContainer").innerHTML =
+      const errHtml =
         `<div class="error-box"><strong><i class="fas fa-triangle-exclamation"></i> Unable to load dashboard data</strong><br><br>${escapeHtml(error.message)}</div>`;
+      $("subscribedTableContainer").innerHTML = errHtml;
+      $("allUsersTableContainer").innerHTML = errHtml;
       toast("Failed to load dashboard data.", "error");
     }
   }
 
-  function renderRecentUsers(users, activeSubs) {
-    const container = $("usersTableContainer");
-    if (!users.length) {
-      container.innerHTML = `<div class="empty"><i class="fas fa-users"></i><h3>No users yet</h3><p>User accounts will appear here once people sign up.</p></div>`;
+  /* ---------- SUBSCRIBED USERS TABLE ---------- */
+  function renderSubscribedUsers(users, subsByUser) {
+    const container = $("subscribedTableContainer");
+
+    /* Only users that have at least one active subscription */
+    const rows = users.filter(u => subsByUser.has(u.id));
+
+    if (!rows.length) {
+      container.innerHTML =
+        `<div class="empty"><i class="fas fa-crown"></i><h3>No subscribed users</h3><p>Active subscription holders will appear here.</p></div>`;
       return;
     }
 
-    /* Build a set of userIds that currently have an active subscription */
-    const subscribedIds = new Set(activeSubs.map(s => s.userId).filter(Boolean));
+    const html = rows.map(u => {
+      const subs = subsByUser.get(u.id) || [];
+      /* Pick the subscription with the latest expiry for display */
+      const latest = subs.slice().sort(
+        (a, b) => new Date(b.expiryDate || 0) - new Date(a.expiryDate || 0)
+      )[0] || {};
 
-    const rows = users.map(u => {
       const name = u.name || u.displayName || "Unnamed User";
       const email = u.email || "—";
       const initial = (name || email || "?").charAt(0).toUpperCase();
-      const isSubscribed = subscribedIds.has(u.id) ||
-        (u.subscriptionStatus && String(u.subscriptionStatus).toLowerCase() === "active");
 
-      const created = formatDate(u.createdAt);
+      const planName = latest.planName || latest.planId || "—";
+      const sectionName = latest.sectionName || latest.subjectId || "—";
+      const planDays = latest.planDays ? `${latest.planDays} days` : "—";
+      const amount = Number(latest.finalAmount ?? latest.planAmount ?? 0);
+
+      const startDate = formatDate(latest.startDate);
+      const expiryDate = formatDate(latest.expiryDate);
+
+      const isActive = latest.status === "active" &&
+        new Date(latest.expiryDate || 0).getTime() > Date.now();
 
       return `<tr>
         <td>
@@ -731,13 +778,18 @@
             </div>
           </div>
         </td>
+        <td><span class="badge badge-plan"><i class="fas fa-tag"></i> ${escapeHtml(planName)}</span></td>
+        <td>${escapeHtml(sectionName)}</td>
+        <td>${escapeHtml(planDays)}</td>
+        <td>₹${amount.toLocaleString("en-IN")}</td>
+        <td>${escapeHtml(startDate)}</td>
+        <td>${escapeHtml(expiryDate)}</td>
         <td>
-          <span class="badge ${isSubscribed ? "badge-premium" : "badge-free"}">
-            <i class="fas ${isSubscribed ? "fa-crown" : "fa-user"}"></i>
-            ${isSubscribed ? "Subscribed" : "Free"}
+          <span class="badge ${isActive ? "badge-active" : "badge-expired"}">
+            <i class="fas ${isActive ? "fa-circle-check" : "fa-circle-xmark"}"></i>
+            ${isActive ? "Active" : "Expired"}
           </span>
         </td>
-        <td>${escapeHtml(created)}</td>
       </tr>`;
     }).join("");
 
@@ -746,25 +798,105 @@
         <thead>
           <tr>
             <th>User</th>
+            <th>Plan</th>
+            <th>Section</th>
+            <th>Duration</th>
+            <th>Amount</th>
+            <th>Start Date</th>
+            <th>Expiry Date</th>
             <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>${html}</tbody>
+      </table>`;
+  }
+
+  /* ---------- ALL USERS TABLE ---------- */
+  function renderAllUsers(users, subsByUser) {
+    const container = $("allUsersTableContainer");
+
+    if (!users.length) {
+      container.innerHTML =
+        `<div class="empty"><i class="fas fa-users"></i><h3>No users yet</h3><p>User accounts will appear here once people sign up.</p></div>`;
+      return;
+    }
+
+    const html = users.map(u => {
+      const name = u.name || u.displayName || "Unnamed User";
+      const email = u.email || "—";
+      const phone = u.phone || "—";
+      const initial = (name || email || "?").charAt(0).toUpperCase();
+      const isSubscribed = subsByUser.has(u.id);
+      const joined = formatDate(u.createdAt);
+      const role = u.role || "student";
+      const emailVerified = u.emailVerified === true;
+
+      return `<tr>
+        <td>
+          <div class="user-cell">
+            <div class="user-avatar">${escapeHtml(initial)}</div>
+            <div class="user-info">
+              <strong>${escapeHtml(name)}</strong>
+              <small>${escapeHtml(email)}</small>
+            </div>
+          </div>
+        </td>
+        <td>${escapeHtml(phone)}</td>
+        <td>
+          <span class="badge ${isSubscribed ? "badge-premium" : "badge-free"}">
+            <i class="fas ${isSubscribed ? "fa-crown" : "fa-user"}"></i>
+            ${isSubscribed ? "Subscribed" : "Free"}
+          </span>
+        </td>
+        <td>${escapeHtml(role)}</td>
+        <td>
+          <span class="badge ${emailVerified ? "badge-active" : "badge-expired"}">
+            <i class="fas ${emailVerified ? "fa-check" : "fa-xmark"}"></i>
+            ${emailVerified ? "Verified" : "Unverified"}
+          </span>
+        </td>
+        <td>${escapeHtml(joined)}</td>
+      </tr>`;
+    }).join("");
+
+    container.innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Phone</th>
+            <th>Subscription</th>
+            <th>Role</th>
+            <th>Email Status</th>
             <th>Joined</th>
           </tr>
         </thead>
-        <tbody>${rows}</tbody>
+        <tbody>${html}</tbody>
       </table>`;
   }
 
   /* HELPERS */
+  function getTimestampMs(ts) {
+    if (!ts) return 0;
+    try {
+      if (typeof ts.toDate === "function") return ts.toDate().getTime();
+      if (ts.seconds !== undefined) return ts.seconds * 1000;
+      if (ts instanceof Date) return ts.getTime();
+      const d = new Date(ts);
+      return isNaN(d.getTime()) ? 0 : d.getTime();
+    } catch (_) { return 0; }
+  }
+
   function formatDate(ts) {
-    if (!ts) return "Recently";
+    if (!ts) return "—";
     let d = null;
     try {
       if (typeof ts.toDate === "function") d = ts.toDate();
       else if (ts.seconds !== undefined) d = new Date(ts.seconds * 1000);
       else if (ts instanceof Date) d = ts;
       else d = new Date(ts);
-    } catch (_) { return "Recently"; }
-    if (!d || Number.isNaN(d.getTime())) return "Recently";
+    } catch (_) { return "—"; }
+    if (!d || Number.isNaN(d.getTime())) return "—";
     return d.toLocaleString("en-IN", {
       day: "numeric", month: "short", year: "numeric",
       hour: "numeric", minute: "2-digit"
@@ -777,14 +909,27 @@
       .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
 
-  /* REFRESH */
-  $("refreshBtn").addEventListener("click", async () => {
-    const btn = $("refreshBtn");
+  /* REFRESH BUTTONS */
+  $("refreshSubscribedBtn").addEventListener("click", async () => {
+    const btn = $("refreshSubscribedBtn");
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
     try {
       await loadDashboardData();
-      toast("Dashboard refreshed.");
+      toast("Subscribed users refreshed.");
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
+    }
+  });
+
+  $("refreshAllUsersBtn").addEventListener("click", async () => {
+    const btn = $("refreshAllUsersBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+    try {
+      await loadDashboardData();
+      toast("All users refreshed.");
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-rotate"></i> Refresh';
