@@ -318,6 +318,15 @@ button,input{font:inherit}
 .review-item.unanswered{border-left:4px solid #e0a800;background:#fffbe6}
 .review-item h4{font-size:12px;line-height:1.5}
 .review-item p{font-size:11px;margin-top:6px;color:var(--muted)}
+  .review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
+.review-all-options>b{display:block;font-size:11px;margin-bottom:5px;color:var(--muted)}
+.review-option{font-size:11px;padding:5px 8px;margin-bottom:4px;border-radius:6px;border:1px solid transparent;color:var(--text)}
+.review-option:last-child{margin-bottom:0}
+.review-option-correct{background:var(--green-light);border-color:var(--green-soft);color:#3e5a2f;font-weight:600}
+.review-option-wrong{background:var(--danger-soft);border-color:#f0c9c3;color:#a14a3e;font-weight:600}
+.review-opt-tag{font-size:8px;font-weight:800;padding:1px 6px;border-radius:10px;margin-left:4px;white-space:nowrap}
+.review-opt-tag.correct-tag{background:var(--green-soft);color:#587441}
+.review-opt-tag.wrong-tag{background:#f8d7da;color:#a14a3e}
 .tag{display:inline-block;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:800;margin-top:7px}
 .tag.correct{background:var(--green-soft);color:#587441}
 .tag.wrong{background:var(--danger-soft);color:#a14a3e}
@@ -1302,19 +1311,31 @@ function toggleReview(i){
   el.innerHTML=r.review.map((x,n)=>{
     const opts=x.options||[];
     const isUnanswered = x.isUnanswered !== undefined ? x.isUnanswered : (x.selectedIndex === null);
-    const selectedLabel=x.selectedIndex===null?null:String.fromCharCode(65+x.selectedIndex);
+    const selectedIdx = x.selectedIndex;
     const correctIdx = (x.correctIndex!=null && !isNaN(x.correctIndex)) ? x.correctIndex : -1;
-    const correctLabel = correctIdx>=0 ? String.fromCharCode(65+correctIdx) : "?";
-    const selectedText=selectedLabel!=null?opts[x.selectedIndex]:null;
-    const correctText = correctIdx>=0 ? (opts[correctIdx]||"") : "";
     let statusClass="wrong";
     let statusLabel="WRONG";
     if(isUnanswered){statusClass="unanswered";statusLabel="NOT ANSWERED";}
     else if(x.isCorrect){statusClass="correct";statusLabel="CORRECT";}
+
+    // Build the full options list
+    const optionsHtml = opts.map((opt, oi) => {
+      const label = String.fromCharCode(65 + oi);
+      const isSelected = selectedIdx === oi;
+      const isCorrect = correctIdx === oi;
+      let cls = "review-option";
+      let suffix = "";
+      if (isCorrect) { cls += " review-option-correct"; suffix = ' <span class="review-opt-tag correct-tag">Correct</span>'; }
+      if (isSelected && !isCorrect) { cls += " review-option-wrong"; suffix = ' <span class="review-opt-tag wrong-tag">Your answer</span>'; }
+      if (isSelected && isCorrect) { suffix = ' <span class="review-opt-tag correct-tag">Your answer · Correct</span>'; }
+      return `<div class="${cls}">(${label}) ${esc(opt||"")}${suffix}</div>`;
+    }).join("");
+
     return `<div class="review-item ${statusClass}">
       <h4>${n+1}. ${esc(x.question)}</h4>
-      <p><b>Your answer:</b> ${selectedLabel!=null?`(${selectedLabel}) ${esc(selectedText||"")}`:"<i>Not answered</i>"}</p>
-      <p><b>Correct answer:</b> ${correctIdx>=0?`(${correctLabel}) ${esc(correctText)}`:"<i>Not available</i>"}</p>
+      <p><b>Your answer:</b> ${selectedIdx!=null?`(${String.fromCharCode(65+selectedIdx)}) ${esc(opts[selectedIdx]||"")}`:"<i>Not answered</i>"}</p>
+      <p><b>Correct answer:</b> ${correctIdx>=0?`(${String.fromCharCode(65+correctIdx)}) ${esc(opts[correctIdx]||"")}`:"<i>Not available</i>"}</p>
+      <div class="review-all-options"><b>All options:</b>${optionsHtml}</div>
       ${x.explanation?`<p style="margin-top:8px;padding:8px;background:#f6f9f2;border-radius:8px;border-left:3px solid var(--green)"><b>Explanation:</b> ${esc(x.explanation)}</p>`:""}
       <span class="tag ${statusClass}">${statusLabel}</span>
     </div>`;
