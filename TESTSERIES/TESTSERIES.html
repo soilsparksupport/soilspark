@@ -1557,6 +1557,225 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 window.addEventListener("beforeunload",()=>{
   if(timerInterval) clearInterval(timerInterval);
 });
+
+
+  (function() {
+    'use strict';
+
+    // ============================================
+    // 1. Disable Right-Click Context Menu
+    // ============================================
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 2. Disable Keyboard Shortcuts
+    // ============================================
+    document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + C (Copy)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + X (Cut)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'x') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + V (Paste) - optional
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + A (Select All)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + S (Save)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + P (Print)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + U (View Source)
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+            e.preventDefault();
+            return false;
+        }
+
+        // F12 (DevTools)
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + Shift + I/J/C (DevTools)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && 
+            ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + Shift + K (Firefox DevTools)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            return false;
+        }
+
+        // Ctrl/Cmd + Shift + S (Screenshot in some browsers)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            return false;
+        }
+
+        // PrintScreen key
+        if (e.key === 'PrintScreen' || e.keyCode === 44) {
+            // Clear clipboard
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText('');
+            }
+            e.preventDefault();
+            return false;
+        }
+
+        // Alt + PrintScreen
+        if (e.altKey && (e.key === 'PrintScreen' || e.keyCode === 44)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // ============================================
+    // 3. Disable Copy Event
+    // ============================================
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 4. Disable Cut Event
+    // ============================================
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 5. Disable Paste Event (optional)
+    // ============================================
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 6. Disable Text Selection
+    // ============================================
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 7. Disable Drag & Drop (prevents dragging content)
+    // ============================================
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 8. Disable Before Print (Ctrl+P fallback)
+    // ============================================
+    window.addEventListener('beforeprint', function(e) {
+        // Optional: return false or hide content
+        // Note: beforeprint can't be prevented, use CSS instead
+    });
+
+    // ============================================
+    // 9. Apply CSS to prevent selection & printing
+    // ============================================
+    var style = document.createElement('style');
+    style.innerHTML = `
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            -webkit-touch-callout: none !important;
+        }
+        @media print {
+            body * {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            body::after {
+                content: "Printing is disabled.";
+                display: block !important;
+                visibility: visible !important;
+                font-size: 24px;
+                text-align: center;
+                margin-top: 50px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // ============================================
+    // 10. Disable DevTools (basic detection)
+    // ============================================
+    var devtoolsOpen = false;
+    var threshold = 160;
+
+    setInterval(function() {
+        var widthDiff = window.outerWidth - window.innerWidth > threshold;
+        var heightDiff = window.outerHeight - window.innerHeight > threshold;
+
+        if (widthDiff || heightDiff) {
+            if (!devtoolsOpen) {
+                devtoolsOpen = true;
+                // Optional: Redirect or blank page
+                // document.body.innerHTML = '<h1>Developer Tools Detected!</h1>';
+                console.clear();
+            }
+        } else {
+            devtoolsOpen = false;
+        }
+    }, 1000);
+
+    // ============================================
+    // 11. Prevent Image Dragging
+    // ============================================
+    document.querySelectorAll('img').forEach(function(img) {
+        img.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
+    });
+
+    // ============================================
+    // 12. Prevent Middle-Click (open in new tab)
+    // ============================================
+    document.addEventListener('auxclick', function(e) {
+        if (e.button === 1) {
+            e.preventDefault();
+        }
+    });
+
+})();
 </script>
 </body>
 </html>
