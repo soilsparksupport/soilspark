@@ -6,7 +6,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SoilSpark · Question Book</title>
+<title>SoilSpark · Test Series</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -52,6 +52,9 @@
   --coral-light:#ffe8e5;
   --lime:#d4e157;
   --lime-light:#f7fce0;
+  --free:#1f7a44;
+  --free-soft:#e8f7ee;
+  --free-border:#b7e6c8;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -198,6 +201,15 @@ button,input{font:inherit}
 }
 .topic-duration.no-timer{background:#f5f0e8;color:var(--muted);border-color:var(--border)}
 
+/* Free badge on topic cards  /* FREEMODE */
+.topic-free{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,var(--free-soft),#d6f5e1);
+  color:var(--free);border:1px solid var(--free-border);
+  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:900;
+  margin-bottom:8px;margin-left:4px;letter-spacing:.2px;
+}
+
 /* ===== LOADING / EMPTY ===== */
 .loading,.empty{
   background:#fff;border:1px solid var(--border);border-radius:18px;
@@ -207,78 +219,12 @@ button,input{font:inherit}
 .empty i,.loading i{font-size:30px;color:var(--orange);margin-bottom:12px}
 .note{margin-top:10px;font-size:11px;color:var(--muted)}
 
-/* ===== QUESTION / RESULT / HISTORY VIEWS ===== */
+/* ===== RESULT / HISTORY ===== */
 #questionView,#resultView,#historyView{display:none}
 .question-shell,.result-card,.history-shell{
   background:#fff;border:1px solid var(--border);border-radius:22px;
   box-shadow:var(--shadow);overflow:hidden;
 }
-.question-head{
-  padding:17px 22px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;gap:15px;align-items:center;
-  background:linear-gradient(135deg,var(--sky-light),var(--peach-light));
-}
-.back{
-  border:1px solid var(--border);background:#fff;color:var(--blue-dark);
-  padding:9px 13px;border-radius:10px;font-weight:800;cursor:pointer;
-}
-.back:hover{background:var(--orange-light);border-color:var(--orange-soft)}
-.topic-title{font:700 18px Poppins;color:var(--text-dark)}
-.progress{font-size:12px;color:var(--muted);font-weight:700}
-.question-area{padding:28px;max-width:900px;margin:auto}
-.q-label{
-  font-size:12px;font-weight:800;color:var(--orange);
-  margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px;
-}
-.q-text{
-  font:700 21px/1.5 Poppins;color:var(--text-dark);
-  background:linear-gradient(135deg,var(--mint-light),var(--lime-light));
-  border:1px solid var(--green-soft);border-radius:18px;
-  padding:21px;margin-bottom:22px;
-}
-
-/* ===== OPTIONS ===== */
-.options{display:flex;flex-direction:column;gap:12px}
-.option{
-  display:flex;gap:14px;align-items:flex-start;
-  border:1.5px solid var(--border);border-radius:15px;
-  padding:15px 17px;cursor:pointer;transition:.2s;background:#fff;
-}
-.option:hover{border-color:var(--orange);background:var(--orange-light)}
-.option.selected{
-  border-color:var(--green);background:var(--green-light);
-  box-shadow:0 4px 14px rgba(127,176,105,.15);
-}
-.letter{
-  width:30px;height:30px;min-width:30px;border-radius:9px;
-  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
-  display:grid;place-items:center;font-weight:800;color:var(--orange);
-}
-.option.selected .letter{
-  background:linear-gradient(135deg,var(--green),var(--green-soft));
-  color:#fff;
-}
-.option-text{font-size:14px;line-height:1.5;padding-top:4px}
-
-/* ===== ACTIONS ===== */
-.actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}
-.action{border:0;border-radius:11px;padding:11px 17px;font-weight:800;cursor:pointer}
-.secondary{background:linear-gradient(135deg,var(--peach-light),var(--orange-light));color:var(--text)}
-.secondary:hover{background:linear-gradient(135deg,var(--orange-soft),var(--peach))}
-.primary{background:linear-gradient(135deg,var(--green),var(--green-soft));color:#fff}
-.primary:hover{background:linear-gradient(135deg,var(--green-soft),var(--green))}
-.disabled{opacity:.45;cursor:not-allowed}
-
-/* ===== EXPLANATION ===== */
-.explanation{
-  display:none;margin-top:20px;
-  border:1px solid var(--green-soft);
-  background:linear-gradient(135deg,var(--mint-light),var(--green-light));
-  border-radius:14px;padding:15px;color:#4e683e;font-size:13px;line-height:1.6;
-}
-.explanation.show{display:block}
-
-/* ===== RESULT CARD ===== */
 .result-card{padding:28px}
 .result-hero{text-align:center;padding:12px 0 25px}
 .result-icon{font-size:42px;color:var(--green);margin-bottom:10px}
@@ -292,6 +238,13 @@ button,input{font:inherit}
 .result-stat strong{display:block;font:800 20px Poppins;color:var(--blue-dark)}
 .result-stat span{font-size:10px;color:var(--muted)}
 .result-actions{display:flex;gap:9px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+
+/* ===== ACTION BUTTONS ===== */
+.action{border:0;border-radius:11px;padding:11px 17px;font-weight:800;cursor:pointer}
+.secondary{background:linear-gradient(135deg,var(--peach-light),var(--orange-light));color:var(--text)}
+.secondary:hover{background:linear-gradient(135deg,var(--orange-soft),var(--peach))}
+.primary{background:linear-gradient(135deg,var(--green),var(--green-soft));color:#fff}
+.primary:hover{background:linear-gradient(135deg,var(--green-soft),var(--green))}
 
 /* ===== DASHBOARD ===== */
 .dashboard{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
@@ -329,7 +282,7 @@ button,input{font:inherit}
 .review-item.unanswered{border-left:4px solid #e0a800;background:#fffbe6}
 .review-item h4{font-size:12px;line-height:1.5}
 .review-item p{font-size:11px;margin-top:6px;color:var(--muted)}
-  .review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
+.review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
 .review-all-options>b{display:block;font-size:11px;margin-bottom:5px;color:var(--muted)}
 .review-option{font-size:11px;padding:5px 8px;margin-bottom:4px;border-radius:6px;border:1px solid transparent;color:var(--text)}
 .review-option:last-child{margin-bottom:0}
@@ -384,7 +337,6 @@ button,input{font:inherit}
 }
 .option-radio-wrapper input{transform:scale(1.2);accent-color:var(--green);pointer-events:none}
 
-/* Action bar */
 .action-control-bar{
   padding:14px 28px;background:#ffffff;border-top:1px solid var(--border);
   display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
@@ -401,10 +353,7 @@ button,input{font:inherit}
 .nta-btn-warning:hover{background:#e08a4a}
 .nta-btn-info{background:#2c6e9e;color:white;border:none}
 .nta-btn-info:hover{background:#1d5a8a}
-.nta-btn-purple{background:#6a1b9a;color:white;border:none}
-.nta-btn-purple:hover{background:#4a148c}
 
-/* Sidebar palette */
 .sidebar-palette-panel{
   width:320px;background:#fff;display:flex;flex-direction:column;
   border-left:1px solid var(--border);padding:20px 16px;
@@ -439,7 +388,6 @@ button,input{font:inherit}
 .palette-scroll-viewport{flex:1;overflow-y:auto}
 .palette-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;place-items:center}
 
-/* Timer display */
 .timer-display{
   background:linear-gradient(135deg,#4f8fae,#8ecae6);color:white;
   padding:8px 16px;border-radius:40px;font-family:monospace;font-weight:700;
@@ -450,7 +398,6 @@ button,input{font:inherit}
 .timer-display.danger{background:linear-gradient(135deg,#d14800,#e76f51);animation:pulse 0.5s infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 
-/* Mobile palette toggle */
 .mobile-palette-toggle{
   display:none;background:var(--green);color:white;border:none;
   width:44px;height:44px;border-radius:12px;cursor:pointer;
@@ -460,7 +407,6 @@ button,input{font:inherit}
   background:rgba(0,0,0,0.4);z-index:80;
 }
 
-/* Timer warning modal */
 .timer-warning-modal{
   position:fixed;inset:0;background:rgba(0,0,0,0.6);
   display:none;align-items:center;justify-content:center;z-index:300;
@@ -555,13 +501,15 @@ button,input{font:inherit}
 }
 </style>
 
-<!-- Purchase / section lock styles (unchanged from original) -->
+<!-- Purchase / section lock styles (with FREE support) -->
 <style id="sectionPurchaseStyles">
 .section-lock{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:#fff8e6;border:1px solid #f2d58b;color:#725400;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px}
 .section-lock button,.buy-section{border:0;border-radius:9px;padding:8px 12px;background:#111827;color:#fff;font-weight:700;cursor:pointer}
 .section-paid{color:#16803c;background:#edf9f1;border-color:#b9e4c5}
+.section-free{color:var(--free);background:var(--free-soft);border-color:var(--free-border)}
 .topic.locked{opacity:.72}
 .topic.locked .open{background:#f59e0b}
+.topic.is-free{border-color:var(--free-border);background:linear-gradient(135deg,#f8fdf9,#fff)}
 .purchase-overlay{position:fixed;inset:0;background:rgba(15,23,42,.62);display:none;align-items:center;justify-content:center;padding:18px;z-index:9999}
 .purchase-modal{width:min(680px,100%);background:#fff;border-radius:18px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow:auto}
 .purchase-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
@@ -580,7 +528,7 @@ button,input{font:inherit}
 <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Test Series</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login1.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button><button id="leaderboardBtn" class="action secondary"><i class="fa-solid fa-trophy"></i> Leaderboard</button></div></div>
+<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Free sections are open to everyone; paid sections unlock after purchase.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button><button id="leaderboardBtn" class="action secondary"><i class="fa-solid fa-trophy"></i> Leaderboard</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
 <div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading Test Series...</p></div></div>
 </section>
@@ -668,7 +616,6 @@ button,input{font:inherit}
   </div>
 </div>
 
-<!-- Timer warning modal -->
 <div id="timerWarningModal" class="timer-warning-modal">
   <div class="timer-warning-card">
     <i class="fa-solid fa-hourglass-end" style="font-size:3rem;color:var(--danger);margin-bottom:15px"></i>
@@ -678,7 +625,6 @@ button,input{font:inherit}
   </div>
 </div>
 
-<!-- Mobile drawer backdrop -->
 <div class="drawer-overlay-backdrop" id="drawerBackdrop" onclick="toggleMobilePalette(false)"></div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -703,7 +649,7 @@ const $ = id => document.getElementById(id);
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== NTA EXAM STATE ===== */
-let examStates={}; // 0=not visited, 1=not answered, 2=answered, 3=marked, 4=marked+answered
+let examStates={};
 let timerInterval=null;
 let timeRemaining=0;
 let timerActive=false;
@@ -780,6 +726,25 @@ async function loadSubscriptions(){
   }
  }catch(e){console.warn("Legacy subscription load failed",e)}
 }
+
+/* FREEMODE: free-access helpers (identical to BOOK.html) */
+function isFreeSection(sec){
+  if(!sec) return false;
+  if(sec.free === true || sec.isFree === true) return true;
+  if(sec.price != null && Number(sec.price) === 0) return true;
+  return false;
+}
+function isFreeTopic(t){
+  if(!t) return false;
+  return t.free === true || t.isFree === true;
+}
+function hasAccess(sec, t){
+  if(isFreeTopic(t)) return true;
+  if(isFreeSection(sec)) return true;
+  const sid = subjectIdForSection(sec||{});
+  return !!activeSubscription(sid);
+}
+
 function showPurchase(subjectId,sectionName){
  if(!user){alert("Please sign in first.");return}
  purchaseSubjectId=subjectId;purchaseSectionName=sectionName||subjectId;
@@ -972,7 +937,6 @@ $("topicSearch").addEventListener("input",renderBook);
 $("purchaseClose").onclick=closePurchase;
 $("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
 
-/* ===== LEADERBOARD BUTTONS ===== */
 $("leaderboardBtn").onclick=showLeaderboard;
 $("leaderboardBack").onclick=showBook;
 $("resultLeaderboardBtn").onclick=showLeaderboard;
@@ -1008,13 +972,23 @@ function renderBook(){
  if(s)secs=secs.map(x=>({...x,topics:x.topics.filter(t=>(x.name+" "+(x.description||"")+" "+t.name+" "+(t.description||"")).toLowerCase().includes(s))})).filter(x=>x.topics.length);
 
  $("book").innerHTML=secs.length?secs.map(sec=>{
-   const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
+   const sid = subjectIdForSection(sec);
+   const sectionFree = isFreeSection(sec);              /* FREEMODE */
+   const paid = sectionFree || !!activeSubscription(sid);/* FREEMODE */
+
+   const lockBanner = sectionFree
+     ? `<span>✓ Free — open to all students.</span>`     /* FREEMODE */
+     : paid
+       ? `<span>✓ Purchased — access until ${new Date(activeSubscription(sid).expiryDate).toLocaleDateString()}</span>`
+       : `<span>🔒 This section is locked. Purchase access to attempt its questions.</span>
+          <button class="buy-section" data-section="${esc(sec.id)}">Buy Section</button>`;
+
    return `<article class="section collapsed" data-section-id="${esc(sec.id)}">
     <div class="section-head" data-toggle-section="${esc(sec.id)}">
       <div class="section-title">
         <div class="section-icon"><i class="fa-solid fa-layer-group"></i></div>
         <div>
-          <h3>${esc(sec.name)}</h3>
+          <h3>${esc(sec.name)}${sectionFree?' <span class="topic-free" style="margin-left:6px;vertical-align:middle">Free</span>':''}</h3>
           <p>${esc(sec.description||"Choose a topic below.")}</p>
         </div>
       </div>
@@ -1024,16 +998,21 @@ function renderBook(){
       </div>
     </div>
     <div class="section-body">
-      <div class="section-lock ${paid?"section-paid":""}">
-        <span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>
-        ${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}
-      </div>
+      <div class="section-lock ${sectionFree?"section-free":(paid?"section-paid":"")}">${lockBanner}</div>
       <div class="topic-grid">${sec.topics.map(t=>{
         const mins=Number(t.duration||0);
         const durBadge=mins>0
           ?`<span class="topic-duration"><i class="fa-regular fa-clock"></i> ${formatDuration(mins)}</span>`
           :`<span class="topic-duration no-timer"><i class="fa-solid fa-infinity"></i> No timer</span>`;
-        return `<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`;
+
+        const topicFree = isFreeTopic(t);
+        const canOpen = paid || topicFree;
+        const freeBadge = topicFree && !sectionFree
+          ? `<span class="topic-free"><i class="fa-solid fa-gift"></i> Free</span>`
+          : "";
+        const openLabel=canOpen?"Open":"🔒 Buy";
+        const cardClass=`topic ${canOpen?"":"locked"} ${topicFree?"is-free":""}`;
+        return `<article class="${cardClass}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}${freeBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${openLabel}</button></div></article>`;
       }).join("")}</div>
     </div>
    </article>`;
@@ -1058,10 +1037,15 @@ function renderBook(){
    const sec=sections.find(x=>x.id===b.dataset.section);
    if(sec)showPurchase(subjectIdForSection(sec),sec.name);
  });
+
+ /* FREEMODE: access-aware click handler */
  $("book").querySelectorAll("[data-topic]").forEach(el=>el.onclick=()=>{
-   const t=topics.find(x=>x.id===el.dataset.topic),sec=sections.find(x=>x.id===t?.sectionId),sid=subjectIdForSection(sec||{});
-   if(activeSubscription(sid))openTopic(el.dataset.topic);
-   else showPurchase(sid,sec?.name||sid);
+   const t=topics.find(x=>x.id===el.dataset.topic);
+   if(!t) return;
+   const sec=sections.find(x=>x.id===t.sectionId);
+   const sid=subjectIdForSection(sec||{});
+   if(!hasAccess(sec, t)){ showPurchase(sid,sec?.name||sid); return; }
+   openTopic(t.id);
  });
 }
 
@@ -1226,10 +1210,18 @@ window.triggerFinalSubmit=function(){
   if(confirm("Are you sure you want to submit the test?")) finishTest();
 };
 
-/* ===== OPEN TOPIC ===== */
+/* ===== OPEN TOPIC (with access re-check) ===== */
 async function openTopic(id,retry=false){
   currentTopic=topics.find(t=>t.id===id)||null;
   if(!currentTopic) return;
+
+  /* FREEMODE: verify access (covers Retry button) */
+  const secForTopic = sections.find(x=>x.id===currentTopic.sectionId);
+  if(!hasAccess(secForTopic, currentTopic)){
+    showPurchase(subjectIdForSection(secForTopic||{}), secForTopic?.name||"Section");
+    return;
+  }
+
   $("bookView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
@@ -1313,7 +1305,6 @@ async function finishTest(){
   saveLocalHistory();
   renderResult();
   syncAttempt(currentResult);
-  // Add to leaderboard
   await addToLeaderboard(currentResult);
 }
 
@@ -1366,7 +1357,6 @@ async function addToLeaderboard(result){
 
 async function loadLeaderboardData(){
   try{
-    // Get all leaderboard entries, ordered by percent desc, then completedAt desc
     const snap = await getDocs(query(
       collection(db, "leaderboard"),
       orderBy("percent", "desc"),
@@ -1374,8 +1364,6 @@ async function loadLeaderboardData(){
       limit(200)
     ));
     leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}));
-    
-    // Extract unique topics for filter tabs
     const topicMap = new Map();
     leaderboardData.forEach(e => {
       if(!topicMap.has(e.topicId)) {
@@ -1385,7 +1373,6 @@ async function loadLeaderboardData(){
     leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
   }catch(e){
     console.warn("Could not load leaderboard:", e);
-    // Fallback: query without orderBy if index not ready
     try{
       const snap = await getDocs(query(collection(db, "leaderboard"), limit(200)));
       leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}))
@@ -1405,61 +1392,48 @@ async function loadLeaderboardData(){
 function renderLeaderboard(){
   const tabsContainer = $("leaderboardTabs");
   const listContainer = $("leaderboardList");
-  
-  // Filter data by selected test/topic
   let filtered = leaderboardData;
-  if(leaderboardFilter !== 'all') {
-    filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
-  }
-  
-  // Deduplicate: best score per user PER TOPIC (never merge different tests)
+  if(leaderboardFilter !== 'all') filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
+
   const bestPerUserPerTopic = new Map();
   filtered.forEach(e => {
     const key = `${e.userId}_${e.topicId}`;
     const existing = bestPerUserPerTopic.get(key);
-    if(!existing || (e.percent > existing.percent) || 
+    if(!existing || (e.percent > existing.percent) ||
        (e.percent === existing.percent && e.correct > existing.correct)) {
       bestPerUserPerTopic.set(key, e);
     }
   });
-  
+
   let entries = Array.from(bestPerUserPerTopic.values());
-  // Sort by percent desc, then correct desc, then completedAt asc
   entries.sort((a,b) => {
     if(b.percent !== a.percent) return b.percent - a.percent;
     if(b.correct !== a.correct) return b.correct - a.correct;
     return (a.completedAt?.seconds || 0) - (b.completedAt?.seconds || 0);
   });
-  
-  // Render tabs
+
   let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Tests</button>`;
   leaderboardTopics.forEach(t => {
     tabsHtml += `<button class="leaderboard-tab ${leaderboardFilter === t.id ? 'active' : ''}" data-filter="${esc(t.id)}">${esc(t.name)}</button>`;
   });
   tabsContainer.innerHTML = tabsHtml;
   tabsContainer.querySelectorAll("[data-filter]").forEach(btn => {
-    btn.onclick = () => {
-      leaderboardFilter = btn.dataset.filter;
-      renderLeaderboard();
-    };
+    btn.onclick = () => { leaderboardFilter = btn.dataset.filter; renderLeaderboard(); };
   });
-  
-  // Render entries
+
   if(entries.length === 0) {
     listContainer.innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet. Be the first to complete a test!</p></div>';
     return;
   }
-  
+
   listContainer.innerHTML = entries.map((e, idx) => {
     const rank = idx + 1;
     let rankClass = "";
     if(rank === 1) rankClass = "gold";
     else if(rank === 2) rankClass = "silver";
     else if(rank === 3) rankClass = "bronze";
-    
     const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
     const dateStr = e.completedAt ? new Date(e.completedAt.seconds * 1000).toLocaleDateString() : "";
-    
     return `<div class="leader-row">
       <div class="leader-rank ${rankClass}">${rank <= 3 ? medal : rank}</div>
       <div class="leader-info">
@@ -1480,7 +1454,6 @@ async function showLeaderboard(){
   $("resultView").style.display="none";
   $("historyView").style.display="none";
   $("leaderboardView").style.display="block";
-  
   $("leaderboardList").innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>';
   await loadLeaderboardData();
   renderLeaderboard();
@@ -1495,6 +1468,7 @@ function showBook(){
   $("historyView").style.display="none";
   $("leaderboardView").style.display="none";
   $("bookView").style.display="block";
+  renderBook();
 }
 
 function showHistory(){
@@ -1526,7 +1500,6 @@ function toggleReview(i){
     if(isUnanswered){statusClass="unanswered";statusLabel="NOT ANSWERED";}
     else if(x.isCorrect){statusClass="correct";statusLabel="CORRECT";}
 
-    // Build the full options list
     const optionsHtml = opts.map((opt, oi) => {
       const label = String.fromCharCode(65 + oi);
       const isSelected = selectedIdx === oi;
@@ -1553,228 +1526,55 @@ function toggleReview(i){
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 
-/* Clean up timer on unload */
 window.addEventListener("beforeunload",()=>{
   if(timerInterval) clearInterval(timerInterval);
 });
 
-
-  (function() {
-    'use strict';
-
-    // ============================================
-    // 1. Disable Right-Click Context Menu
-    // ============================================
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 2. Disable Keyboard Shortcuts
-    // ============================================
-    document.addEventListener('keydown', function(e) {
-        // Ctrl/Cmd + C (Copy)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + X (Cut)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'x') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + V (Paste) - optional
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + A (Select All)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + S (Save)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + P (Print)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + U (View Source)
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
-            e.preventDefault();
-            return false;
-        }
-
-        // F12 (DevTools)
-        if (e.key === 'F12' || e.keyCode === 123) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + Shift + I/J/C (DevTools)
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && 
-            ['i', 'j', 'c'].includes(e.key.toLowerCase())) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + Shift + K (Firefox DevTools)
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'k') {
-            e.preventDefault();
-            return false;
-        }
-
-        // Ctrl/Cmd + Shift + S (Screenshot in some browsers)
-        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 's') {
-            e.preventDefault();
-            return false;
-        }
-
-        // PrintScreen key
-        if (e.key === 'PrintScreen' || e.keyCode === 44) {
-            // Clear clipboard
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText('');
-            }
-            e.preventDefault();
-            return false;
-        }
-
-        // Alt + PrintScreen
-        if (e.altKey && (e.key === 'PrintScreen' || e.keyCode === 44)) {
-            e.preventDefault();
-            return false;
-        }
-    });
-
-    // ============================================
-    // 3. Disable Copy Event
-    // ============================================
-    document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 4. Disable Cut Event
-    // ============================================
-    document.addEventListener('cut', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 5. Disable Paste Event (optional)
-    // ============================================
-    document.addEventListener('paste', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 6. Disable Text Selection
-    // ============================================
-    document.addEventListener('selectstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 7. Disable Drag & Drop (prevents dragging content)
-    // ============================================
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 8. Disable Before Print (Ctrl+P fallback)
-    // ============================================
-    window.addEventListener('beforeprint', function(e) {
-        // Optional: return false or hide content
-        // Note: beforeprint can't be prevented, use CSS instead
-    });
-
-    // ============================================
-    // 9. Apply CSS to prevent selection & printing
-    // ============================================
-    var style = document.createElement('style');
-    style.innerHTML = `
-        * {
-            -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
-            user-select: none !important;
-            -webkit-touch-callout: none !important;
-        }
-        @media print {
-            body * {
-                display: none !important;
-                visibility: hidden !important;
-            }
-            body::after {
-                content: "Printing is disabled.";
-                display: block !important;
-                visibility: visible !important;
-                font-size: 24px;
-                text-align: center;
-                margin-top: 50px;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-
-    // ============================================
-    // 10. Disable DevTools (basic detection)
-    // ============================================
-    var devtoolsOpen = false;
-    var threshold = 160;
-
-    setInterval(function() {
-        var widthDiff = window.outerWidth - window.innerWidth > threshold;
-        var heightDiff = window.outerHeight - window.innerHeight > threshold;
-
-        if (widthDiff || heightDiff) {
-            if (!devtoolsOpen) {
-                devtoolsOpen = true;
-                // Optional: Redirect or blank page
-                // document.body.innerHTML = '<h1>Developer Tools Detected!</h1>';
-                console.clear();
-            }
-        } else {
-            devtoolsOpen = false;
-        }
-    }, 1000);
-
-    // ============================================
-    // 11. Prevent Image Dragging
-    // ============================================
-    document.querySelectorAll('img').forEach(function(img) {
-        img.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
-    });
-
-    // ============================================
-    // 12. Prevent Middle-Click (open in new tab)
-    // ============================================
-    document.addEventListener('auxclick', function(e) {
-        if (e.button === 1) {
-            e.preventDefault();
-        }
-    });
-
+(function() {
+  'use strict';
+  document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'x') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') { e.preventDefault(); return false; }
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(e.key.toLowerCase())) { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'k') { e.preventDefault(); return false; }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 's') { e.preventDefault(); return false; }
+    if (e.key === 'PrintScreen' || e.keyCode === 44) {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('');
+      e.preventDefault(); return false;
+    }
+    if (e.altKey && (e.key === 'PrintScreen' || e.keyCode === 44)) { e.preventDefault(); return false; }
+  });
+  document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
+  document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
+  document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
+  document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
+  document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
+  window.addEventListener('beforeprint', function(e) {});
+  var style = document.createElement('style');
+  style.innerHTML = `
+    * { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; }
+    @media print { body * { display: none !important; visibility: hidden !important; } body::after { content: "Printing is disabled."; display: block !important; visibility: visible !important; font-size: 24px; text-align: center; margin-top: 50px; } }
+  `;
+  document.head.appendChild(style);
+  var devtoolsOpen = false;
+  var threshold = 160;
+  setInterval(function() {
+    var widthDiff = window.outerWidth - window.innerWidth > threshold;
+    var heightDiff = window.outerHeight - window.innerHeight > threshold;
+    if (widthDiff || heightDiff) { if (!devtoolsOpen) { devtoolsOpen = true; console.clear(); } }
+    else { devtoolsOpen = false; }
+  }, 1000);
+  document.querySelectorAll('img').forEach(function(img) {
+    img.addEventListener('dragstart', function(e) { e.preventDefault(); });
+  });
+  document.addEventListener('auxclick', function(e) { if (e.button === 1) { e.preventDefault(); } });
 })();
 </script>
 </body>
