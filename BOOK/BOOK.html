@@ -199,6 +199,15 @@ button,input{font:inherit}
 }
 .topic-duration.no-timer{background:#f5f0e8;color:var(--muted);border-color:var(--border)}
 
+/* Free badge on topic cards  /* FREEMODE */
+.topic-free{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,#eafbf0,#d6f5e1);
+  color:#1f7a44;border:1px solid #b7e6c8;
+  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;
+  margin-bottom:8px;margin-left:4px;
+}
+
 /* Attempt badge on topic cards */
 .topic-attempts{
   display:inline-flex;align-items:center;gap:4px;
@@ -318,7 +327,7 @@ button,input{font:inherit}
 .review-item.unanswered{border-left:4px solid #e0a800;background:#fffbe6}
 .review-item h4{font-size:12px;line-height:1.5}
 .review-item p{font-size:11px;margin-top:6px;color:var(--muted)}
-  .review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
+.review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
 .review-all-options>b{display:block;font-size:11px;margin-bottom:5px;color:var(--muted)}
 .review-option{font-size:11px;padding:5px 8px;margin-bottom:4px;border-radius:6px;border:1px solid transparent;color:var(--text)}
 .review-option:last-child{margin-bottom:0}
@@ -521,7 +530,7 @@ button,input{font:inherit}
 <header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Question Book</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Question Book</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="hero"><div><h2>Question Book</h2><p>Choose a section, open a topic, and practice. Free sections are open to everyone; paid sections unlock after purchase.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
 <div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
 </section>
@@ -691,6 +700,26 @@ async function loadSubscriptions(){
   }
  }catch(e){console.warn("Legacy subscription load failed",e)}
 }
+
+/* FREEMODE: free-access helpers */
+function isFreeSection(sec){
+  if(!sec) return false;
+  if(sec.free === true || sec.isFree === true) return true;
+  // A section with no price and no explicit paid flag is treated as free too.
+  if(sec.price != null && Number(sec.price) === 0) return true;
+  return false;
+}
+function isFreeTopic(t){
+  if(!t) return false;
+  return t.free === true || t.isFree === true;
+}
+function hasAccess(sec, t){
+  if(isFreeTopic(t)) return true;
+  if(isFreeSection(sec)) return true;
+  const sid = subjectIdForSection(sec||{});
+  return !!activeSubscription(sid);
+}
+
 function showPurchase(subjectId,sectionName){
  if(!user){alert("Please sign in first.");return}
  purchaseSubjectId=subjectId;purchaseSectionName=sectionName||subjectId;
@@ -919,13 +948,23 @@ function renderBook(){
  if(s)secs=secs.map(x=>({...x,topics:x.topics.filter(t=>(x.name+" "+(x.description||"")+" "+t.name+" "+(t.description||"")).toLowerCase().includes(s))})).filter(x=>x.topics.length);
 
  $("book").innerHTML=secs.length?secs.map(sec=>{
-   const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
+   const sid = subjectIdForSection(sec);
+   const sectionFree = isFreeSection(sec);              /* FREEMODE */
+   const paid = sectionFree || !!activeSubscription(sid);/* FREEMODE */
+
+   const lockBanner = sectionFree
+     ? `<span>✓ Free — open to all students.</span>`     /* FREEMODE */
+     : paid
+       ? `<span>✓ Purchased — access until ${new Date(activeSubscription(sid).expiryDate).toLocaleDateString()}</span>`
+       : `<span>🔒 This section is locked. Purchase access to attempt its questions.</span>
+          <button class="buy-section" data-section="${esc(sec.id)}">Buy Section</button>`;
+
    return `<article class="section collapsed" data-section-id="${esc(sec.id)}">
     <div class="section-head" data-toggle-section="${esc(sec.id)}">
       <div class="section-title">
         <div class="section-icon"><i class="fa-solid fa-layer-group"></i></div>
         <div>
-          <h3>${esc(sec.name)}</h3>
+          <h3>${esc(sec.name)}${sectionFree?' <span class="topic-free" style="margin-left:6px;vertical-align:middle">Free</span>':''}</h3>
           <p>${esc(sec.description||"Choose a topic below.")}</p>
         </div>
       </div>
@@ -935,10 +974,7 @@ function renderBook(){
       </div>
     </div>
     <div class="section-body">
-      <div class="section-lock ${paid?"section-paid":""}">
-        <span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>
-        ${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}
-      </div>
+      <div class="section-lock ${paid?"section-paid":""}">${lockBanner}</div>
       <div class="topic-grid">${sec.topics.map(t=>{
         const mins=Number(t.duration||0);
         const durBadge=mins>0
@@ -954,9 +990,15 @@ function renderBook(){
           ?`<span class="topic-attempts ${exhausted?"exhausted":""}"><i class="fa-solid fa-rotate"></i> ${remaining}/${limit} left</span>`
           :"";
 
-        const openLabel=paid?(exhausted?"Limit reached":"Open"):"🔒 Buy";
-        const cardClass=`topic ${paid?"":"locked"} ${exhausted?"limit-reached":""}`;
-        return `<article class="${cardClass}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}${attemptBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${openLabel}</button></div></article>`;
+        // FREEMODE: free topic badge + access-aware labels
+        const topicFree = isFreeTopic(t);
+        const canOpen = paid || topicFree;
+        const freeBadge = topicFree && !sectionFree
+          ? `<span class="topic-free"><i class="fa-solid fa-gift"></i> Free</span>`
+          : "";
+        const openLabel=canOpen?(exhausted?"Limit reached":"Open"):"🔒 Buy";
+        const cardClass=`topic ${canOpen?"":"locked"} ${exhausted?"limit-reached":""}`;
+        return `<article class="${cardClass}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}${freeBadge}${attemptBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${openLabel}</button></div></article>`;
       }).join("")}</div>
     </div>
    </article>`;
@@ -981,16 +1023,22 @@ function renderBook(){
    const sec=sections.find(x=>x.id===b.dataset.section);
    if(sec)showPurchase(subjectIdForSection(sec),sec.name);
  });
+
+ /* FREEMODE: access-aware click handler */
  $("book").querySelectorAll("[data-topic]").forEach(el=>el.onclick=()=>{
-   const t=topics.find(x=>x.id===el.dataset.topic),sec=sections.find(x=>x.id===t?.sectionId),sid=subjectIdForSection(sec||{});
-   if(!activeSubscription(sid)){ showPurchase(sid,sec?.name||sid); return; }
-   // Attempt-limit guard (front-line UX check)
-   const lim=Number(t?.maxAttempts||0);
+   const t=topics.find(x=>x.id===el.dataset.topic);
+   if(!t) return;
+   const sec=sections.find(x=>x.id===t.sectionId);
+   const sid=subjectIdForSection(sec||{});
+
+   if(!hasAccess(sec, t)){ showPurchase(sid,sec?.name||sid); return; }
+
+   const lim=Number(t.maxAttempts||0);
    if(lim>0 && attemptsUsedFor(t.id)>=lim){
      alert(`You have used all ${lim} attempt(s) for "${t.name}".`);
      return;
    }
-   openTopic(el.dataset.topic);
+   openTopic(t.id);
  });
 }
 
@@ -1155,12 +1203,19 @@ window.triggerFinalSubmit=function(){
   if(confirm("Are you sure you want to submit the test?")) finishTest();
 };
 
-/* ===== OPEN TOPIC (with attempt-limit guard) ===== */
+/* ===== OPEN TOPIC (with access + attempt-limit guards) ===== */
 async function openTopic(id,retry=false){
   currentTopic=topics.find(t=>t.id===id)||null;
   if(!currentTopic) return;
 
-  // Attempt-limit guard — covers card clicks AND the retry button
+  /* FREEMODE: verify access again (covers the Retry button path) */
+  const secForTopic = sections.find(x=>x.id===currentTopic.sectionId);
+  if(!hasAccess(secForTopic, currentTopic)){
+    showPurchase(subjectIdForSection(secForTopic||{}), secForTopic?.name||"Section");
+    return;
+  }
+
+  // Attempt-limit guard
   const limit=Number(currentTopic.maxAttempts||0);
   if(limit>0){
     const used=attemptsUsedFor(id);
@@ -1285,7 +1340,6 @@ function showBook(){
   $("resultView").style.display="none";
   $("historyView").style.display="none";
   $("bookView").style.display="block";
-  // Re-render so attempt badges reflect the just-completed test
   renderBook();
 }
 
@@ -1318,7 +1372,6 @@ function toggleReview(i){
     if(isUnanswered){statusClass="unanswered";statusLabel="NOT ANSWERED";}
     else if(x.isCorrect){statusClass="correct";statusLabel="CORRECT";}
 
-    // Build the full options list
     const optionsHtml = opts.map((opt, oi) => {
       const label = String.fromCharCode(65 + oi);
       const isSelected = selectedIdx === oi;
@@ -1436,7 +1489,6 @@ window.addEventListener("beforeunload",()=>{
 
         // PrintScreen key
         if (e.key === 'PrintScreen' || e.keyCode === 44) {
-            // Clear clipboard
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText('');
             }
@@ -1451,57 +1503,14 @@ window.addEventListener("beforeunload",()=>{
         }
     });
 
-    // ============================================
-    // 3. Disable Copy Event
-    // ============================================
-    document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        return false;
-    });
+    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
 
-    // ============================================
-    // 4. Disable Cut Event
-    // ============================================
-    document.addEventListener('cut', function(e) {
-        e.preventDefault();
-        return false;
-    });
+    window.addEventListener('beforeprint', function(e) {});
 
-    // ============================================
-    // 5. Disable Paste Event (optional)
-    // ============================================
-    document.addEventListener('paste', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 6. Disable Text Selection
-    // ============================================
-    document.addEventListener('selectstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 7. Disable Drag & Drop (prevents dragging content)
-    // ============================================
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-
-    // ============================================
-    // 8. Disable Before Print (Ctrl+P fallback)
-    // ============================================
-    window.addEventListener('beforeprint', function(e) {
-        // Optional: return false or hide content
-        // Note: beforeprint can't be prevented, use CSS instead
-    });
-
-    // ============================================
-    // 9. Apply CSS to prevent selection & printing
-    // ============================================
     var style = document.createElement('style');
     style.innerHTML = `
         * {
@@ -1528,9 +1537,6 @@ window.addEventListener("beforeunload",()=>{
     `;
     document.head.appendChild(style);
 
-    // ============================================
-    // 10. Disable DevTools (basic detection)
-    // ============================================
     var devtoolsOpen = false;
     var threshold = 160;
 
@@ -1541,8 +1547,6 @@ window.addEventListener("beforeunload",()=>{
         if (widthDiff || heightDiff) {
             if (!devtoolsOpen) {
                 devtoolsOpen = true;
-                // Optional: Redirect or blank page
-                // document.body.innerHTML = '<h1>Developer Tools Detected!</h1>';
                 console.clear();
             }
         } else {
@@ -1550,22 +1554,12 @@ window.addEventListener("beforeunload",()=>{
         }
     }, 1000);
 
-    // ============================================
-    // 11. Prevent Image Dragging
-    // ============================================
     document.querySelectorAll('img').forEach(function(img) {
-        img.addEventListener('dragstart', function(e) {
-            e.preventDefault();
-        });
+        img.addEventListener('dragstart', function(e) { e.preventDefault(); });
     });
 
-    // ============================================
-    // 12. Prevent Middle-Click (open in new tab)
-    // ============================================
     document.addEventListener('auxclick', function(e) {
-        if (e.button === 1) {
-            e.preventDefault();
-        }
+        if (e.button === 1) { e.preventDefault(); }
     });
 
 })();
