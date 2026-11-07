@@ -910,13 +910,20 @@
   </footer>
 </div>
 
-<!-- FIREBASE MODULE — REAL LOGOUT + STATS FROM JRF HISTORY -->
+<!-- FIREBASE MODULE — REAL LOGOUT + STATS FROM BOOK + TEST SERIES -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
   import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-  const firebaseConfig = {
+  /* ============================================================
+     Firebase configs — one per product
+     BOOK.html  → soilspark
+     TEST SERIES.html → soilspark-02
+     Both write to users/{uid}/testHistory, but in SEPARATE projects.
+     We now read from BOTH and merge the results.
+     ============================================================ */
+  const bookConfig = {
     apiKey: "AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",
     authDomain: "soilspark.firebaseapp.com",
     projectId: "soilspark",
@@ -926,9 +933,24 @@
     measurementId: "G-1M406BN9JK"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+  const testSeriesConfig = {
+    apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+    authDomain: "soilspark-02.firebaseapp.com",
+    projectId: "soilspark-02",
+    storageBucket: "soilspark-02.firebasestorage.app",
+    messagingSenderId: "1076135404685",
+    appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+    measurementId: "G-3HGQCNDR9H"
+  };
+
+  // Auth comes from the primary app (BOOK project) so login state matches the user's session
+  const bookApp = initializeApp(bookConfig);
+  const auth = getAuth(bookApp);
+  const bookDb = getFirestore(bookApp);
+
+  // Secondary app for Test Series — auth is shared by UID, we read testHistory by the same UID
+  const testSeriesApp = initializeApp(testSeriesConfig, "testSeriesDashboard");
+  const testSeriesDb = getFirestore(testSeriesApp);
 
   // DOM elements for stats
   const statCompleted = document.getElementById('statCompleted');
@@ -948,10 +970,86 @@
     ringEl.style.background = `conic-gradient(${color1} 0% ${deg}deg, ${color2} ${deg}deg 100%)`;
   }
 
-  // Load stats from Firestore (JRF testHistory + local fallback)
+  // Normalize an attempt row from either project into a common shape
+  function normalizeAttempt(data, source) {
+    return {
+      source,
+      topicId: data.topicId || null,
+      topicName: data.topicName || "Test",
+      total: Number(data.total) || 0,
+      correct: Number(data.correct) || 0,
+      wrong: Number(data.wrong) || 0,
+      unanswered: Number(data.unanswered) || 0,
+      percent: Number(data.percent) || 0,
+      completedAt: data.completedAt || null
+    };
+  }
+
+  // Read one project's testHistory subcollection
+  async function readHistory(db, uid, sourceLabel) {
+    try {
+      const historyRef = collection(db, "users", uid, "testHistory");
+      const q = query(historyRef, orderBy("completedAt", "desc"), limit(200));
+      const snap = await getDocs(q);
+      return snap.docs.map(d => normalizeAttempt(d.data(), sourceLabel));
+    } catch (err) {
+      // orderBy can fail if index missing or field absent — try unsorted
+      try {
+        const historyRef = collection(db, "users", uid, "testHistory");
+        const snap = await getDocs(historyRef);
+        return snap.docs.map(d => normalizeAttempt(d.data(), sourceLabel));
+      } catch (err2) {
+        console.warn(`Could not read ${sourceLabel} history:`, err2);
+        return [];
+      }
+    }
+  }
+
+  // Read local history from localStorage for either source
+  // BOOK writes to: soilspark_history_<uid>
+  // TEST SERIES also writes to the same key (shared)
+  // We treat the single local key as a fallback pool; deduplicate by id/completedAt.
+  function readLocalHistory(uid) {
+    try {
+      const stored = localStorage.getItem(`soilspark_history_${uid}`);
+      if (!stored) return [];
+      const arr = JSON.parse(stored);
+      if (!Array.isArray(arr)) return [];
+      // Mark as "local" so we can dedupe against Firestore later
+      return arr.map(a => ({
+        source: "local",
+        id: a.id || null,
+        topicId: a.topicId || null,
+        topicName: a.topicName || "Test",
+        total: Number(a.total) || 0,
+        correct: Number(a.correct) || 0,
+        wrong: Number(a.wrong) || 0,
+        unanswered: Number(a.unanswered) || 0,
+        percent: Number(a.percent) || 0,
+        completedAt: a.completedAt ? { seconds: Math.floor(Number(a.completedAt) / 1000) } : null
+      }));
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Dedupe attempts across sources: key by topicId + completedAt-seconds
+  function dedupeAttempts(list) {
+    const seen = new Set();
+    const out = [];
+    for (const a of list) {
+      const sec = a.completedAt?.seconds ?? null;
+      const key = `${a.topicId || "?"}|${sec ?? "?"}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(a);
+    }
+    return out;
+  }
+
+  // Load stats from BOTH Firestore projects + local fallback
   async function loadUserStats(user) {
     if (!user) {
-      // Reset to default/placeholder
       statCompleted.textContent = '0';
       statQuestions.textContent = '0';
       statAvgScore.textContent = '0%';
@@ -966,88 +1064,83 @@
     }
 
     try {
-      // 1) Try to load from Firebase testHistory (JRF format)
-      const historyRef = collection(db, "users", user.uid, "testHistory");
-      const q = query(historyRef, orderBy("completedAt", "desc"), limit(50));
-      const snap = await getDocs(q);
+      // Firestore: read BOOK project and TEST SERIES project in parallel
+      const [bookAttempts, testSeriesAttempts] = await Promise.all([
+        readHistory(bookDb, user.uid, "book"),
+        readHistory(testSeriesDb, user.uid, "testseries")
+      ]);
 
-      // Also check localStorage for JRF history (key: soilspark_history_<uid>)
-      let localHistory = [];
-      try {
-        const stored = localStorage.getItem(`soilspark_history_${user.uid}`);
-        if (stored) localHistory = JSON.parse(stored);
-      } catch (e) { /* ignore */ }
+      // Local fallback pool (either source may have written it)
+      const localAttempts = readLocalHistory(user.uid);
 
-      // Merge: prefer Firebase, but include local if Firebase empty
-      let attempts = [];
-      if (!snap.empty) {
-        attempts = snap.docs.map(d => d.data());
-      } else if (localHistory.length > 0) {
-        attempts = localHistory;
-      }
+      // Merge everything, then dedupe
+      let combined = [...bookAttempts, ...testSeriesAttempts, ...localAttempts];
+      combined = dedupeAttempts(combined);
 
-      // Calculate stats
-      const totalTests = attempts.length;
-      const totalQuestions = attempts.reduce((sum, a) => sum + (a.total || 0), 0);
-      const totalCorrect = attempts.reduce((sum, a) => sum + (a.correct || 0), 0);
-      const totalWrong = attempts.reduce((sum, a) => sum + (a.wrong || 0), 0);
-      const totalUnanswered = attempts.reduce((sum, a) => sum + (a.unanswered || 0), 0);
-      const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-      const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / (totalCorrect + totalWrong || 1)) * 100) : 0;
+      // Sort newest-first for consistency (use completedAt.seconds when available)
+      combined.sort((a, b) => {
+        const as = a.completedAt?.seconds ?? 0;
+        const bs = b.completedAt?.seconds ?? 0;
+        return bs - as;
+      });
 
-      // Update UI
+      const totalTests = combined.length;
+      const totalQuestions = combined.reduce((s, a) => s + a.total, 0);
+      const totalCorrect = combined.reduce((s, a) => s + a.correct, 0);
+      const totalWrong = combined.reduce((s, a) => s + a.wrong, 0);
+
+      const avgScore = totalQuestions > 0
+        ? Math.round((totalCorrect / totalQuestions) * 100)
+        : 0;
+      const accuracy = (totalCorrect + totalWrong) > 0
+        ? Math.round((totalCorrect / (totalCorrect + totalWrong)) * 100)
+        : 0;
+
+      // UI updates
       statCompleted.textContent = totalTests;
       statQuestions.textContent = totalQuestions;
       statAvgScore.textContent = avgScore + '%';
-      statAvailableTests.textContent = '4'; // JRF, SRF, ASRB NET, ARO
+      statAvailableTests.textContent = '4';
 
       // Accuracy ring
       accuracyPercent.textContent = accuracy + '%';
-      accuracySubtext.textContent = accuracy >= 80 ? 'Excellent work!' : accuracy >= 60 ? 'Good progress!' : 'Keep practicing!';
+      accuracySubtext.textContent =
+        accuracy >= 80 ? 'Excellent work!' :
+        accuracy >= 60 ? 'Good progress!' :
+        totalTests === 0 ? 'No attempts yet' : 'Keep practicing!';
       setRing(accuracyRing, accuracy, '#f7d44a', '#c1d9f0');
 
-      // Coverage ring (attempts relative to 10 as a target)
-      const coverageValue = Math.min(100, totalTests * 10); // 10 attempts = 100%
+      // Coverage ring (10 attempts = 100%)
+      const coverageValue = Math.min(100, totalTests * 10);
       coveragePercent.textContent = totalTests;
-      coverageSubtext.textContent = totalTests === 0 ? 'No attempts yet' : `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
+      coverageSubtext.textContent =
+        totalTests === 0 ? 'No attempts yet' :
+        `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
       setRing(coverageRing, coverageValue, '#7fb2d9', '#fef3d9');
 
     } catch (err) {
-      console.warn('Could not load stats from Firebase:', err);
-      // Fallback: try localStorage
+      console.warn('Could not load combined stats:', err);
+
+      // Hard fallback: only local
       try {
-        const stored = localStorage.getItem(`soilspark_history_${user.uid}`);
-        if (stored) {
-          const localHistory = JSON.parse(stored);
-          const totalTests = localHistory.length;
-          const totalQuestions = localHistory.reduce((sum, a) => sum + (a.total || 0), 0);
-          const totalCorrect = localHistory.reduce((sum, a) => sum + (a.correct || 0), 0);
-          const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-          statCompleted.textContent = totalTests;
-          statQuestions.textContent = totalQuestions;
-          statAvgScore.textContent = avgScore + '%';
-          statAvailableTests.textContent = '4';
-          accuracyPercent.textContent = avgScore + '%';
-          accuracySubtext.textContent = avgScore >= 80 ? 'Excellent work!' : 'Keep practicing!';
-          setRing(accuracyRing, avgScore, '#f7d44a', '#c1d9f0');
-          coveragePercent.textContent = totalTests;
-          coverageSubtext.textContent = `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
-          setRing(coverageRing, Math.min(100, totalTests * 10), '#7fb2d9', '#fef3d9');
-        } else {
-          // No local history either
-          statCompleted.textContent = '0';
-          statQuestions.textContent = '0';
-          statAvgScore.textContent = '0%';
-          statAvailableTests.textContent = '4';
-          accuracyPercent.textContent = '0%';
-          accuracySubtext.textContent = 'No attempts yet';
-          coveragePercent.textContent = '0';
-          coverageSubtext.textContent = 'No attempts';
-          setRing(accuracyRing, 0, '#f7d44a', '#c1d9f0');
-          setRing(coverageRing, 0, '#7fb2d9', '#fef3d9');
-        }
+        const localAttempts = readLocalHistory(user.uid);
+        const totalTests = localAttempts.length;
+        const totalQuestions = localAttempts.reduce((s, a) => s + a.total, 0);
+        const totalCorrect = localAttempts.reduce((s, a) => s + a.correct, 0);
+        const avgScore = totalQuestions > 0
+          ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+        statCompleted.textContent = totalTests;
+        statQuestions.textContent = totalQuestions;
+        statAvgScore.textContent = avgScore + '%';
+        statAvailableTests.textContent = '4';
+        accuracyPercent.textContent = avgScore + '%';
+        accuracySubtext.textContent = avgScore >= 80 ? 'Excellent work!' : 'Keep practicing!';
+        setRing(accuracyRing, avgScore, '#f7d44a', '#c1d9f0');
+        coveragePercent.textContent = totalTests;
+        coverageSubtext.textContent = `${totalTests} exam${totalTests > 1 ? 's' : ''} attempted`;
+        setRing(coverageRing, Math.min(100, totalTests * 10), '#7fb2d9', '#fef3d9');
       } catch (e) {
-        // Final fallback: placeholders
         statCompleted.textContent = '—';
         statQuestions.textContent = '—';
         statAvgScore.textContent = '—';
@@ -1070,7 +1163,7 @@
       const h2 = document.querySelector('.welcome-text h2');
       if (h2) h2.innerHTML = `Welcome back, ${name}! <span class="wave">🌱</span>`;
 
-      // Load stats for this user
+      // Load combined stats
       loadUserStats(user);
     }
   });
