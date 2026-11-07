@@ -453,17 +453,30 @@ button,input{font:inherit}
 .leader-score{text-align:right}
 .leader-score b{font:800 18px Poppins;color:var(--orange)}
 .leader-score span{display:block;font-size:10px;color:var(--muted)}
-.leaderboard-tabs{
-  display:flex;gap:8px;padding:0 15px 15px;flex-wrap:wrap;
+
+/* Leaderboard filter bar (dropdown) */
+.leaderboard-filter-bar{
+  display:flex;align-items:center;gap:10px;padding:0 15px 15px;
+  flex-wrap:wrap;
 }
-.leaderboard-tab{
-  border:1px solid var(--border);border-radius:20px;padding:7px 16px;
-  font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
-  transition:.2s;
+.leaderboard-filter-bar label{
+  font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;
 }
-.leaderboard-tab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
-.leaderboard-tab:hover{border-color:var(--orange);color:var(--orange)}
-.leaderboard-tab.active:hover{color:#fff}
+.leaderboard-select{
+  flex:1;min-width:180px;max-width:340px;
+  border:1px solid var(--border);border-radius:10px;
+  padding:9px 36px 9px 12px;
+  font-size:12px;font-weight:600;color:var(--text-dark);
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a7b6b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 12px center;
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  cursor:pointer;outline:none;transition:.2s;
+}
+.leaderboard-select:hover{border-color:var(--orange)}
+.leaderboard-select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(244,162,97,.15)}
+.leaderboard-info{
+  font-size:11px;color:var(--muted);padding:0 15px 10px;
+}
+.leaderboard-info b{color:var(--orange)}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:1000px){
@@ -588,7 +601,13 @@ button,input{font:inherit}
       <h3><i class="fa-solid fa-trophy"></i> Leaderboard</h3>
       <button id="leaderboardBack" class="action secondary"><i class="fa-solid fa-arrow-left"></i> Back</button>
     </div>
-    <div class="leaderboard-tabs" id="leaderboardTabs"></div>
+    <div class="leaderboard-filter-bar">
+      <label for="leaderboardSelect"><i class="fa-solid fa-filter"></i> Test:</label>
+      <select id="leaderboardSelect" class="leaderboard-select">
+        <option value="all">All Tests</option>
+      </select>
+    </div>
+    <div id="leaderboardInfo" class="leaderboard-info"></div>
     <div id="leaderboardList" class="leaderboard-list">
       <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>
     </div>
@@ -1370,7 +1389,7 @@ async function loadLeaderboardData(){
         topicMap.set(e.topicId, e.topicName || "Unknown Topic");
       }
     });
-    leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+    leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name})).sort((a,b)=>a.name.localeCompare(b.name));
   }catch(e){
     console.warn("Could not load leaderboard:", e);
     try{
@@ -1381,7 +1400,7 @@ async function loadLeaderboardData(){
       leaderboardData.forEach(e => {
         if(!topicMap.has(e.topicId)) topicMap.set(e.topicId, e.topicName || "Unknown Topic");
       });
-      leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+      leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name})).sort((a,b)=>a.name.localeCompare(b.name));
     }catch(e2){
       leaderboardData = [];
       leaderboardTopics = [];
@@ -1390,8 +1409,24 @@ async function loadLeaderboardData(){
 }
 
 function renderLeaderboard(){
-  const tabsContainer = $("leaderboardTabs");
   const listContainer = $("leaderboardList");
+  const selectEl = $("leaderboardSelect");
+  const infoEl = $("leaderboardInfo");
+
+  // Build dropdown options (preserve selection)
+  const currentVal = leaderboardFilter;
+  const options = [`<option value="all">All Tests</option>`].concat(
+    leaderboardTopics.map(t => `<option value="${esc(t.id)}">${esc(t.name)}</option>`)
+  );
+  selectEl.innerHTML = options.join("");
+  // Restore selection if still valid, else reset to all
+  if (currentVal === 'all' || leaderboardTopics.some(t => t.id === currentVal)) {
+    selectEl.value = currentVal;
+  } else {
+    leaderboardFilter = 'all';
+    selectEl.value = 'all';
+  }
+
   let filtered = leaderboardData;
   if(leaderboardFilter !== 'all') filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
 
@@ -1412,17 +1447,14 @@ function renderLeaderboard(){
     return (a.completedAt?.seconds || 0) - (b.completedAt?.seconds || 0);
   });
 
-  let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Tests</button>`;
-  leaderboardTopics.forEach(t => {
-    tabsHtml += `<button class="leaderboard-tab ${leaderboardFilter === t.id ? 'active' : ''}" data-filter="${esc(t.id)}">${esc(t.name)}</button>`;
-  });
-  tabsContainer.innerHTML = tabsHtml;
-  tabsContainer.querySelectorAll("[data-filter]").forEach(btn => {
-    btn.onclick = () => { leaderboardFilter = btn.dataset.filter; renderLeaderboard(); };
-  });
+  // Info line
+  const scopeLabel = leaderboardFilter === 'all'
+    ? "All Tests"
+    : (leaderboardTopics.find(t => t.id === leaderboardFilter)?.name || "Test");
+  infoEl.innerHTML = `Showing <b>${entries.length}</b> participant${entries.length===1?"":"s"} for <b>${esc(scopeLabel)}</b>`;
 
   if(entries.length === 0) {
-    listContainer.innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet. Be the first to complete a test!</p></div>';
+    listContainer.innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet for this test. Be the first to complete it!</p></div>';
     return;
   }
 
@@ -1457,6 +1489,16 @@ async function showLeaderboard(){
   $("leaderboardList").innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>';
   await loadLeaderboardData();
   renderLeaderboard();
+
+  // Wire dropdown (once)
+  const sel = $("leaderboardSelect");
+  if (sel && !sel.dataset.bound) {
+    sel.dataset.bound = "1";
+    sel.onchange = () => {
+      leaderboardFilter = sel.value;
+      renderLeaderboard();
+    };
+  }
 }
 
 function loadLocalHistory(){try{history=JSON.parse(localStorage.getItem(HISTORY_KEY_PREFIX+user.uid)||"[]")}catch(_){history=[]}}
