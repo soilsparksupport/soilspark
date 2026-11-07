@@ -174,8 +174,57 @@ button,input,textarea,select{font:inherit}
 .duration-info b{color:var(--blue-dark)}
 .duration-info i{color:var(--blue-dark);margin-right:5px}
 
+/* ===== LEADERBOARD ADMIN ===== */
+.leaderboard-admin{margin-top:18px}
+.lb-topic-row{
+  border:1px solid var(--border);border-radius:12px;padding:11px 13px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  background:#fff;margin-bottom:8px;transition:.15s;
+}
+.lb-topic-row:hover{border-color:var(--blue-dark);box-shadow:0 3px 10px rgba(79,143,174,.08)}
+.lb-topic-info{flex:1;min-width:0}
+.lb-topic-info strong{display:block;font-size:13px;color:var(--text-dark)}
+.lb-topic-info small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.lb-topic-count{
+  background:var(--blue-soft);color:var(--blue-dark);
+  padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;
+  white-space:nowrap;flex-shrink:0;
+}
+.lb-topic-actions{display:flex;gap:6px;flex-shrink:0}
+.lb-btn-reset{background:#fff3cd;color:#8a6d00}
+.lb-btn-delete{background:var(--danger-soft);color:var(--danger)}
+.lb-filter-row{
+  display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap;
+}
+.lb-filter-row label{font-size:11px;font-weight:800;color:var(--muted)}
+.lb-filter-row select{
+  flex:1;min-width:180px;border:1px solid var(--border);border-radius:9px;
+  padding:8px 11px;font-size:12px;font-weight:600;color:var(--text-dark);
+  background:#fff;outline:none;cursor:pointer;
+}
+.lb-filter-row select:focus{border-color:var(--blue-dark);box-shadow:0 0 0 3px rgba(142,202,230,.16)}
+.lb-summary{
+  background:linear-gradient(135deg,#eaf6fb,#f1f8eb);
+  border:1px solid var(--border-blue);border-radius:10px;
+  padding:10px 13px;font-size:11px;color:var(--text);margin-bottom:12px;
+}
+.lb-summary b{color:var(--blue-dark)}
+.lb-danger-zone{
+  margin-top:14px;padding:13px;border-radius:12px;
+  background:var(--danger-soft);border:1px solid #f0c9c3;
+}
+.lb-danger-zone h4{font-size:12px;color:#a14a3e;margin-bottom:6px}
+.lb-danger-zone p{font-size:10px;color:#a14a3e;opacity:.85;line-height:1.5;margin-bottom:9px}
+.lb-danger-zone button{
+  background:#c96b5c;color:#fff;border:0;border-radius:8px;
+  padding:9px 13px;font-size:11px;font-weight:800;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.lb-danger-zone button:hover{background:#a14a3e}
+.lb-danger-zone button:disabled{opacity:.5;cursor:not-allowed}
+
 @media(max-width:1000px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.topbar-inner,.heading{align-items:stretch;flex-direction:column}.email{display:none}.page{padding:22px 15px}.stats{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar .btn{flex:1}}
+@media(max-width:600px){.topbar-inner,.heading{align-items:stretch;flex-direction:column}.email{display:none}.page{padding:22px 15px}.stats{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.toolbar .btn{flex:1}.lb-topic-row{flex-wrap:wrap}.lb-topic-actions{width:100%}}
 </style>
 </head>
 <body>
@@ -233,6 +282,30 @@ button,input,textarea,select{font:inherit}
     <div class="panel-body"><div id="questionList" class="list"><div class="empty"><i class="fa-regular fa-folder-open"></i><p>Select a topic to manage its questions.</p></div></div></div>
   </section>
 </div>
+
+<!-- LEADERBOARD ADMIN PANEL -->
+<section class="panel leaderboard-admin">
+  <div class="panel-head">
+    <div><h3><i class="fa-solid fa-trophy" style="color:var(--yellow);margin-right:6px"></i> Leaderboard Management</h3><small style="color:var(--muted);font-size:10px">Reset or delete leaderboard entries per test. This does not affect questions, topics, or student history.</small></div>
+    <button id="lbRefresh" class="btn secondary"><i class="fa-solid fa-rotate"></i> Refresh</button>
+  </div>
+  <div class="panel-body">
+    <div id="lbLoading" class="empty"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>
+    <div id="lbContent" style="display:none">
+      <div class="lb-summary" id="lbSummary"></div>
+      <div class="lb-filter-row">
+        <label for="lbTopicSelect"><i class="fa-solid fa-filter"></i> Test:</label>
+        <select id="lbTopicSelect"><option value="all">All Tests</option></select>
+      </div>
+      <div id="lbTopicList"></div>
+      <div class="lb-danger-zone">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</h4>
+        <p>Permanently removes leaderboard entries from Firestore. Student test history and questions are not affected. This cannot be undone.</p>
+        <button id="lbResetAllBtn"><i class="fa-solid fa-broom"></i> Reset Entire Leaderboard</button>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 </section>
 
@@ -338,6 +411,11 @@ const firebaseConfig = {
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let sections=[],topics=[],questions=[],selectedTopic=null,editingSectionId=null,editingTopicId=null,editingQuestionId=null;
 
+/* Leaderboard admin state */
+let leaderboardEntries=[];
+let leaderboardTopicsAdmin=[];
+let lbFilter='all';
+
 /* FREEMODE helpers */
 function isFreeSection(s){return !!s && (s.free===true || s.isFree===true);}
 function isFreeTopic(t){return !!t && (t.free===true || t.isFree===true);}
@@ -353,7 +431,7 @@ async function verifyAdmin(user){
 }
 onAuthStateChanged(auth,async user=>{
  if(!user){$("loginScreen").style.display="grid";$("app").style.display="none";return}
- try{await verifyAdmin(user);$("adminEmail").textContent=user.email||"Administrator";$("loginScreen").style.display="none";$("app").style.display="block";await loadAll()}
+ try{await verifyAdmin(user);$("adminEmail").textContent=user.email||"Administrator";$("loginScreen").style.display="none";$("app").style.display="block";await loadAll();await loadLeaderboardAdmin()}
  catch(e){await signOut(auth);$("loginError").textContent=e.message;$("loginError").style.display="block"}
 });
 $("loginBtn").onclick=login;$("password").onkeydown=e=>{if(e.key==="Enter")login()};
@@ -618,5 +696,157 @@ function downloadTemplate(){
 }
 function editSection(id){openSectionModal(id)}function editTopic(id){openTopicModal(id)}
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+/* ============================================================
+   LEADERBOARD ADMIN — view, reset, delete per test
+   ============================================================ */
+async function loadLeaderboardAdmin(){
+  $("lbLoading").style.display="block";
+  $("lbContent").style.display="none";
+  try{
+    const snap=await getDocs(collection(db,"leaderboard"));
+    leaderboardEntries=snap.docs.map(d=>({id:d.id,...d.data()}));
+
+    /* Build topic map from entries; fall back to topics collection names */
+    const topicMap=new Map();
+    leaderboardEntries.forEach(e=>{
+      if(e.topicId && !topicMap.has(e.topicId)){
+        topicMap.set(e.topicId,{id:e.topicId,name:e.topicName||topics.find(t=>t.id===e.topicId)?.name||"Unknown Topic"});
+      }
+    });
+    leaderboardTopicsAdmin=Array.from(topicMap.values()).sort((a,b)=>a.name.localeCompare(b.name));
+
+    renderLeaderboardAdmin();
+    $("lbLoading").style.display="none";
+    $("lbContent").style.display="block";
+  }catch(e){
+    console.error(e);
+    $("lbLoading").innerHTML='<i class="fa-solid fa-triangle-exclamation"></i><p>Unable to load leaderboard. Check Firestore rules.</p>';
+  }
+}
+
+function renderLeaderboardAdmin(){
+  /* Dropdown */
+  const sel=$("lbTopicSelect");
+  const currentVal=lbFilter;
+  const opts=[`<option value="all">All Tests</option>`].concat(
+    leaderboardTopicsAdmin.map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`)
+  );
+  sel.innerHTML=opts.join("");
+  if(currentVal==='all'||leaderboardTopicsAdmin.some(t=>t.id===currentVal)){
+    sel.value=currentVal;
+  }else{
+    lbFilter='all';sel.value='all';
+  }
+
+  /* Filtered entries */
+  const filtered = lbFilter==='all'
+    ? leaderboardEntries
+    : leaderboardEntries.filter(e=>e.topicId===lbFilter);
+
+  /* Summary */
+  const uniqueUsers=new Set(filtered.map(e=>e.userId)).size;
+  const scopeLabel = lbFilter==='all'
+    ? "All Tests"
+    : (leaderboardTopicsAdmin.find(t=>t.id===lbFilter)?.name||"Test");
+  $("lbSummary").innerHTML=`Showing <b>${filtered.length}</b> entr${filtered.length===1?"y":"ies"} from <b>${uniqueUsers}</b> user${uniqueUsers===1?"":"s"} · scope: <b>${esc(scopeLabel)}</b>`;
+
+  /* Per-topic list */
+  const listEl=$("lbTopicList");
+  if(lbFilter!=='all'){
+    const topic=leaderboardTopicsAdmin.find(t=>t.id===lbFilter);
+    if(!topic){listEl.innerHTML='<div class="empty"><p>No entries for this test.</p></div>';return}
+    listEl.innerHTML=`
+      <div class="lb-topic-row">
+        <div class="lb-topic-info">
+          <strong>${esc(topic.name)}</strong>
+          <small>${filtered.length} entr${filtered.length===1?"y":"ies"} · ${uniqueUsers} user${uniqueUsers===1?"":"s"}</small>
+        </div>
+        <div class="lb-topic-count">${filtered.length} entries</div>
+        <div class="lb-topic-actions">
+          <button class="mini lb-btn-reset" data-lbreset="${esc(topic.id)}">Reset</button>
+          <button class="mini lb-btn-delete" data-lbdelete="${esc(topic.id)}">Delete All</button>
+        </div>
+      </div>`;
+  }else{
+    if(!leaderboardTopicsAdmin.length){
+      listEl.innerHTML='<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet.</p></div>';
+    }else{
+      listEl.innerHTML=leaderboardTopicsAdmin.map(t=>{
+        const cnt=leaderboardEntries.filter(e=>e.topicId===t.id).length;
+        const usr=new Set(leaderboardEntries.filter(e=>e.topicId===t.id).map(e=>e.userId)).size;
+        return `<div class="lb-topic-row">
+          <div class="lb-topic-info">
+            <strong>${esc(t.name)}</strong>
+            <small>${cnt} entr${cnt===1?"y":"ies"} · ${usr} user${usr===1?"":"s"}</small>
+          </div>
+          <div class="lb-topic-count">${cnt} entries</div>
+          <div class="lb-topic-actions">
+            <button class="mini lb-btn-reset" data-lbreset="${esc(t.id)}">Reset</button>
+            <button class="mini lb-btn-delete" data-lbdelete="${esc(t.id)}">Delete All</button>
+          </div>
+        </div>`;
+      }).join("");
+    }
+  }
+
+  /* Bind per-topic buttons */
+  listEl.querySelectorAll("[data-lbreset]").forEach(b=>b.onclick=()=>resetLeaderboardForTopic(b.dataset.lbreset));
+  listEl.querySelectorAll("[data-lbdelete]").forEach(b=>b.onclick=()=>deleteLeaderboardForTopic(b.dataset.lbdelete));
+}
+
+async function deleteLeaderboardForTopic(topicId){
+  const topic=leaderboardTopicsAdmin.find(t=>t.id===topicId);
+  const entries=leaderboardEntries.filter(e=>e.topicId===topicId);
+  if(!entries.length){toast("No entries for this test.");return}
+  if(!confirm(`Delete all ${entries.length} leaderboard entries for "${topic?.name||"this test"}"?\n\nStudent test history and questions will NOT be affected. This cannot be undone.`))return;
+  try{
+    for(let i=0;i<entries.length;i+=450){
+      const batch=writeBatch(db);
+      entries.slice(i,i+450).forEach(e=>batch.delete(doc(db,"leaderboard",e.id)));
+      await batch.commit();
+    }
+    toast(`Deleted ${entries.length} leaderboard entries.`);
+    await loadLeaderboardAdmin();
+  }catch(e){console.error(e);alert("Delete failed: "+e.message)}
+}
+
+async function resetLeaderboardForTopic(topicId){
+  /* "Reset" = delete (Firestore has no truncate); semantically identical to delete-all for that test */
+  const topic=leaderboardTopicsAdmin.find(t=>t.id===topicId);
+  const entries=leaderboardEntries.filter(e=>e.topicId===topicId);
+  if(!entries.length){toast("Nothing to reset.");return}
+  if(!confirm(`Reset leaderboard for "${topic?.name||"this test"}"?\n\nThis removes ${entries.length} entries. The test itself and all questions remain intact. Student history is preserved.`))return;
+  try{
+    for(let i=0;i<entries.length;i+=450){
+      const batch=writeBatch(db);
+      entries.slice(i,i+450).forEach(e=>batch.delete(doc(db,"leaderboard",e.id)));
+      await batch.commit();
+    }
+    toast(`Leaderboard reset for "${topic?.name||"test"}".`);
+    await loadLeaderboardAdmin();
+  }catch(e){console.error(e);alert("Reset failed: "+e.message)}
+}
+
+async function resetEntireLeaderboard(){
+  if(!leaderboardEntries.length){toast("Leaderboard is already empty.");return}
+  if(!confirm(`⚠ RESET ENTIRE LEADERBOARD ⚠\n\nThis will permanently delete ALL ${leaderboardEntries.length} leaderboard entries across every test.\n\nQuestions, topics, sections, and student test history are NOT affected.\n\nThis cannot be undone. Continue?`))return;
+  const btn=$("lbResetAllBtn");
+  btn.disabled=true;
+  try{
+    for(let i=0;i<leaderboardEntries.length;i+=450){
+      const batch=writeBatch(db);
+      leaderboardEntries.slice(i,i+450).forEach(e=>batch.delete(doc(db,"leaderboard",e.id)));
+      await batch.commit();
+    }
+    toast("Entire leaderboard reset.");
+    await loadLeaderboardAdmin();
+  }catch(e){console.error(e);alert("Reset failed: "+e.message)}
+  finally{btn.disabled=false}
+}
+
+$("lbRefresh").onclick=loadLeaderboardAdmin;
+$("lbResetAllBtn").onclick=resetEntireLeaderboard;
+$("lbTopicSelect").onchange=()=>{lbFilter=$("lbTopicSelect").value;renderLeaderboardAdmin()};
 </script>
 </body></html>
