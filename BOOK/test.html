@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<head><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
@@ -199,26 +198,6 @@ button,input{font:inherit}
 }
 .topic-duration.no-timer{background:#f5f0e8;color:var(--muted);border-color:var(--border)}
 
-/* Free badge on topic cards  /* FREEMODE */
-.topic-free{
-  display:inline-flex;align-items:center;gap:4px;
-  background:linear-gradient(135deg,#eafbf0,#d6f5e1);
-  color:#1f7a44;border:1px solid #b7e6c8;
-  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;
-  margin-bottom:8px;margin-left:4px;
-}
-
-/* Attempt badge on topic cards */
-.topic-attempts{
-  display:inline-flex;align-items:center;gap:4px;
-  background:#fff7d9;color:#725400;border:1px solid #f2d58b;
-  padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;
-  margin-bottom:8px;margin-left:4px;
-}
-.topic-attempts.exhausted{background:var(--danger-soft);color:var(--danger);border-color:#f0c9c3}
-.topic.limit-reached{opacity:.72}
-.topic.limit-reached .open{background:#c96b5c;cursor:not-allowed}
-
 /* ===== LOADING / EMPTY ===== */
 .loading,.empty{
   background:#fff;border:1px solid var(--border);border-radius:18px;
@@ -257,6 +236,29 @@ button,input{font:inherit}
   border:1px solid var(--green-soft);border-radius:18px;
   padding:21px;margin-bottom:22px;
 }
+
+/* ===== OPTIONS ===== */
+.options{display:flex;flex-direction:column;gap:12px}
+.option{
+  display:flex;gap:14px;align-items:flex-start;
+  border:1.5px solid var(--border);border-radius:15px;
+  padding:15px 17px;cursor:pointer;transition:.2s;background:#fff;
+}
+.option:hover{border-color:var(--orange);background:var(--orange-light)}
+.option.selected{
+  border-color:var(--green);background:var(--green-light);
+  box-shadow:0 4px 14px rgba(127,176,105,.15);
+}
+.letter{
+  width:30px;height:30px;min-width:30px;border-radius:9px;
+  background:linear-gradient(135deg,var(--peach-light),var(--orange-soft));
+  display:grid;place-items:center;font-weight:800;color:var(--orange);
+}
+.option.selected .letter{
+  background:linear-gradient(135deg,var(--green),var(--green-soft));
+  color:#fff;
+}
+.option-text{font-size:14px;line-height:1.5;padding-top:4px}
 
 /* ===== ACTIONS ===== */
 .actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}
@@ -327,7 +329,7 @@ button,input{font:inherit}
 .review-item.unanswered{border-left:4px solid #e0a800;background:#fffbe6}
 .review-item h4{font-size:12px;line-height:1.5}
 .review-item p{font-size:11px;margin-top:6px;color:var(--muted)}
-.review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
+  .review-all-options{margin-top:8px;padding:8px;background:#fafafa;border-radius:8px;border:1px solid var(--border)}
 .review-all-options>b{display:block;font-size:11px;margin-bottom:5px;color:var(--muted)}
 .review-option{font-size:11px;padding:5px 8px;margin-bottom:4px;border-radius:6px;border:1px solid transparent;color:var(--text)}
 .review-option:last-child{margin-bottom:0}
@@ -399,6 +401,8 @@ button,input{font:inherit}
 .nta-btn-warning:hover{background:#e08a4a}
 .nta-btn-info{background:#2c6e9e;color:white;border:none}
 .nta-btn-info:hover{background:#1d5a8a}
+.nta-btn-purple{background:#6a1b9a;color:white;border:none}
+.nta-btn-purple:hover{background:#4a148c}
 
 /* Sidebar palette */
 .sidebar-palette-panel{
@@ -470,6 +474,51 @@ button,input{font:inherit}
 }
 @keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
 
+/* ===== LEADERBOARD ===== */
+.leaderboard-shell{
+  background:#fff;border:1px solid var(--border);border-radius:22px;
+  box-shadow:var(--shadow);overflow:hidden;margin-top:18px;
+}
+.leaderboard-head{
+  padding:18px 20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--yellow-soft),var(--orange-light));
+}
+.leaderboard-head h3{font:700 18px Poppins;display:flex;align-items:center;gap:8px}
+.leaderboard-head h3 i{color:var(--yellow)}
+.leaderboard-list{padding:15px;display:flex;flex-direction:column;gap:9px}
+.leader-row{
+  border:1px solid var(--border);border-radius:13px;padding:13px;
+  display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  background:linear-gradient(135deg,var(--white),var(--sky-light));
+  transition:.2s;
+}
+.leader-row:hover{border-color:var(--orange);box-shadow:0 4px 15px rgba(244,162,97,.12)}
+.leader-rank{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  font-weight:800;font-size:14px;color:#fff;
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+}
+.leader-rank.gold{background:linear-gradient(135deg,#f4c542,#e6a800)}
+.leader-rank.silver{background:linear-gradient(135deg,#b0b0b0,#8a8a8a)}
+.leader-rank.bronze{background:linear-gradient(135deg,#cd7f32,#a05a1e)}
+.leader-info strong{font-size:13px;display:block}
+.leader-info small{font-size:10px;color:var(--muted);display:block;margin-top:3px}
+.leader-score{text-align:right}
+.leader-score b{font:800 18px Poppins;color:var(--orange)}
+.leader-score span{display:block;font-size:10px;color:var(--muted)}
+.leaderboard-tabs{
+  display:flex;gap:8px;padding:0 15px 15px;flex-wrap:wrap;
+}
+.leaderboard-tab{
+  border:1px solid var(--border);border-radius:20px;padding:7px 16px;
+  font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);
+  transition:.2s;
+}
+.leaderboard-tab.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.leaderboard-tab:hover{border-color:var(--orange);color:var(--orange)}
+.leaderboard-tab.active:hover{color:#fff}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:1000px){
   .topic-grid{grid-template-columns:repeat(2,1fr)}
@@ -502,10 +551,11 @@ button,input{font:inherit}
   .left-action-group{width:100%;justify-content:space-between}
   .nta-btn{flex:1;text-align:center;font-size:0.7rem;padding:8px 6px}
   .timer-display{font-size:0.9rem;padding:6px 12px}
+  .leader-row{grid-template-columns:auto 1fr auto}
 }
 </style>
 
-<!-- Purchase / section lock styles -->
+<!-- Purchase / section lock styles (unchanged from original) -->
 <style id="sectionPurchaseStyles">
 .section-lock{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:#fff8e6;border:1px solid #f2d58b;color:#725400;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px}
 .section-lock button,.buy-section{border:0;border-radius:9px;padding:8px 12px;background:#111827;color:#fff;font-weight:700;cursor:pointer}
@@ -527,12 +577,12 @@ button,input{font:inherit}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Question Book</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
+<header class="topbar"><div class="topbar-inner"><div class="brand"><div class="brand-icon"><i class="fa-solid fa-book-open"></i></div><div><h1>SoilSpark</h1><small>Test Series</small></div></div><div class="user-actions"><div id="userEmail" class="user-email">Checking account...</div><div id="timerDisplay" class="timer-display" style="display:none"><i class="fa-solid fa-clock"></i><span id="timerText">00:00</span></div><a id="authActionBtn" class="auth-link" href="https://soilsparks.in/login1.html"><i class="fa-solid fa-right-to-bracket"></i> Login</a></div></div></header>
 <main class="page">
 <section id="bookView">
-<div class="hero"><div><h2>Question Book</h2><p>Choose a section, open a topic, and practice. Free sections are open to everyone; paid sections unlock after purchase.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button></div></div>
+<div class="hero"><div><h2>Test Series</h2><p>Choose a section, open a topic, and practice. Your recent test data is kept locally for faster repeat access.</p></div><div class="top-actions-mobile"><button id="statsBtn" class="action secondary"><i class="fa-solid fa-chart-column"></i> My Statistics</button><button id="historyBtn" class="action secondary"><i class="fa-solid fa-clock-rotate-left"></i> Test History</button><button id="leaderboardBtn" class="action secondary"><i class="fa-solid fa-trophy"></i> Leaderboard</button></div></div>
 <div class="search-wrap" style="margin-bottom:15px"><i class="fa-solid fa-search"></i><input id="topicSearch" class="search" placeholder="Search sections and topics..."></div>
-<div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading book...</p></div></div>
+<div id="book" class="book"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading Test Series...</p></div></div>
 </section>
 
 <!-- NTA-STYLE EXAM CONSOLE -->
@@ -579,9 +629,23 @@ button,input{font:inherit}
   </div>
 </section>
 
-<section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
+<section id="resultView"><div class="result-card"><div class="result-hero"><div class="result-icon"><i class="fa-solid fa-circle-check"></i></div><h2 id="resultTitle">Test Completed</h2><div id="score" class="score">0/0</div><p id="resultPercent" style="color:var(--muted)">0%</p></div><div class="result-grid"><div class="result-stat"><strong id="rCorrect">0</strong><span>Correct</span></div><div class="result-stat"><strong id="rWrong">0</strong><span>Wrong</span></div><div class="result-stat"><strong id="rUnanswered">0</strong><span>Unanswered</span></div><div class="result-stat"><strong id="rTotal">0</strong><span>Total</span></div></div><div class="result-actions"><button id="retryBtn" class="action primary">Retry Test</button><button id="resultHistoryBtn" class="action secondary">View History</button><button id="resultLeaderboardBtn" class="action secondary">View Leaderboard</button><button id="resultBookBtn" class="action secondary">Back to Book</button></div></div></section>
 
-<section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Book</button></div><div id="historyList" class="history-list"></div></div></section>
+<section id="historyView"><div class="dashboard"><div class="dash-card"><strong id="statAttempts">0</strong><span>Tests Attempted</span></div><div class="dash-card"><strong id="statQuestions">0</strong><span>Questions Answered</span></div><div class="dash-card"><strong id="statCorrect">0</strong><span>Correct Answers</span></div><div class="dash-card"><strong id="statWrong">0</strong><span>Wrong Answers</span></div></div><div class="history-shell"><div class="history-head"><div><h3>Test History</h3><small style="color:var(--muted)">Stored locally for quick access; each completed test is synced once to Firebase.</small></div><button id="historyBack" class="action secondary">Test Series</button></div><div id="historyList" class="history-list"></div></div></section>
+
+<!-- LEADERBOARD VIEW -->
+<section id="leaderboardView" style="display:none">
+  <div class="leaderboard-shell">
+    <div class="leaderboard-head">
+      <h3><i class="fa-solid fa-trophy"></i> Leaderboard</h3>
+      <button id="leaderboardBack" class="action secondary"><i class="fa-solid fa-arrow-left"></i> Back</button>
+    </div>
+    <div class="leaderboard-tabs" id="leaderboardTabs"></div>
+    <div id="leaderboardList" class="leaderboard-list">
+      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>
+    </div>
+  </div>
+</section>
 </main>
 
 <div id="purchaseOverlay" class="purchase-overlay">
@@ -620,19 +684,35 @@ button,input{font:inherit}
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import {auth,watchAuth} from "/js/auth.js";
+import {getFirestore,collection,getDocs,getDoc,doc,query,where,addDoc,serverTimestamp,orderBy,limit} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-const firebaseConfig={apiKey:"AIzaSyCJ8Zg6qRYa2QrMbKjG4I1B3Dxg1_Z51EI",authDomain:"soilspark.firebaseapp.com",projectId:"soilspark",storageBucket:"soilspark.firebasestorage.app",messagingSenderId:"22641848933",appId:"1:22641848933:web:4c08ce5046681dbb698c8c",measurementId:"G-1M406BN9JK"};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+const firebaseConfig = {
+  apiKey: "AIzaSyAqBu7M4FCKx4xjsEaGAZkJVwWUjC0oJ7A",
+  authDomain: "soilspark-02.firebaseapp.com",
+  projectId: "soilspark-02",
+  storageBucket: "soilspark-02.firebasestorage.app",
+  messagingSenderId: "1076135404685",
+  appId: "1:1076135404685:web:97782c1e7f93bea7b42ec4",
+  measurementId: "G-3HGQCNDR9H"
+};
+const testSeriesApp = initializeApp(firebaseConfig, "testSeries");
+const db = getFirestore(testSeriesApp);
+const $ = id => document.getElementById(id);
+
 let user=null,sections=[],topics=[],currentTopic=null,questions=[],currentIndex=0,answers={},history=[],currentResult=null;
 
 /* ===== NTA EXAM STATE ===== */
-let examStates={};
+let examStates={}; // 0=not visited, 1=not answered, 2=answered, 3=marked, 4=marked+answered
 let timerInterval=null;
 let timeRemaining=0;
 let timerActive=false;
 let warning5Shown=false;
+
+/* ===== LEADERBOARD ===== */
+let leaderboardData=[];
+let leaderboardFilter='all';
+let leaderboardTopics=[];
 
 /* ===== PLANS ===== */
 let PLANS = [];
@@ -700,26 +780,6 @@ async function loadSubscriptions(){
   }
  }catch(e){console.warn("Legacy subscription load failed",e)}
 }
-
-/* FREEMODE: free-access helpers */
-function isFreeSection(sec){
-  if(!sec) return false;
-  if(sec.free === true || sec.isFree === true) return true;
-  // A section with no price and no explicit paid flag is treated as free too.
-  if(sec.price != null && Number(sec.price) === 0) return true;
-  return false;
-}
-function isFreeTopic(t){
-  if(!t) return false;
-  return t.free === true || t.isFree === true;
-}
-function hasAccess(sec, t){
-  if(isFreeTopic(t)) return true;
-  if(isFreeSection(sec)) return true;
-  const sid = subjectIdForSection(sec||{});
-  return !!activeSubscription(sid);
-}
-
 function showPurchase(subjectId,sectionName){
  if(!user){alert("Please sign in first.");return}
  purchaseSubjectId=subjectId;purchaseSectionName=sectionName||subjectId;
@@ -832,10 +892,7 @@ async function startPurchase(planId){
               sectionName: purchaseSectionName,
               couponCode: appliedCoupon?.id || null,
               userName: $("purchaseName").value||user.displayName||"",
-              userPhone: $("purchasePhone").value||"",
-              userId: user.uid,
-              firebaseProjectId: "soilspark",
-              firebaseIdToken: await user.getIdToken()
+              userPhone: $("purchasePhone").value||""
             })
           });
           const vd = await safeJson(vr);
@@ -884,11 +941,11 @@ async function startPurchase(planId){
 const CACHE_KEY="soilspark_jrf_book_v2",HISTORY_KEY_PREFIX="soilspark_history_";
 localStorage.removeItem("soilspark_jrf_book_v2");
 
-onAuthStateChanged(auth,async u=>{
+watchAuth(async u=>{
  user=u||null;
  if(!u){
    $("userEmail").textContent="Not signed in";
-   $("authActionBtn").href="https://soilsparks.in/login.html";
+   $("authActionBtn").href="https://soilsparks.in/login1.html";
    $("authActionBtn").innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';
    $("book").innerHTML='<div class="empty"><i class="fa-solid fa-lock"></i><h3>Sign in required</h3><p>Please sign in before opening the book.</p></div>';
    return;
@@ -908,9 +965,17 @@ $("historyBack").onclick=showBook;
 $("resultHistoryBtn").onclick=showHistory;
 $("resultBookBtn").onclick=showBook;
 $("retryBtn").onclick=()=>openTopic(currentTopic.id,true);
+$("backBtn")?.addEventListener("click",showBook);
+$("prevBtn")?.addEventListener("click",()=>{if(currentIndex>0){currentIndex--;loadActiveQuestion()}});
+$("nextBtn")?.addEventListener("click",()=>shiftIndex(1));
 $("topicSearch").addEventListener("input",renderBook);
 $("purchaseClose").onclick=closePurchase;
 $("purchaseOverlay").onclick=e=>{if(e.target.id==="purchaseOverlay")closePurchase();};
+
+/* ===== LEADERBOARD BUTTONS ===== */
+$("leaderboardBtn").onclick=showLeaderboard;
+$("leaderboardBack").onclick=showBook;
+$("resultLeaderboardBtn").onclick=showLeaderboard;
 
 async function loadBook(){
  const cached=readCache();
@@ -925,11 +990,6 @@ async function loadBook(){
 function readCache(){try{const x=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");if(!x||Date.now()-x.savedAt>6*60*60*1000)return null;return x}catch(_){return null}}
 function saveCache(data){try{localStorage.setItem(CACHE_KEY,JSON.stringify({...data,savedAt:Date.now()}))}catch(_){}}
 function orderName(a,b){return (a.order??9999)-(b.order??9999)||(a.name||"").localeCompare(b.name||"")}
-
-/* ===== ATTEMPT LIMIT HELPER ===== */
-function attemptsUsedFor(topicId){
-  return history.filter(r => r.topicId === topicId).length;
-}
 
 const collapsedSections = new Set();
 
@@ -948,23 +1008,13 @@ function renderBook(){
  if(s)secs=secs.map(x=>({...x,topics:x.topics.filter(t=>(x.name+" "+(x.description||"")+" "+t.name+" "+(t.description||"")).toLowerCase().includes(s))})).filter(x=>x.topics.length);
 
  $("book").innerHTML=secs.length?secs.map(sec=>{
-   const sid = subjectIdForSection(sec);
-   const sectionFree = isFreeSection(sec);              /* FREEMODE */
-   const paid = sectionFree || !!activeSubscription(sid);/* FREEMODE */
-
-   const lockBanner = sectionFree
-     ? `<span>✓ Free — open to all students.</span>`     /* FREEMODE */
-     : paid
-       ? `<span>✓ Purchased — access until ${new Date(activeSubscription(sid).expiryDate).toLocaleDateString()}</span>`
-       : `<span>🔒 This section is locked. Purchase access to attempt its questions.</span>
-          <button class="buy-section" data-section="${esc(sec.id)}">Buy Section</button>`;
-
+   const sid=subjectIdForSection(sec),paid=!!activeSubscription(sid);
    return `<article class="section collapsed" data-section-id="${esc(sec.id)}">
     <div class="section-head" data-toggle-section="${esc(sec.id)}">
       <div class="section-title">
         <div class="section-icon"><i class="fa-solid fa-layer-group"></i></div>
         <div>
-          <h3>${esc(sec.name)}${sectionFree?' <span class="topic-free" style="margin-left:6px;vertical-align:middle">Free</span>':''}</h3>
+          <h3>${esc(sec.name)}</h3>
           <p>${esc(sec.description||"Choose a topic below.")}</p>
         </div>
       </div>
@@ -974,31 +1024,16 @@ function renderBook(){
       </div>
     </div>
     <div class="section-body">
-      <div class="section-lock ${paid?"section-paid":""}">${lockBanner}</div>
+      <div class="section-lock ${paid?"section-paid":""}">
+        <span>${paid?"✓ Purchased — access until "+new Date(activeSubscription(sid).expiryDate).toLocaleDateString():"🔒 This section is locked. Purchase access to attempt its questions."}</span>
+        ${paid?"":"<button class=\"buy-section\" data-section=\""+esc(sec.id)+"\">Buy Section</button>"}
+      </div>
       <div class="topic-grid">${sec.topics.map(t=>{
         const mins=Number(t.duration||0);
         const durBadge=mins>0
           ?`<span class="topic-duration"><i class="fa-regular fa-clock"></i> ${formatDuration(mins)}</span>`
           :`<span class="topic-duration no-timer"><i class="fa-solid fa-infinity"></i> No timer</span>`;
-
-        // Attempt limit badge
-        const limit=Number(t.maxAttempts||0);
-        const used=limit>0?attemptsUsedFor(t.id):0;
-        const remaining=limit>0?Math.max(0,limit-used):0;
-        const exhausted=limit>0 && used>=limit;
-        const attemptBadge=limit>0
-          ?`<span class="topic-attempts ${exhausted?"exhausted":""}"><i class="fa-solid fa-rotate"></i> ${remaining}/${limit} left</span>`
-          :"";
-
-        // FREEMODE: free topic badge + access-aware labels
-        const topicFree = isFreeTopic(t);
-        const canOpen = paid || topicFree;
-        const freeBadge = topicFree && !sectionFree
-          ? `<span class="topic-free"><i class="fa-solid fa-gift"></i> Free</span>`
-          : "";
-        const openLabel=canOpen?(exhausted?"Limit reached":"Open"):"🔒 Buy";
-        const cardClass=`topic ${canOpen?"":"locked"} ${exhausted?"limit-reached":""}`;
-        return `<article class="${cardClass}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}${freeBadge}${attemptBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${openLabel}</button></div></article>`;
+        return `<article class="topic ${paid?"":"locked"}" data-topic="${esc(t.id)}"><h4>${esc(t.name)}</h4><p>${esc(t.description||"Practice questions from this topic.")}</p>${durBadge}<div class="topic-foot"><span class="count">${Number(t.questionCount||0)} question${Number(t.questionCount||0)===1?"":"s"}</span><button class="open">${paid?"Open":"🔒 Buy"}</button></div></article>`;
       }).join("")}</div>
     </div>
    </article>`;
@@ -1023,22 +1058,10 @@ function renderBook(){
    const sec=sections.find(x=>x.id===b.dataset.section);
    if(sec)showPurchase(subjectIdForSection(sec),sec.name);
  });
-
- /* FREEMODE: access-aware click handler */
  $("book").querySelectorAll("[data-topic]").forEach(el=>el.onclick=()=>{
-   const t=topics.find(x=>x.id===el.dataset.topic);
-   if(!t) return;
-   const sec=sections.find(x=>x.id===t.sectionId);
-   const sid=subjectIdForSection(sec||{});
-
-   if(!hasAccess(sec, t)){ showPurchase(sid,sec?.name||sid); return; }
-
-   const lim=Number(t.maxAttempts||0);
-   if(lim>0 && attemptsUsedFor(t.id)>=lim){
-     alert(`You have used all ${lim} attempt(s) for "${t.name}".`);
-     return;
-   }
-   openTopic(t.id);
+   const t=topics.find(x=>x.id===el.dataset.topic),sec=sections.find(x=>x.id===t?.sectionId),sid=subjectIdForSection(sec||{});
+   if(activeSubscription(sid))openTopic(el.dataset.topic);
+   else showPurchase(sid,sec?.name||sid);
  });
 }
 
@@ -1203,31 +1226,14 @@ window.triggerFinalSubmit=function(){
   if(confirm("Are you sure you want to submit the test?")) finishTest();
 };
 
-/* ===== OPEN TOPIC (with access + attempt-limit guards) ===== */
+/* ===== OPEN TOPIC ===== */
 async function openTopic(id,retry=false){
   currentTopic=topics.find(t=>t.id===id)||null;
   if(!currentTopic) return;
-
-  /* FREEMODE: verify access again (covers the Retry button path) */
-  const secForTopic = sections.find(x=>x.id===currentTopic.sectionId);
-  if(!hasAccess(secForTopic, currentTopic)){
-    showPurchase(subjectIdForSection(secForTopic||{}), secForTopic?.name||"Section");
-    return;
-  }
-
-  // Attempt-limit guard
-  const limit=Number(currentTopic.maxAttempts||0);
-  if(limit>0){
-    const used=attemptsUsedFor(id);
-    if(used>=limit){
-      alert(`You have used all ${limit} attempt(s) for "${currentTopic.name}".`);
-      return;
-    }
-  }
-
   $("bookView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("questionView").style.display="block";
   $("questionBodyArea").textContent="Loading questions...";
 
@@ -1307,6 +1313,8 @@ async function finishTest(){
   saveLocalHistory();
   renderResult();
   syncAttempt(currentResult);
+  // Add to leaderboard
+  await addToLeaderboard(currentResult);
 }
 
 function renderResult(){
@@ -1331,23 +1339,169 @@ async function syncAttempt(r){
   }catch(e){console.warn("Attempt sync failed; local history remains available.",e)}
 }
 
+/* ===== LEADERBOARD FUNCTIONS ===== */
+async function addToLeaderboard(result){
+  if(!user) return;
+  try{
+    const entry = {
+      userId: user.uid,
+      displayName: user.displayName || user.email?.split('@')[0] || "Anonymous",
+      email: user.email || "",
+      topicId: result.topicId,
+      topicName: result.topicName,
+      sectionId: result.sectionId,
+      total: result.total,
+      correct: result.correct,
+      wrong: result.wrong,
+      unanswered: result.unanswered,
+      percent: result.percent,
+      completedAt: serverTimestamp()
+    };
+    await addDoc(collection(db, "leaderboard"), entry);
+    console.log("Leaderboard entry added");
+  }catch(e){
+    console.warn("Could not add to leaderboard:", e);
+  }
+}
+
+async function loadLeaderboardData(){
+  try{
+    // Get all leaderboard entries, ordered by percent desc, then completedAt desc
+    const snap = await getDocs(query(
+      collection(db, "leaderboard"),
+      orderBy("percent", "desc"),
+      orderBy("completedAt", "desc"),
+      limit(200)
+    ));
+    leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    
+    // Extract unique topics for filter tabs
+    const topicMap = new Map();
+    leaderboardData.forEach(e => {
+      if(!topicMap.has(e.topicId)) {
+        topicMap.set(e.topicId, e.topicName || "Unknown Topic");
+      }
+    });
+    leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+  }catch(e){
+    console.warn("Could not load leaderboard:", e);
+    // Fallback: query without orderBy if index not ready
+    try{
+      const snap = await getDocs(query(collection(db, "leaderboard"), limit(200)));
+      leaderboardData = snap.docs.map(d => ({id: d.id, ...d.data()}))
+        .sort((a,b) => (b.percent || 0) - (a.percent || 0));
+      const topicMap = new Map();
+      leaderboardData.forEach(e => {
+        if(!topicMap.has(e.topicId)) topicMap.set(e.topicId, e.topicName || "Unknown Topic");
+      });
+      leaderboardTopics = Array.from(topicMap.entries()).map(([id, name]) => ({id, name}));
+    }catch(e2){
+      leaderboardData = [];
+      leaderboardTopics = [];
+    }
+  }
+}
+
+function renderLeaderboard(){
+  const tabsContainer = $("leaderboardTabs");
+  const listContainer = $("leaderboardList");
+  
+  // Filter data by selected test/topic
+  let filtered = leaderboardData;
+  if(leaderboardFilter !== 'all') {
+    filtered = leaderboardData.filter(e => e.topicId === leaderboardFilter);
+  }
+  
+  // Deduplicate: best score per user PER TOPIC (never merge different tests)
+  const bestPerUserPerTopic = new Map();
+  filtered.forEach(e => {
+    const key = `${e.userId}_${e.topicId}`;
+    const existing = bestPerUserPerTopic.get(key);
+    if(!existing || (e.percent > existing.percent) || 
+       (e.percent === existing.percent && e.correct > existing.correct)) {
+      bestPerUserPerTopic.set(key, e);
+    }
+  });
+  
+  let entries = Array.from(bestPerUserPerTopic.values());
+  // Sort by percent desc, then correct desc, then completedAt asc
+  entries.sort((a,b) => {
+    if(b.percent !== a.percent) return b.percent - a.percent;
+    if(b.correct !== a.correct) return b.correct - a.correct;
+    return (a.completedAt?.seconds || 0) - (b.completedAt?.seconds || 0);
+  });
+  
+  // Render tabs
+  let tabsHtml = `<button class="leaderboard-tab ${leaderboardFilter === 'all' ? 'active' : ''}" data-filter="all">All Tests</button>`;
+  leaderboardTopics.forEach(t => {
+    tabsHtml += `<button class="leaderboard-tab ${leaderboardFilter === t.id ? 'active' : ''}" data-filter="${esc(t.id)}">${esc(t.name)}</button>`;
+  });
+  tabsContainer.innerHTML = tabsHtml;
+  tabsContainer.querySelectorAll("[data-filter]").forEach(btn => {
+    btn.onclick = () => {
+      leaderboardFilter = btn.dataset.filter;
+      renderLeaderboard();
+    };
+  });
+  
+  // Render entries
+  if(entries.length === 0) {
+    listContainer.innerHTML = '<div class="empty"><i class="fa-regular fa-face-smile"></i><p>No leaderboard entries yet. Be the first to complete a test!</p></div>';
+    return;
+  }
+  
+  listContainer.innerHTML = entries.map((e, idx) => {
+    const rank = idx + 1;
+    let rankClass = "";
+    if(rank === 1) rankClass = "gold";
+    else if(rank === 2) rankClass = "silver";
+    else if(rank === 3) rankClass = "bronze";
+    
+    const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : "";
+    const dateStr = e.completedAt ? new Date(e.completedAt.seconds * 1000).toLocaleDateString() : "";
+    
+    return `<div class="leader-row">
+      <div class="leader-rank ${rankClass}">${rank <= 3 ? medal : rank}</div>
+      <div class="leader-info">
+        <strong>${esc(e.displayName || "Anonymous")}</strong>
+        <small>${esc(e.topicName || "Test")} · ${dateStr}</small>
+      </div>
+      <div class="leader-score">
+        <b>${e.percent || 0}%</b>
+        <span>${e.correct}/${e.total} correct</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+async function showLeaderboard(){
+  $("bookView").style.display="none";
+  $("questionView").style.display="none";
+  $("resultView").style.display="none";
+  $("historyView").style.display="none";
+  $("leaderboardView").style.display="block";
+  
+  $("leaderboardList").innerHTML = '<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading leaderboard...</p></div>';
+  await loadLeaderboardData();
+  renderLeaderboard();
+}
+
 function loadLocalHistory(){try{history=JSON.parse(localStorage.getItem(HISTORY_KEY_PREFIX+user.uid)||"[]")}catch(_){history=[]}}
 function saveLocalHistory(){try{localStorage.setItem(HISTORY_KEY_PREFIX+user.uid,JSON.stringify(history))}catch(_){}}
 
 function showBook(){
-  stopTimer();
   $("questionView").style.display="none";
   $("resultView").style.display="none";
   $("historyView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("bookView").style.display="block";
-  renderBook();
 }
 
 function showHistory(){
-  stopTimer();
   $("bookView").style.display="none";
   $("questionView").style.display="none";
   $("resultView").style.display="none";
+  $("leaderboardView").style.display="none";
   $("historyView").style.display="block";
   const attempts=history.length,answered=history.reduce((n,x)=>n+(x.total-x.unanswered),0),
         correct=history.reduce((n,x)=>n+x.correct,0),wrong=history.reduce((n,x)=>n+x.wrong,0);
@@ -1372,6 +1526,7 @@ function toggleReview(i){
     if(isUnanswered){statusClass="unanswered";statusLabel="NOT ANSWERED";}
     else if(x.isCorrect){statusClass="correct";statusLabel="CORRECT";}
 
+    // Build the full options list
     const optionsHtml = opts.map((opt, oi) => {
       const label = String.fromCharCode(65 + oi);
       const isSelected = selectedIdx === oi;
@@ -1402,7 +1557,6 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 window.addEventListener("beforeunload",()=>{
   if(timerInterval) clearInterval(timerInterval);
 });
-
 
 
   (function() {
@@ -1489,6 +1643,7 @@ window.addEventListener("beforeunload",()=>{
 
         // PrintScreen key
         if (e.key === 'PrintScreen' || e.keyCode === 44) {
+            // Clear clipboard
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText('');
             }
@@ -1503,14 +1658,57 @@ window.addEventListener("beforeunload",()=>{
         }
     });
 
-    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
+    // ============================================
+    // 3. Disable Copy Event
+    // ============================================
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+    });
 
-    window.addEventListener('beforeprint', function(e) {});
+    // ============================================
+    // 4. Disable Cut Event
+    // ============================================
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
 
+    // ============================================
+    // 5. Disable Paste Event (optional)
+    // ============================================
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 6. Disable Text Selection
+    // ============================================
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 7. Disable Drag & Drop (prevents dragging content)
+    // ============================================
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // ============================================
+    // 8. Disable Before Print (Ctrl+P fallback)
+    // ============================================
+    window.addEventListener('beforeprint', function(e) {
+        // Optional: return false or hide content
+        // Note: beforeprint can't be prevented, use CSS instead
+    });
+
+    // ============================================
+    // 9. Apply CSS to prevent selection & printing
+    // ============================================
     var style = document.createElement('style');
     style.innerHTML = `
         * {
@@ -1537,6 +1735,9 @@ window.addEventListener("beforeunload",()=>{
     `;
     document.head.appendChild(style);
 
+    // ============================================
+    // 10. Disable DevTools (basic detection)
+    // ============================================
     var devtoolsOpen = false;
     var threshold = 160;
 
@@ -1547,6 +1748,8 @@ window.addEventListener("beforeunload",()=>{
         if (widthDiff || heightDiff) {
             if (!devtoolsOpen) {
                 devtoolsOpen = true;
+                // Optional: Redirect or blank page
+                // document.body.innerHTML = '<h1>Developer Tools Detected!</h1>';
                 console.clear();
             }
         } else {
@@ -1554,12 +1757,22 @@ window.addEventListener("beforeunload",()=>{
         }
     }, 1000);
 
+    // ============================================
+    // 11. Prevent Image Dragging
+    // ============================================
     document.querySelectorAll('img').forEach(function(img) {
-        img.addEventListener('dragstart', function(e) { e.preventDefault(); });
+        img.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+        });
     });
 
+    // ============================================
+    // 12. Prevent Middle-Click (open in new tab)
+    // ============================================
     document.addEventListener('auxclick', function(e) {
-        if (e.button === 1) { e.preventDefault(); }
+        if (e.button === 1) {
+            e.preventDefault();
+        }
     });
 
 })();
