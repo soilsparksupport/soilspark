@@ -302,6 +302,35 @@
       color: #a61b29; font-size: 13px; line-height: 1.6;
     }
 
+    /* REMOVE BUTTON */
+    .remove-btn {
+      background: #fff0f1;
+      border: 1px solid #f5c2c7;
+      color: var(--danger);
+      border-radius: 9px;
+      padding: 7px 12px;
+      font-weight: 700;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .remove-btn:hover {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: white;
+    }
+    .remove-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background: #f8d7da;
+      border-color: #f1b0b7;
+      color: #842029;
+    }
+
     /* TOAST */
     #toast {
       position: fixed; right: 22px; bottom: 22px;
@@ -458,7 +487,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs, getDoc, doc }
+  import { getFirestore, collection, getDocs, getDoc, doc, updateDoc, deleteDoc }
     from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -715,7 +744,10 @@
       const isActive = latest.status === "active" &&
         new Date(latest.expiryDate || 0).getTime() > Date.now();
 
-      return `<tr>
+      /* Individual subscription ID (or the group key if it's the only one) */
+      const subId = latest.id || key;
+
+      return `<tr data-sub-id="${escapeHtml(subId)}" data-user-key="${escapeHtml(key)}">
         <td>
           <div class="user-cell">
             <div class="user-avatar">${escapeHtml(initial)}</div>
@@ -737,6 +769,11 @@
             ${isActive ? "Active" : "Expired"}
           </span>
         </td>
+        <td>
+          <button class="remove-btn" data-sub-id="${escapeHtml(subId)}" title="Remove subscription">
+            <i class="fas fa-trash-can"></i> Remove
+          </button>
+        </td>
       </tr>`;
     }).join("");
 
@@ -752,10 +789,55 @@
             <th>Start Date</th>
             <th>Expiry Date</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>${rowsHtml}</tbody>
       </table>`;
+
+    /* Attach remove handlers */
+    container.querySelectorAll(".remove-btn").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const subId = btn.getAttribute("data-sub-id");
+        if (!subId) return;
+        await removeSubscription(subId, btn);
+      });
+    });
+  }
+
+  /* ---------- REMOVE SUBSCRIPTION ---------- */
+  async function removeSubscription(subId, buttonEl) {
+    if (!confirm("Remove this subscription? The user will immediately lose access.")) return;
+
+    buttonEl.disabled = true;
+    buttonEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+
+    try {
+      /* Try to soft-delete first: set status to "cancelled" and expiry to past */
+      const subRef = doc(db, "subscriptions", subId);
+      const subSnap = await getDoc(subRef);
+      if (!subSnap.exists()) throw new Error("Subscription not found.");
+
+      /* Option 1: soft delete (preserves record) */
+      await updateDoc(subRef, {
+        status: "cancelled",
+        cancelledAt: new Date().toISOString(),
+        cancelledBy: auth.currentUser?.uid || "admin"
+      });
+
+      /* Option 2: hard delete fallback — uncomment if you prefer permanent removal
+      await deleteDoc(subRef);
+      */
+
+      toast("Subscription removed successfully.");
+      await loadDashboardData(); // refresh both tables and stats
+    } catch (error) {
+      console.error("Remove subscription failed:", error);
+      toast("Failed to remove subscription: " + error.message, "error");
+      buttonEl.disabled = false;
+      buttonEl.innerHTML = '<i class="fas fa-trash-can"></i> Remove';
+    }
   }
 
   /* ---------- ALL USERS TABLE ---------- */
